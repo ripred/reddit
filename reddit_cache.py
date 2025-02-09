@@ -424,7 +424,7 @@ def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]
     if "global_summary" in final_output:
         gs = final_output["global_summary"]
         md_lines.append("## Global Summary")
-        md_lines.append(f"- **Total network retrievals:** {gs.get('global_network_retrievals', 0)}")
+        md_lines.append(f"- **Total network retrievals (over time):** {gs.get('global_network_retrievals', 0)}")
         md_lines.append(f"- **Total cached posts (global):** {gs.get('global_cached_posts', 0)}\n")
     md_lines.append("## Filters applied")
     for key, value in filters_applied.items():
@@ -569,7 +569,7 @@ def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str
     if "global_summary" in final_output:
         gs = final_output["global_summary"]
         print(f"\n{Fore.CYAN}Global Summary:{Style.RESET_ALL}")
-        print(f"  {Fore.LIGHTGREEN_EX}Total network retrievals: {gs.get('global_network_retrievals', 0)}{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}Total network retrievals (over time): {gs.get('global_network_retrievals', 0)}{Style.RESET_ALL}")
         print(f"  {Fore.LIGHTGREEN_EX}Total cached posts (global): {gs.get('global_cached_posts', 0)}{Style.RESET_ALL}")
     print(f"\n{Fore.YELLOW}Filters applied:{Style.RESET_ALL}")
     for key, value in filters_applied.items():
@@ -713,7 +713,7 @@ def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str
     if "global_summary" in final_output:
         gs = final_output["global_summary"]
         print(f"\n{Fore.CYAN}Global Summary:{Style.RESET_ALL}")
-        print(f"  {Fore.LIGHTGREEN_EX}Total network retrievals: {gs.get('global_network_retrievals', 0)}{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}Total network retrievals (over time): {gs.get('global_network_retrievals', 0)}{Style.RESET_ALL}")
         print(f"  {Fore.LIGHTGREEN_EX}Total cached posts (global): {gs.get('global_cached_posts', 0)}{Style.RESET_ALL}")
     print(f"\n{Fore.YELLOW}Filters applied:{Style.RESET_ALL}")
     for key, value in filters_applied.items():
@@ -857,7 +857,7 @@ def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str
     if "global_summary" in final_output:
         gs = final_output["global_summary"]
         print(f"\n{Fore.CYAN}Global Summary:{Style.RESET_ALL}")
-        print(f"  {Fore.LIGHTGREEN_EX}Total network retrievals: {gs.get('global_network_retrievals', 0)}{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}Total network retrievals (over time): {gs.get('global_network_retrievals', 0)}{Style.RESET_ALL}")
         print(f"  {Fore.LIGHTGREEN_EX}Total cached posts (global): {gs.get('global_cached_posts', 0)}{Style.RESET_ALL}")
     print(f"\n{Fore.YELLOW}Filters applied:{Style.RESET_ALL}")
     for key, value in filters_applied.items():
@@ -1001,7 +1001,7 @@ def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str
     if "global_summary" in final_output:
         gs = final_output["global_summary"]
         print(f"\n{Fore.CYAN}Global Summary:{Style.RESET_ALL}")
-        print(f"  {Fore.LIGHTGREEN_EX}Total network retrievals: {gs.get('global_network_retrievals', 0)}{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}Total network retrievals (over time): {gs.get('global_network_retrievals', 0)}{Style.RESET_ALL}")
         print(f"  {Fore.LIGHTGREEN_EX}Total cached posts (global): {gs.get('global_cached_posts', 0)}{Style.RESET_ALL}")
     print(f"\n{Fore.YELLOW}Filters applied:{Style.RESET_ALL}")
     for key, value in filters_applied.items():
