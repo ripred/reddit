@@ -13,9 +13,9 @@ Features:
   - Option -D/--digest: include a Monthly Digest report section by scanning cached posts
        whose titles contain "Monthly Digest"
   - Option --output: choose output format:
-         "json"   - machine-readable JSON output,
-         "report" - human-readable ANSI colored report,
-         "markdown" - human-readable report formatted as Markdown
+         "json"       - machine-readable JSON output,
+         "report"     - human-readable ANSI colored report,
+         "markdown"   - human-readable report formatted as Markdown
 
 All report operations use the local cache to minimize network traffic.
 """
@@ -43,10 +43,10 @@ class ColoredHelpFormatter(argparse.RawTextHelpFormatter):
 def fetch_posts(subreddit):
     """
     Fetch the newest 100 posts for the given subreddit using Reddit's public JSON endpoint.
-
+    
     Parameters:
         subreddit (str): Name of the subreddit.
-    
+        
     Returns:
         list: List of post objects (each containing a 'data' key), or None on error.
     """
@@ -70,11 +70,11 @@ def fetch_posts(subreddit):
 def cache_post(subreddit, post_data):
     """
     Cache a post's data locally in a folder named after the subreddit.
-
+    
     Parameters:
         subreddit (str): Subreddit name.
         post_data (dict): JSON data for a single post.
-    
+        
     Returns:
         tuple: (cached_data, is_new) where is_new is True if the file was newly created.
     """
@@ -101,11 +101,11 @@ def cache_post(subreddit, post_data):
 def generate_flair_report(subreddit, report_limit=None):
     """
     Generate a summary report of unique flair texts from the cached posts.
-
+    
     Parameters:
         subreddit (str): Subreddit name.
         report_limit (int, optional): Limit the number of cached posts scanned (most recent M posts).
-    
+        
     Returns:
         dict: Mapping of flair texts to their occurrence counts.
     """
@@ -135,11 +135,11 @@ def generate_flair_report(subreddit, report_limit=None):
 def generate_show_report(subreddit, n):
     """
     Generate a report showing the title, selftext, author, and flair for the last n cached posts.
-
+    
     Parameters:
         subreddit (str): Subreddit name.
         n (int): Number of posts to include.
-    
+        
     Returns:
         list: List of dicts with keys 'title', 'selftext', 'author', and 'flair'.
     """
@@ -172,13 +172,13 @@ def generate_show_report(subreddit, n):
 def generate_monthly_digest_report(subreddit, digest_pattern="Monthly Digest", limit=None):
     """
     Generate a Monthly Digest report section by scanning cached posts whose titles contain
-    the given digest_pattern (case-insensitive). This synthesizes a digest-style summary.
+    the given digest_pattern (case-insensitive) and synthesizing a digest-style summary.
     
     Parameters:
         subreddit (str): Subreddit name.
         digest_pattern (str): Pattern to search for in titles (default: "Monthly Digest").
         limit (int, optional): Limit the number of cached posts scanned for the digest report.
-    
+        
     Returns:
         dict: A digest report with keys 'header', 'narrative', and 'digest_posts'.
               If no digest posts are found, returns a dict with a message.
@@ -208,7 +208,6 @@ def generate_monthly_digest_report(subreddit, digest_pattern="Monthly Digest", l
         return {"message": "No Monthly Digest posts found."}
     header = posts_list[0].get("title", "Monthly Digest")
     count = len(posts_list)
-    # Create a simple narrative summary by combining the titles of the first three digest posts.
     titles = [post.get("title", "") for post in posts_list]
     highlights = "; ".join(titles[:3]) if titles else "None"
     narrative = (

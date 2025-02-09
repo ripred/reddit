@@ -1,0 +1,188 @@
+{
+  "approved_at_utc": null,
+  "subreddit": "arduino",
+  "selftext": "I made a fun Simon game \ud83d\ude01",
+  "author_fullname": "t2_mfd0z786l",
+  "saved": false,
+  "mod_reason_title": null,
+  "gilded": 0,
+  "clicked": false,
+  "title": "Simon game",
+  "link_flair_richtext": [
+    {
+      "e": "text",
+      "t": "Look what I made!"
+    }
+  ],
+  "subreddit_name_prefixed": "r/arduino",
+  "hidden": false,
+  "pwls": 6,
+  "link_flair_css_class": "",
+  "downs": 0,
+  "thumbnail_height": 140,
+  "top_awarded_type": null,
+  "hide_score": true,
+  "name": "t3_1ildgsc",
+  "quarantine": false,
+  "link_flair_text_color": "dark",
+  "upvote_ratio": 1.0,
+  "author_flair_background_color": null,
+  "ups": 9,
+  "total_awards_received": 0,
+  "media_embed": {},
+  "thumbnail_width": 140,
+  "author_flair_template_id": null,
+  "is_original_content": false,
+  "user_reports": [],
+  "secure_media": {
+    "reddit_video": {
+      "bitrate_kbps": 5000,
+      "fallback_url": "https://v.redd.it/zia4zs8zu3ie1/DASH_1080.mp4?source=fallback",
+      "has_audio": true,
+      "height": 1920,
+      "width": 864,
+      "scrubber_media_url": "https://v.redd.it/zia4zs8zu3ie1/DASH_96.mp4",
+      "dash_url": "https://v.redd.it/zia4zs8zu3ie1/DASHPlaylist.mpd?a=1741698993%2CNzYwOGZkNDExYzdkMzYzY2QwY2VmYjA5YTFmNjQwYjYyMzFmOTQ2NjY5MzEwMDllOTllMzgxZWQ4Njc3NDM1ZQ%3D%3D&amp;v=1&amp;f=sd",
+      "duration": 97,
+      "hls_url": "https://v.redd.it/zia4zs8zu3ie1/HLSPlaylist.m3u8?a=1741698993%2CNjBiZjY5NDg2NDAwNjIyZWRlNTc5ZGI4NmE5ZmQ0ZTU3ZTNmOWNlNDNkZmU0MTE4YTc5OWNmN2I0ZjBjYmYyZg%3D%3D&amp;v=1&amp;f=sd",
+      "is_gif": false,
+      "transcoding_status": "completed"
+    }
+  },
+  "is_reddit_media_domain": true,
+  "is_meta": false,
+  "category": null,
+  "secure_media_embed": {},
+  "link_flair_text": "Look what I made!",
+  "can_mod_post": false,
+  "score": 9,
+  "approved_by": null,
+  "is_created_from_ads_ui": false,
+  "author_premium": false,
+  "thumbnail": "https://external-preview.redd.it/cXh0OGY2NHp1M2llMTcN85F4TSSoKTLujpUIziq-s3fghWHK8GMks0h8rtP-.png?width=140&amp;height=140&amp;crop=140:140,smart&amp;format=jpg&amp;v=enabled&amp;lthumb=true&amp;s=960f3aec5dca651597850b91bbc282cec9f54b01",
+  "edited": false,
+  "author_flair_css_class": null,
+  "author_flair_richtext": [],
+  "gildings": {},
+  "post_hint": "hosted:video",
+  "content_categories": null,
+  "is_self": false,
+  "subreddit_type": "public",
+  "created": 1739103320.0,
+  "link_flair_type": "richtext",
+  "wls": 6,
+  "removed_by_category": null,
+  "banned_by": null,
+  "author_flair_type": "text",
+  "domain": "v.redd.it",
+  "allow_live_comments": false,
+  "selftext_html": "&lt;!-- SC_OFF --&gt;&lt;div class=\"md\"&gt;&lt;p&gt;I made a fun Simon game \ud83d\ude01&lt;/p&gt;\n&lt;/div&gt;&lt;!-- SC_ON --&gt;",
+  "likes": null,
+  "suggested_sort": "confidence",
+  "banned_at_utc": null,
+  "url_overridden_by_dest": "https://v.redd.it/zia4zs8zu3ie1",
+  "view_count": null,
+  "archived": false,
+  "no_follow": false,
+  "is_crosspostable": false,
+  "pinned": false,
+  "over_18": false,
+  "preview": {
+    "images": [
+      {
+        "source": {
+          "url": "https://external-preview.redd.it/cXh0OGY2NHp1M2llMTcN85F4TSSoKTLujpUIziq-s3fghWHK8GMks0h8rtP-.png?format=pjpg&amp;auto=webp&amp;s=4b0e62d6100a811dd7afdc9933df334320c26d37",
+          "width": 1080,
+          "height": 2400
+        },
+        "resolutions": [
+          {
+            "url": "https://external-preview.redd.it/cXh0OGY2NHp1M2llMTcN85F4TSSoKTLujpUIziq-s3fghWHK8GMks0h8rtP-.png?width=108&amp;crop=smart&amp;format=pjpg&amp;auto=webp&amp;s=5e93eef58bf2e5e9852ce5c534f2ded3f1c39aac",
+            "width": 108,
+            "height": 216
+          },
+          {
+            "url": "https://external-preview.redd.it/cXh0OGY2NHp1M2llMTcN85F4TSSoKTLujpUIziq-s3fghWHK8GMks0h8rtP-.png?width=216&amp;crop=smart&amp;format=pjpg&amp;auto=webp&amp;s=e2e88cf10ccd03198cc121cac4942682415198d3",
+            "width": 216,
+            "height": 432
+          },
+          {
+            "url": "https://external-preview.redd.it/cXh0OGY2NHp1M2llMTcN85F4TSSoKTLujpUIziq-s3fghWHK8GMks0h8rtP-.png?width=320&amp;crop=smart&amp;format=pjpg&amp;auto=webp&amp;s=73bc6c657d584b47b6784c5b02f8583209c1a769",
+            "width": 320,
+            "height": 640
+          },
+          {
+            "url": "https://external-preview.redd.it/cXh0OGY2NHp1M2llMTcN85F4TSSoKTLujpUIziq-s3fghWHK8GMks0h8rtP-.png?width=640&amp;crop=smart&amp;format=pjpg&amp;auto=webp&amp;s=a6d9ae2d5e9a504e320dac5c71ca1fe4eb3914fd",
+            "width": 640,
+            "height": 1280
+          },
+          {
+            "url": "https://external-preview.redd.it/cXh0OGY2NHp1M2llMTcN85F4TSSoKTLujpUIziq-s3fghWHK8GMks0h8rtP-.png?width=960&amp;crop=smart&amp;format=pjpg&amp;auto=webp&amp;s=12ca7758f5aba4f5df643b1cfeb1d07555880ca5",
+            "width": 960,
+            "height": 1920
+          },
+          {
+            "url": "https://external-preview.redd.it/cXh0OGY2NHp1M2llMTcN85F4TSSoKTLujpUIziq-s3fghWHK8GMks0h8rtP-.png?width=1080&amp;crop=smart&amp;format=pjpg&amp;auto=webp&amp;s=3b5bd8690b75089910b2117f4c1b3ccf0bd84235",
+            "width": 1080,
+            "height": 2160
+          }
+        ],
+        "variants": {},
+        "id": "cXh0OGY2NHp1M2llMTcN85F4TSSoKTLujpUIziq-s3fghWHK8GMks0h8rtP-"
+      }
+    ],
+    "enabled": false
+  },
+  "all_awardings": [],
+  "awarders": [],
+  "media_only": false,
+  "link_flair_template_id": "8a993096-51ce-11e9-84d9-0e29268ab306",
+  "can_gild": false,
+  "spoiler": false,
+  "locked": false,
+  "author_flair_text": null,
+  "treatment_tags": [],
+  "visited": false,
+  "removed_by": null,
+  "mod_note": null,
+  "distinguished": null,
+  "subreddit_id": "t5_2qknj",
+  "author_is_blocked": false,
+  "mod_reason_by": null,
+  "num_reports": null,
+  "removal_reason": null,
+  "link_flair_background_color": "#94e044",
+  "id": "1ildgsc",
+  "is_robot_indexable": true,
+  "report_reasons": null,
+  "author": "PasMalNon_C_Francais",
+  "discussion_type": null,
+  "num_comments": 0,
+  "send_replies": true,
+  "contest_mode": false,
+  "mod_reports": [],
+  "author_patreon_flair": false,
+  "author_flair_text_color": null,
+  "permalink": "/r/arduino/comments/1ildgsc/simon_game/",
+  "stickied": false,
+  "url": "https://v.redd.it/zia4zs8zu3ie1",
+  "subreddit_subscribers": 691347,
+  "created_utc": 1739103320.0,
+  "num_crossposts": 0,
+  "media": {
+    "reddit_video": {
+      "bitrate_kbps": 5000,
+      "fallback_url": "https://v.redd.it/zia4zs8zu3ie1/DASH_1080.mp4?source=fallback",
+      "has_audio": true,
+      "height": 1920,
+      "width": 864,
+      "scrubber_media_url": "https://v.redd.it/zia4zs8zu3ie1/DASH_96.mp4",
+      "dash_url": "https://v.redd.it/zia4zs8zu3ie1/DASHPlaylist.mpd?a=1741698993%2CNzYwOGZkNDExYzdkMzYzY2QwY2VmYjA5YTFmNjQwYjYyMzFmOTQ2NjY5MzEwMDllOTllMzgxZWQ4Njc3NDM1ZQ%3D%3D&amp;v=1&amp;f=sd",
+      "duration": 97,
+      "hls_url": "https://v.redd.it/zia4zs8zu3ie1/HLSPlaylist.m3u8?a=1741698993%2CNjBiZjY5NDg2NDAwNjIyZWRlNTc5ZGI4NmE5ZmQ0ZTU3ZTNmOWNlNDNkZmU0MTE4YTc5OWNmN2I0ZjBjYmYyZg%3D%3D&amp;v=1&amp;f=sd",
+      "is_gif": false,
+      "transcoding_status": "completed"
+    }
+  },
+  "is_video": true
+}
