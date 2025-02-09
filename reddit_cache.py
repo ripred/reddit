@@ -19,11 +19,13 @@ Features:
   - Option --check-code-format: interactively check cached posts for code formatting violations.
        For each post, any code outside properly formatted blocks (either fenced with ``` or indented by 4 spaces)
        is examined. If a contiguous block of 3 or more lines that appear to be Arduino/C/C++ code is detected,
-       the complete post body is shown and the moderator is prompted with:
-            y: Yes, it contains unformatted code (flag it)
-            n: No, it does not contain unformatted code (record in config so it isn’t flagged again)
-            s: Skip this post
+       the full post body is printed (without truncation) and the moderator is prompted with:
+            y: Yes, it contains unformatted code (flag it).
+            n: No, it does not contain unformatted code (record in config so it isn’t flagged again).
+            s: Skip this post.
             c: Cancel further checking.
+       In non-interactive mode (if the environment variable TEST_NONINTERACTIVE is set),
+       the response is automatically "y".
   - Option --output: choose output format:
          "json"       - machine-readable JSON output,
          "report"     - human-readable ANSI colored report,
@@ -210,7 +212,7 @@ def generate_monthly_digest_report(subreddit: str, digest_pattern: str = "Monthl
         limit (Optional[int]): Limit the posts scanned.
         
     Returns:
-        Dict[str, Any]: Digest report with header, narrative, and digest_posts or a message.
+        Dict[str, Any]: Digest report with header, narrative, and digest_posts, or a message if none found.
     """
     posts_list = []
     folder = get_cache_folder(subreddit)
@@ -292,7 +294,7 @@ def remove_indented_code(text: str) -> str:
 
 def clean_text(text: str) -> str:
     """
-    Remove properly formatted code blocks from text (both fenced and indented).
+    Remove properly formatted code blocks (both fenced and indented) from text.
     
     Parameters:
         text (str): Raw markdown text.
@@ -304,8 +306,8 @@ def clean_text(text: str) -> str:
 
 def is_code_line(line: str) -> bool:
     """
-    Check if a line likely contains Arduino/C/C++ code using common patterns.
-    Allows for optional leading whitespace.
+    Check if a line likely contains Arduino/C/C++ code using common patterns,
+    allowing for optional leading whitespace.
     
     Parameters:
         line (str): A single line of text.
@@ -333,8 +335,8 @@ def is_code_line(line: str) -> bool:
 
 def has_unformatted_code(text: str) -> bool:
     """
-    Determine if text contains a contiguous block of 3 or more consecutive lines
-    that appear to contain Arduino/C/C++ source code, ignoring properly formatted code blocks.
+    Determine if text contains a contiguous block of 3 or more consecutive lines that appear to contain
+    Arduino/C/C++ source code, ignoring properly formatted code blocks.
     
     Parameters:
         text (str): Raw markdown text.
@@ -357,17 +359,17 @@ def has_unformatted_code(text: str) -> bool:
             code_run = 0
     return False
 
-
 def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]) -> None:
     """
     Print a Markdown-formatted report of the final output.
+    (Full post body text is displayed without truncation.)
     """
     md_lines = []
     md_lines.append("# Monthly Digest Report\n")
     for subreddit, result in final_output["results"].items():
         md_lines.append(f"## Subreddit: {subreddit}\n")
         summary = result.get("summary", {})
-        md_lines.append(f"**Total posts checked:** {summary.get('total_posts_checked', 0)}  ")
+        md_lines.append(f"**Total posts checked:** {summary.get('total_posts_checked', 0)}")
         md_lines.append(f"**New posts retrieved:** {summary.get('new_posts_retrieved', 0)}\n")
         if "report" in result:
             report = result["report"]
@@ -384,10 +386,8 @@ def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]
                     md_lines.append(f"- Title: {post.get('title')}")
                     md_lines.append(f"- Author: {post.get('author')}")
                     md_lines.append(f"- Flair: {post.get('flair')}")
-                    selftext = post.get("selftext", "")
-                    if len(selftext) > 100:
-                        selftext = selftext[:100] + "..."
-                    md_lines.append(f"- Selftext: {selftext}\n")
+                    # Show full selftext without truncation:
+                    md_lines.append(f"- Selftext: {post.get('selftext', '')}\n")
             if "show_posts" in report:
                 md_lines.append("### Show Posts Report")
                 for idx, post in enumerate(report["show_posts"], 1):
@@ -395,10 +395,7 @@ def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]
                     md_lines.append(f"- Title: {post.get('title')}")
                     md_lines.append(f"- Author: {post.get('author')}")
                     md_lines.append(f"- Flair: {post.get('flair')}")
-                    selftext = post.get("selftext", "")
-                    if len(selftext) > 100:
-                        selftext = selftext[:100] + "..."
-                    md_lines.append(f"- Selftext: {selftext}\n")
+                    md_lines.append(f"- Selftext: {post.get('selftext', '')}\n")
             if "monthly_digest" in report:
                 digest = report["monthly_digest"]
                 md_lines.append("### Monthly Digest Report")
@@ -413,10 +410,7 @@ def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]
                         md_lines.append(f"    - Title: {post.get('title')}")
                         md_lines.append(f"    - Author: {post.get('author')}")
                         md_lines.append(f"    - Flair: {post.get('flair')}")
-                        selftext = post.get("selftext", "")
-                        if len(selftext) > 100:
-                            selftext = selftext[:100] + "..."
-                        md_lines.append(f"    - Selftext: {selftext}")
+                        md_lines.append(f"    - Selftext: {post.get('selftext', '')}")
                     md_lines.append("")
             if "code_format_violations" in report:
                 md_lines.append("### Code Format Violations")
@@ -443,14 +437,14 @@ def check_code_format_violations(subreddit: str, limit: Optional[int] = None) ->
     A violation is defined as a contiguous block of 3 or more non-empty lines (outside of properly formatted code blocks)
     that each contain code as determined by common Arduino/C/C++ code patterns.
     
-    For each post meeting the criteria and not already recorded as "no violation", the full post body is shown,
+    For each post meeting the criteria and not already recorded as "no violation", the full post body is printed,
     and the user is prompted:
         y: Yes, it contains unformatted code (flag it).
         n: No, it does not contain unformatted code (record in config so it isn’t flagged again).
         s: Skip this post.
         c: Cancel further checking.
     
-    The configuration is stored in "caches/app.ini" under [CodeFormat], with each post ID marked as "n" to avoid future prompts.
+    In non-interactive mode (if the environment variable TEST_NONINTERACTIVE is set), the response is automatically "y".
     
     Parameters:
         subreddit (str): Subreddit name.
@@ -489,8 +483,13 @@ def check_code_format_violations(subreddit: str, limit: Optional[int] = None) ->
             print(f"Title: {post.get('title', '')}")
             print(f"Author: {post.get('author', '')}")
             print("Complete Selftext:")
+            # Print full selftext without truncation:
             print(selftext)
-            response = input("Does this post contain unformatted code? (y/n/s/c): ").strip().lower()
+            if os.environ.get("TEST_NONINTERACTIVE"):
+                response = "y"
+                print("[DEBUG] TEST_NONINTERACTIVE is set; automatically flagging this post.")
+            else:
+                response = input("Does this post contain unformatted code? (y/n/s/c): ").strip().lower()
             if response == "y":
                 violations.append({
                     "id": post_id,
@@ -511,6 +510,7 @@ def check_code_format_violations(subreddit: str, limit: Optional[int] = None) ->
 def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str, Any]) -> None:
     """
     Print a human-readable, colorful, ANSI report of the final output.
+    (Full post body text is displayed without truncation.)
     """
     print(f"{Fore.GREEN}=== Human Readable Report ==={Style.RESET_ALL}")
     for subreddit, result in final_output["results"].items():
@@ -533,10 +533,7 @@ def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str
                     print(f"      Title  : {post.get('title')}")
                     print(f"      Author : {post.get('author')}")
                     print(f"      Flair  : {post.get('flair')}")
-                    selftext = post.get("selftext", "")
-                    if len(selftext) > 100:
-                        selftext = selftext[:100] + "..."
-                    print(f"      Selftext: {selftext}")
+                    print(f"      Selftext: {post.get('selftext', '')}")
             if "show_posts" in report:
                 print(f"\n  {Fore.MAGENTA}Show Posts Report:{Style.RESET_ALL}")
                 for idx, post in enumerate(report["show_posts"], 1):
@@ -544,10 +541,7 @@ def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str
                     print(f"      Title  : {post.get('title')}")
                     print(f"      Author : {post.get('author')}")
                     print(f"      Flair  : {post.get('flair')}")
-                    selftext = post.get("selftext", "")
-                    if len(selftext) > 100:
-                        selftext = selftext[:100] + "..."
-                    print(f"      Selftext: {selftext}")
+                    print(f"      Selftext: {post.get('selftext', '')}")
             if "monthly_digest" in report:
                 digest = report["monthly_digest"]
                 print(f"\n  {Fore.MAGENTA}Monthly Digest Report:{Style.RESET_ALL}")
@@ -562,10 +556,8 @@ def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str
                         print(f"        Title  : {post.get('title')}")
                         print(f"        Author : {post.get('author')}")
                         print(f"        Flair  : {post.get('flair')}")
-                        selftext = post.get("selftext", "")
-                        if len(selftext) > 100:
-                            selftext = selftext[:100] + "..."
-                        print(f"        Selftext: {selftext}")
+                        print(f"        Selftext: {post.get('selftext', '')}")
+                    print("")
             if "code_format_violations" in report:
                 print(f"\n  {Fore.MAGENTA}Code Format Violations:{Style.RESET_ALL}")
                 for idx, violation in enumerate(report["code_format_violations"], 1):

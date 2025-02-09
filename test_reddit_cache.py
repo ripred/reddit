@@ -87,7 +87,6 @@ class TestRedditCache(unittest.TestCase):
             "once they are\n"
             "debugged"
         )
-        # Expect at least 3 consecutive code lines (lines 3-5) to trigger a violation.
         self.assertTrue(has_unformatted_code(text))
 
     def test_get_cache_folder_creates_directory(self):
