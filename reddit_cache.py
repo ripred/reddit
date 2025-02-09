@@ -5,6 +5,8 @@ reddit_cache.py
 This script fetches and caches the newest 100 posts from one or more subreddits,
 and generates various reports based on the local cache.
 
+All cached posts are stored under the "caches" folder.
+
 Features:
   - Positional arguments: one or more subreddit names (default: "arduino")
   - Option -r/--report: generate a report; available option: "flair"
@@ -17,7 +19,7 @@ Features:
          "report"     - human-readable ANSI colored report,
          "markdown"   - human-readable report formatted as Markdown
 
-All report operations use the local cache to minimize network traffic.
+All report operations use the local cache (located under "caches") to minimize network traffic.
 """
 
 import os
@@ -30,6 +32,9 @@ from colorama import init, Fore, Style
 
 # Initialize colorama for ANSI color support with auto-reset.
 init(autoreset=True)
+
+# Define the root directory for caches.
+CACHE_DIR = "caches"
 
 class ColoredHelpFormatter(argparse.RawTextHelpFormatter):
     """Custom help formatter to display usage/help text in color."""
@@ -69,7 +74,7 @@ def fetch_posts(subreddit):
 
 def cache_post(subreddit, post_data):
     """
-    Cache a post's data locally in a folder named after the subreddit.
+    Cache a post's data locally in a folder under "caches" named after the subreddit.
     
     Parameters:
         subreddit (str): Subreddit name.
@@ -78,7 +83,7 @@ def cache_post(subreddit, post_data):
     Returns:
         tuple: (cached_data, is_new) where is_new is True if the file was newly created.
     """
-    folder = subreddit
+    folder = os.path.join(CACHE_DIR, subreddit)
     os.makedirs(folder, exist_ok=True)
     post_id = post_data.get("id")
     if not post_id:
@@ -110,7 +115,7 @@ def generate_flair_report(subreddit, report_limit=None):
         dict: Mapping of flair texts to their occurrence counts.
     """
     flair_counts = {}
-    folder = subreddit
+    folder = os.path.join(CACHE_DIR, subreddit)
     if not os.path.isdir(folder):
         print(f"{Fore.RED}No cache folder for subreddit {subreddit} found.{Style.RESET_ALL}", file=sys.stderr)
         return flair_counts
@@ -144,7 +149,7 @@ def generate_show_report(subreddit, n):
         list: List of dicts with keys 'title', 'selftext', 'author', and 'flair'.
     """
     posts_list = []
-    folder = subreddit
+    folder = os.path.join(CACHE_DIR, subreddit)
     if not os.path.isdir(folder):
         print(f"{Fore.RED}No cache folder for subreddit {subreddit} found.{Style.RESET_ALL}", file=sys.stderr)
         return []
@@ -185,7 +190,7 @@ def generate_monthly_digest_report(subreddit, digest_pattern="Monthly Digest", l
     """
     import re
     posts_list = []
-    folder = subreddit
+    folder = os.path.join(CACHE_DIR, subreddit)
     if not os.path.isdir(folder):
         print(f"{Fore.RED}No cache folder for subreddit {subreddit} found.{Style.RESET_ALL}", file=sys.stderr)
         return {"message": "No cache folder found."}
@@ -438,6 +443,7 @@ def main():
     global_cached_posts = 0
     overall_results = {}
 
+    # Process each subreddit.
     for sub in tqdm(args.subreddits, desc="Processing subreddits", unit="subreddit"):
         print(f"{Fore.BLUE}Checking subreddit: {sub}{Style.RESET_ALL}", file=sys.stderr)
         posts = fetch_posts(sub)
@@ -447,7 +453,6 @@ def main():
 
         new_posts = []
         new_posts_count = 0
-
         for post in posts:
             post_data = post.get("data", {})
             cached, is_new = cache_post(sub, post_data)
@@ -456,7 +461,8 @@ def main():
                 new_posts_count += 1
 
         try:
-            total_cached = len([f for f in os.listdir(sub) if f.endswith(".json") and f != "custom_flairs.json"])
+            folder = os.path.join("caches", sub)
+            total_cached = len([f for f in os.listdir(folder) if f.endswith(".json") and f != "custom_flairs.json"])
         except Exception as e:
             print(f"{Fore.RED}Error counting cached posts in {sub}: {e}{Style.RESET_ALL}", file=sys.stderr)
             total_cached = 0
