@@ -4,7 +4,6 @@ import tempfile
 import shutil
 import unittest
 
-# Import the functions to be tested from your reddit_cache module.
 from reddit_cache import (
     remove_fenced_code,
     remove_indented_code,
@@ -68,7 +67,7 @@ class TestRedditCache(unittest.TestCase):
         text = (
             "#include <stdio.h>\n"
             "void main() {\n"
-            "    printf(\"Hello\");\n"  # properly indented
+            "    printf(\"Hello\");\n"
             "}\n"
             "Some extra text."
         )

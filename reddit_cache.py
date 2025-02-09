@@ -18,8 +18,9 @@ Features:
        whose titles contain "Monthly Digest"
   - Option --check-code-format: interactively check cached posts for code formatting violations.
        For each post, any code outside properly formatted blocks (either fenced with ``` or indented by 4 spaces)
-       is examined. If a contiguous block of 3 or more lines that appear to be Arduino/C/C++ code is detected,
-       the full post body is printed (without truncation) and the moderator is prompted with:
+       is examined. If a contiguous block of 3 or more non-empty lines (ignoring blank lines) that appear to be
+       Arduino/C/C++ code is detected, the full post body is printed (without truncation) and the moderator is
+       prompted with:
             y: Yes, it contains unformatted code (flag it).
             n: No, it does not contain unformatted code (record in config so it isn’t flagged again).
             s: Skip this post.
@@ -44,6 +45,7 @@ import configparser
 from tqdm import tqdm
 from colorama import init, Fore, Style
 import re
+import html
 from typing import Tuple, Optional, List, Dict, Any
 
 # Initialize colorama for ANSI color support with auto-reset.
@@ -237,10 +239,8 @@ def generate_monthly_digest_report(subreddit: str, digest_pattern: str = "Monthl
     titles = [post.get("title", "") for post in posts_list]
     highlights = "; ".join(titles[:3]) if titles else "None"
     narrative = (
-        f"{header}\n\n"
-        f"During this period, {count} digest post(s) were identified. "
-        f"Highlights include: {highlights}.\n\n"
-        "This digest summarizes key community highlights and statistics for the period."
+        f"{header}\n\nDuring this period, {count} digest post(s) were identified. "
+        f"Highlights include: {highlights}.\n\nThis digest summarizes key community highlights and statistics for the period."
     )
     digest_posts = [
         {
@@ -295,6 +295,7 @@ def remove_indented_code(text: str) -> str:
 def clean_text(text: str) -> str:
     """
     Remove properly formatted code blocks (both fenced and indented) from text.
+    Also unescape HTML entities so that code detection works on HTML-escaped content.
     
     Parameters:
         text (str): Raw markdown text.
@@ -302,7 +303,8 @@ def clean_text(text: str) -> str:
     Returns:
         str: Cleaned text.
     """
-    return remove_indented_code(remove_fenced_code(text))
+    unescaped = html.unescape(text)
+    return remove_indented_code(remove_fenced_code(unescaped))
 
 def is_code_line(line: str) -> bool:
     """
@@ -335,8 +337,8 @@ def is_code_line(line: str) -> bool:
 
 def has_unformatted_code(text: str) -> bool:
     """
-    Determine if text contains a contiguous block of 3 or more consecutive lines that appear to contain
-    Arduino/C/C++ source code, ignoring properly formatted code blocks.
+    Determine if text contains a contiguous block of 3 or more non-empty lines (ignoring blank lines)
+    that appear to contain Arduino/C/C++ source code, ignoring properly formatted code blocks.
     
     Parameters:
         text (str): Raw markdown text.
@@ -348,8 +350,8 @@ def has_unformatted_code(text: str) -> bool:
     lines = cleaned.splitlines()
     code_run = 0
     for line in lines:
+        # Ignore blank lines
         if line.strip() == "":
-            code_run = 0
             continue
         if is_code_line(line):
             code_run += 1
@@ -386,7 +388,6 @@ def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]
                     md_lines.append(f"- Title: {post.get('title')}")
                     md_lines.append(f"- Author: {post.get('author')}")
                     md_lines.append(f"- Flair: {post.get('flair')}")
-                    # Show full selftext without truncation:
                     md_lines.append(f"- Selftext: {post.get('selftext', '')}\n")
             if "show_posts" in report:
                 md_lines.append("### Show Posts Report")
@@ -434,8 +435,8 @@ def check_code_format_violations(subreddit: str, limit: Optional[int] = None) ->
     """
     Interactively scan cached posts for code formatting violations.
     
-    A violation is defined as a contiguous block of 3 or more non-empty lines (outside of properly formatted code blocks)
-    that each contain code as determined by common Arduino/C/C++ code patterns.
+    A violation is defined as a contiguous block of 3 or more non-empty lines (ignoring blank lines)
+    that appear to contain Arduino/C/C++ source code, ignoring properly formatted code blocks.
     
     For each post meeting the criteria and not already recorded as "no violation", the full post body is printed,
     and the user is prompted:
@@ -483,7 +484,6 @@ def check_code_format_violations(subreddit: str, limit: Optional[int] = None) ->
             print(f"Title: {post.get('title', '')}")
             print(f"Author: {post.get('author', '')}")
             print("Complete Selftext:")
-            # Print full selftext without truncation:
             print(selftext)
             if os.environ.get("TEST_NONINTERACTIVE"):
                 response = "y"
@@ -565,6 +565,439 @@ def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str
                     print(f"      Post ID: {violation.get('id')}")
                     print(f"      Title  : {violation.get('title')}")
                     print(f"      Message: {violation.get('violation')}")
+        print("\n")
+    if "global_summary" in final_output:
+        gs = final_output["global_summary"]
+        print(f"\n{Fore.CYAN}Global Summary:{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}Total network retrievals: {gs.get('global_network_retrievals', 0)}{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}Total cached posts (global): {gs.get('global_cached_posts', 0)}{Style.RESET_ALL}")
+    print(f"\n{Fore.YELLOW}Filters applied:{Style.RESET_ALL}")
+    for key, value in filters_applied.items():
+        print(f"  {key}: {value}")
+
+def check_code_format_violations(subreddit: str, limit: Optional[int] = None) -> List[Dict[str, Any]]:
+    """
+    Interactively scan cached posts for code formatting violations.
+    
+    A violation is defined as a contiguous block of 3 or more non-empty lines (ignoring blank lines)
+    that appear to contain Arduino/C/C++ source code, ignoring properly formatted code blocks.
+    
+    For each post meeting the criteria and not already recorded as "no violation", the full post body is printed,
+    and the user is prompted:
+        y: Yes, it contains unformatted code (flag it).
+        n: No, it does not contain unformatted code (record in config so it isn’t flagged again).
+        s: Skip this post.
+        c: Cancel further checking.
+    
+    In non-interactive mode (if the environment variable TEST_NONINTERACTIVE is set), the response is automatically "y".
+    
+    Parameters:
+        subreddit (str): Subreddit name.
+        limit (Optional[int]): Limit the number of posts to scan.
+        
+    Returns:
+        List[Dict[str, Any]]: List of posts with confirmed code formatting violations.
+    """
+    config, config_path = get_config()
+    no_violation_ids = config["CodeFormat"] if "CodeFormat" in config else {}
+    violations: List[Dict[str, Any]] = []
+    folder = get_cache_folder(subreddit)
+    if not os.path.isdir(folder):
+        return violations
+    files = [os.path.join(folder, f) for f in os.listdir(folder)
+             if f.endswith(".json") and f != "custom_flairs.json"]
+    posts: List[Dict[str, Any]] = []
+    for file_path in files:
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            posts.append(data)
+        except Exception as e:
+            print(f"{Fore.RED}Error processing {file_path}: {e}{Style.RESET_ALL}", file=sys.stderr)
+    posts.sort(key=lambda x: x.get("created_utc", 0), reverse=True)
+    if limit is not None:
+        posts = posts[:limit]
+    for post in posts:
+        post_id = post.get("id", "")
+        if post_id in no_violation_ids:
+            continue
+        selftext = post.get("selftext", "")
+        if has_unformatted_code(selftext):
+            print(f"\n{Fore.CYAN}Potential Code Format Violation Detected:{Style.RESET_ALL}")
+            print(f"Post ID: {post_id}")
+            print(f"Title: {post.get('title', '')}")
+            print(f"Author: {post.get('author', '')}")
+            print("Complete Selftext:")
+            print(selftext)
+            if os.environ.get("TEST_NONINTERACTIVE"):
+                response = "y"
+                print("[DEBUG] TEST_NONINTERACTIVE is set; automatically flagging this post.")
+            else:
+                response = input("Does this post contain unformatted code? (y/n/s/c): ").strip().lower()
+            if response == "y":
+                violations.append({
+                    "id": post_id,
+                    "title": post.get("title", ""),
+                    "violation": "Post contains unformatted source code. Please format your code in proper code blocks."
+                })
+            elif response == "n":
+                no_violation_ids[post_id] = "n"
+            elif response == "s":
+                continue
+            elif response == "c":
+                print("Cancelling code format check.")
+                break
+    config["CodeFormat"] = no_violation_ids
+    save_config(config, config_path)
+    return violations
+
+def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str, Any]) -> None:
+    """
+    Print a human-readable, colorful, ANSI report of the final output.
+    (Full post body text is displayed without truncation.)
+    """
+    print(f"{Fore.GREEN}=== Human Readable Report ==={Style.RESET_ALL}")
+    for subreddit, result in final_output["results"].items():
+        print(f"\n{Fore.BLUE}Subreddit: {subreddit}{Style.RESET_ALL}")
+        summary = result.get("summary", {})
+        print(f"  {Fore.LIGHTGREEN_EX}Total posts checked: {summary.get('total_posts_checked', 0)}{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}New posts retrieved: {summary.get('new_posts_retrieved', 0)}{Style.RESET_ALL}")
+        if "report" in result:
+            report = result["report"]
+            if "flair_summary" in report:
+                print(f"\n  {Fore.MAGENTA}Flair Report:{Style.RESET_ALL}")
+                for flair, count in report["flair_summary"].items():
+                    print(f"    {flair}: {count}")
+                print(f"    {Fore.LIGHTGREEN_EX}Total unique flairs: {report.get('total_unique_flairs', 0)}{Style.RESET_ALL}")
+                print(f"    {Fore.LIGHTGREEN_EX}Total cached posts (scanned for report): {report.get('total_cached_posts', 0)}{Style.RESET_ALL}")
+            if "limited_scan_posts" in report:
+                print(f"\n  {Fore.MAGENTA}Limited Scan Report (Limit: {filters_applied.get('limit_report')}):{Style.RESET_ALL}")
+                for idx, post in enumerate(report["limited_scan_posts"], 1):
+                    print(f"    Post {idx}:")
+                    print(f"      Title  : {post.get('title')}")
+                    print(f"      Author : {post.get('author')}")
+                    print(f"      Flair  : {post.get('flair')}")
+                    print(f"      Selftext: {post.get('selftext', '')}")
+            if "show_posts" in report:
+                print(f"\n  {Fore.MAGENTA}Show Posts Report:{Style.RESET_ALL}")
+                for idx, post in enumerate(report["show_posts"], 1):
+                    print(f"    Post {idx}:")
+                    print(f"      Title  : {post.get('title')}")
+                    print(f"      Author : {post.get('author')}")
+                    print(f"      Flair  : {post.get('flair')}")
+                    print(f"      Selftext: {post.get('selftext', '')}")
+            if "monthly_digest" in report:
+                digest = report["monthly_digest"]
+                print(f"\n  {Fore.MAGENTA}Monthly Digest Report:{Style.RESET_ALL}")
+                if "message" in digest:
+                    print(f"    {digest['message']}")
+                else:
+                    print(f"    {Fore.YELLOW}Header: {digest.get('header')}{Style.RESET_ALL}")
+                    print(f"    {Fore.YELLOW}Narrative Summary:{Style.RESET_ALL} {digest.get('narrative')}")
+                    print(f"    {Fore.YELLOW}Digest Posts:{Style.RESET_ALL}")
+                    for idx, post in enumerate(digest.get("digest_posts", []), 1):
+                        print(f"      Digest Post {idx}:")
+                        print(f"        Title  : {post.get('title')}")
+                        print(f"        Author : {post.get('author')}")
+                        print(f"        Flair  : {post.get('flair')}")
+                        print(f"        Selftext: {post.get('selftext', '')}")
+                    print("")
+            if "code_format_violations" in report:
+                print(f"\n  {Fore.MAGENTA}Code Format Violations:{Style.RESET_ALL}")
+                for idx, violation in enumerate(report["code_format_violations"], 1):
+                    print(f"    Violation {idx}:")
+                    print(f"      Post ID: {violation.get('id')}")
+                    print(f"      Title  : {violation.get('title')}")
+                    print(f"      Message: {violation.get('violation')}")
+        print("\n")
+    if "global_summary" in final_output:
+        gs = final_output["global_summary"]
+        print(f"\n{Fore.CYAN}Global Summary:{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}Total network retrievals: {gs.get('global_network_retrievals', 0)}{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}Total cached posts (global): {gs.get('global_cached_posts', 0)}{Style.RESET_ALL}")
+    print(f"\n{Fore.YELLOW}Filters applied:{Style.RESET_ALL}")
+    for key, value in filters_applied.items():
+        print(f"  {key}: {value}")
+
+def check_code_format_violations(subreddit: str, limit: Optional[int] = None) -> List[Dict[str, Any]]:
+    """
+    Interactively scan cached posts for code formatting violations.
+    
+    A violation is defined as a contiguous block of 3 or more non-empty lines (ignoring blank lines)
+    that appear to contain Arduino/C/C++ source code, ignoring properly formatted code blocks.
+    
+    For each post meeting the criteria and not already recorded as "no violation", the full post body is printed,
+    and the user is prompted:
+        y: Yes, it contains unformatted code (flag it).
+        n: No, it does not contain unformatted code (record in config so it isn’t flagged again).
+        s: Skip this post.
+        c: Cancel further checking.
+    
+    In non-interactive mode (if the environment variable TEST_NONINTERACTIVE is set), the response is automatically "y".
+    
+    Parameters:
+        subreddit (str): Subreddit name.
+        limit (Optional[int]): Limit the number of posts to scan.
+        
+    Returns:
+        List[Dict[str, Any]]: List of posts with confirmed code formatting violations.
+    """
+    config, config_path = get_config()
+    no_violation_ids = config["CodeFormat"] if "CodeFormat" in config else {}
+    violations: List[Dict[str, Any]] = []
+    folder = get_cache_folder(subreddit)
+    if not os.path.isdir(folder):
+        return violations
+    files = [os.path.join(folder, f) for f in os.listdir(folder)
+             if f.endswith(".json") and f != "custom_flairs.json"]
+    posts: List[Dict[str, Any]] = []
+    for file_path in files:
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            posts.append(data)
+        except Exception as e:
+            print(f"{Fore.RED}Error processing {file_path}: {e}{Style.RESET_ALL}", file=sys.stderr)
+    posts.sort(key=lambda x: x.get("created_utc", 0), reverse=True)
+    if limit is not None:
+        posts = posts[:limit]
+    for post in posts:
+        post_id = post.get("id", "")
+        if post_id in no_violation_ids:
+            continue
+        selftext = post.get("selftext", "")
+        if has_unformatted_code(selftext):
+            print(f"\n{Fore.CYAN}Potential Code Format Violation Detected:{Style.RESET_ALL}")
+            print(f"Post ID: {post_id}")
+            print(f"Title: {post.get('title', '')}")
+            print(f"Author: {post.get('author', '')}")
+            print("Complete Selftext:")
+            print(selftext)
+            if os.environ.get("TEST_NONINTERACTIVE"):
+                response = "y"
+                print("[DEBUG] TEST_NONINTERACTIVE is set; automatically flagging this post.")
+            else:
+                response = input("Does this post contain unformatted code? (y/n/s/c): ").strip().lower()
+            if response == "y":
+                violations.append({
+                    "id": post_id,
+                    "title": post.get("title", ""),
+                    "violation": "Post contains unformatted source code. Please format your code in proper code blocks."
+                })
+            elif response == "n":
+                no_violation_ids[post_id] = "n"
+            elif response == "s":
+                continue
+            elif response == "c":
+                print("Cancelling code format check.")
+                break
+    config["CodeFormat"] = no_violation_ids
+    save_config(config, config_path)
+    return violations
+
+def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str, Any]) -> None:
+    """
+    Print a human-readable, colorful, ANSI report of the final output.
+    (Full post body text is displayed without truncation.)
+    """
+    print(f"{Fore.GREEN}=== Human Readable Report ==={Style.RESET_ALL}")
+    for subreddit, result in final_output["results"].items():
+        print(f"\n{Fore.BLUE}Subreddit: {subreddit}{Style.RESET_ALL}")
+        summary = result.get("summary", {})
+        print(f"  {Fore.LIGHTGREEN_EX}Total posts checked: {summary.get('total_posts_checked', 0)}{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}New posts retrieved: {summary.get('new_posts_retrieved', 0)}{Style.RESET_ALL}")
+        if "report" in result:
+            report = result["report"]
+            if "flair_summary" in report:
+                print(f"\n  {Fore.MAGENTA}Flair Report:{Style.RESET_ALL}")
+                for flair, count in report["flair_summary"].items():
+                    print(f"    {flair}: {count}")
+                print(f"    {Fore.LIGHTGREEN_EX}Total unique flairs: {report.get('total_unique_flairs', 0)}{Style.RESET_ALL}")
+                print(f"    {Fore.LIGHTGREEN_EX}Total cached posts (scanned for report): {report.get('total_cached_posts', 0)}{Style.RESET_ALL}")
+            if "limited_scan_posts" in report:
+                print(f"\n  {Fore.MAGENTA}Limited Scan Report (Limit: {filters_applied.get('limit_report')}):{Style.RESET_ALL}")
+                for idx, post in enumerate(report["limited_scan_posts"], 1):
+                    print(f"    Post {idx}:")
+                    print(f"      Title  : {post.get('title')}")
+                    print(f"      Author : {post.get('author')}")
+                    print(f"      Flair  : {post.get('flair')}")
+                    print(f"      Selftext: {post.get('selftext', '')}")
+            if "show_posts" in report:
+                print(f"\n  {Fore.MAGENTA}Show Posts Report:{Style.RESET_ALL}")
+                for idx, post in enumerate(report["show_posts"], 1):
+                    print(f"    Post {idx}:")
+                    print(f"      Title  : {post.get('title')}")
+                    print(f"      Author : {post.get('author')}")
+                    print(f"      Flair  : {post.get('flair')}")
+                    print(f"      Selftext: {post.get('selftext', '')}")
+            if "monthly_digest" in report:
+                digest = report["monthly_digest"]
+                print(f"\n  {Fore.MAGENTA}Monthly Digest Report:{Style.RESET_ALL}")
+                if "message" in digest:
+                    print(f"    {digest['message']}")
+                else:
+                    print(f"    {Fore.YELLOW}Header: {digest.get('header')}{Style.RESET_ALL}")
+                    print(f"    {Fore.YELLOW}Narrative Summary:{Style.RESET_ALL} {digest.get('narrative')}")
+                    print(f"    {Fore.YELLOW}Digest Posts:{Style.RESET_ALL}")
+                    for idx, post in enumerate(digest.get("digest_posts", []), 1):
+                        print(f"      Digest Post {idx}:")
+                        print(f"        Title  : {post.get('title')}")
+                        print(f"        Author : {post.get('author')}")
+                        print(f"        Flair  : {post.get('flair')}")
+                        print(f"        Selftext: {post.get('selftext', '')}")
+                    print("")
+            if "code_format_violations" in report:
+                print(f"\n  {Fore.MAGENTA}Code Format Violations:{Style.RESET_ALL}")
+                for idx, violation in enumerate(report["code_format_violations"], 1):
+                    print(f"    Violation {idx}:")
+                    print(f"      Post ID: {violation.get('id')}")
+                    print(f"      Title  : {violation.get('title')}")
+                    print(f"      Message: {violation.get('violation')}")
+        print("\n")
+    if "global_summary" in final_output:
+        gs = final_output["global_summary"]
+        print(f"\n{Fore.CYAN}Global Summary:{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}Total network retrievals: {gs.get('global_network_retrievals', 0)}{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}Total cached posts (global): {gs.get('global_cached_posts', 0)}{Style.RESET_ALL}")
+    print(f"\n{Fore.YELLOW}Filters applied:{Style.RESET_ALL}")
+    for key, value in filters_applied.items():
+        print(f"  {key}: {value}")
+
+def check_code_format_violations(subreddit: str, limit: Optional[int] = None) -> List[Dict[str, Any]]:
+    """
+    Interactively scan cached posts for code formatting violations.
+    
+    A violation is defined as a contiguous block of 3 or more non-empty lines (ignoring blank lines)
+    that appear to contain Arduino/C/C++ source code, ignoring properly formatted code blocks.
+    
+    For each post meeting the criteria and not already recorded as "no violation", the full post body is printed,
+    and the user is prompted:
+        y: Yes, it contains unformatted code (flag it).
+        n: No, it does not contain unformatted code (record in config so it isn’t flagged again).
+        s: Skip this post.
+        c: Cancel further checking.
+    
+    In non-interactive mode (if the environment variable TEST_NONINTERACTIVE is set), the response is automatically "y".
+    
+    Parameters:
+        subreddit (str): Subreddit name.
+        limit (Optional[int]): Limit the number of posts to scan.
+        
+    Returns:
+        List[Dict[str, Any]]: List of posts with confirmed code formatting violations.
+    """
+    config, config_path = get_config()
+    no_violation_ids = config["CodeFormat"] if "CodeFormat" in config else {}
+    violations: List[Dict[str, Any]] = []
+    folder = get_cache_folder(subreddit)
+    if not os.path.isdir(folder):
+        return violations
+    files = [os.path.join(folder, f) for f in os.listdir(folder)
+             if f.endswith(".json") and f != "custom_flairs.json"]
+    posts: List[Dict[str, Any]] = []
+    for file_path in files:
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            posts.append(data)
+        except Exception as e:
+            print(f"{Fore.RED}Error processing {file_path}: {e}{Style.RESET_ALL}", file=sys.stderr)
+    posts.sort(key=lambda x: x.get("created_utc", 0), reverse=True)
+    if limit is not None:
+        posts = posts[:limit]
+    for post in posts:
+        post_id = post.get("id", "")
+        if post_id in no_violation_ids:
+            continue
+        selftext = post.get("selftext", "")
+        if has_unformatted_code(selftext):
+            print(f"\n{Fore.CYAN}Potential Code Format Violation Detected:{Style.RESET_ALL}")
+            print(f"Post ID: {post_id}")
+            print(f"Title: {post.get('title', '')}")
+            print(f"Author: {post.get('author', '')}")
+            print("Complete Selftext:")
+            print(selftext)
+            if os.environ.get("TEST_NONINTERACTIVE"):
+                response = "y"
+                print("[DEBUG] TEST_NONINTERACTIVE is set; automatically flagging this post.")
+            else:
+                response = input("Does this post contain unformatted code? (y/n/s/c): ").strip().lower()
+            if response == "y":
+                violations.append({
+                    "id": post_id,
+                    "title": post.get("title", ""),
+                    "violation": "Post contains unformatted source code. Please format your code in proper code blocks."
+                })
+            elif response == "n":
+                no_violation_ids[post_id] = "n"
+            elif response == "s":
+                continue
+            elif response == "c":
+                print("Cancelling code format check.")
+                break
+    config["CodeFormat"] = no_violation_ids
+    save_config(config, config_path)
+    return violations
+
+def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str, Any]) -> None:
+    """
+    Print a human-readable, colorful, ANSI report of the final output.
+    (Full post body text is displayed without truncation.)
+    """
+    print(f"{Fore.GREEN}=== Human Readable Report ==={Style.RESET_ALL}")
+    for subreddit, result in final_output["results"].items():
+        print(f"\n{Fore.BLUE}Subreddit: {subreddit}{Style.RESET_ALL}")
+        summary = result.get("summary", {})
+        print(f"  {Fore.LIGHTGREEN_EX}Total posts checked: {summary.get('total_posts_checked', 0)}{Style.RESET_ALL}")
+        print(f"  {Fore.LIGHTGREEN_EX}New posts retrieved: {summary.get('new_posts_retrieved', 0)}{Style.RESET_ALL}")
+        if "report" in result:
+            report = result["report"]
+            if "flair_summary" in report:
+                print(f"\n  {Fore.MAGENTA}Flair Report:{Style.RESET_ALL}")
+                for flair, count in report["flair_summary"].items():
+                    print(f"    {flair}: {count}")
+                print(f"    {Fore.LIGHTGREEN_EX}Total unique flairs: {report.get('total_unique_flairs', 0)}{Style.RESET_ALL}")
+                print(f"    {Fore.LIGHTGREEN_EX}Total cached posts (scanned for report): {report.get('total_cached_posts', 0)}{Style.RESET_ALL}")
+            if "limited_scan_posts" in report:
+                print(f"\n  {Fore.MAGENTA}Limited Scan Report (Limit: {filters_applied.get('limit_report')}):{Style.RESET_ALL}")
+                for idx, post in enumerate(report["limited_scan_posts"], 1):
+                    print(f"    Post {idx}:")
+                    print(f"      Title  : {post.get('title')}")
+                    print(f"      Author : {post.get('author')}")
+                    print(f"      Flair  : {post.get('flair')}")
+                    print(f"      Selftext: {post.get('selftext', '')}")
+            if "show_posts" in report:
+                print(f"\n  {Fore.MAGENTA}Show Posts Report:{Style.RESET_ALL}")
+                for idx, post in enumerate(report["show_posts"], 1):
+                    print(f"    Post {idx}:")
+                    print(f"      Title  : {post.get('title')}")
+                    print(f"      Author : {post.get('author')}")
+                    print(f"      Flair  : {post.get('flair')}")
+                    print(f"      Selftext: {post.get('selftext', '')}")
+            if "monthly_digest" in report:
+                digest = report["monthly_digest"]
+                print(f"\n  {Fore.MAGENTA}Monthly Digest Report:{Style.RESET_ALL}")
+                if "message" in digest:
+                    print(f"    {digest['message']}")
+                else:
+                    print(f"    {Fore.YELLOW}Header: {digest.get('header')}{Style.RESET_ALL}")
+                    print(f"    {Fore.YELLOW}Narrative Summary:{Style.RESET_ALL} {digest.get('narrative')}")
+                    print(f"    {Fore.YELLOW}Digest Posts:{Style.RESET_ALL}")
+                    for idx, post in enumerate(digest.get("digest_posts", []), 1):
+                        print(f"      Digest Post {idx}:")
+                        print(f"        Title  : {post.get('title')}")
+                        print(f"        Author : {post.get('author')}")
+                        print(f"        Flair  : {post.get('flair')}")
+                        print(f"        Selftext: {post.get('selftext', '')}")
+                    print("")
+            if "code_format_violations" in report:
+                print(f"\n  {Fore.MAGENTA}Code Format Violations:{Style.RESET_ALL}")
+                for idx, violation in enumerate(report["code_format_violations"], 1):
+                    print(f"    Violation {idx}:")
+                    print(f"      Post ID: {violation.get('id')}")
+                    print(f"      Title  : {violation.get('title')}")
+                    print(f"      Message: {violation.get('violation')}")
+        print("\n")
     if "global_summary" in final_output:
         gs = final_output["global_summary"]
         print(f"\n{Fore.CYAN}Global Summary:{Style.RESET_ALL}")
