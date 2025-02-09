@@ -17,8 +17,8 @@ Features:
   - Option -D/--digest: include a Monthly Digest report section by scanning cached posts
        whose titles contain "Monthly Digest"
   - Option --check-code-format: interactively check cached posts for code formatting violations.
-       For each post, any code outside properly formatted blocks (fenced with ``` or indented by 4 spaces)
-       is examined. If a contiguous block of 4 or more lines that appear to be Arduino/C/C++ code is detected,
+       For each post, any code outside properly formatted blocks (either fenced with ``` or indented by 4 spaces)
+       is examined. If a contiguous block of 3 or more lines that appear to be Arduino/C/C++ code is detected,
        the complete post body is shown and the moderator is prompted with:
             y: Yes, it contains unformatted code (flag it)
             n: No, it does not contain unformatted code (record in config so it isn’t flagged again)
@@ -85,7 +85,7 @@ def fetch_posts(subreddit: str) -> Optional[List[Dict[str, Any]]]:
         subreddit (str): Name of the subreddit.
         
     Returns:
-        Optional[List[Dict[str, Any]]]: List of post objects (each containing a 'data' key), or None on error.
+        Optional[List[Dict[str, Any]]]: List of post objects, or None on error.
     """
     url = f"https://www.reddit.com/r/{subreddit}/new.json?limit=100"
     headers = {"User-Agent": "python:reddit.cache.script:v1.0 (by /u/yourusername)"}
@@ -113,7 +113,7 @@ def cache_post(subreddit: str, post_data: Dict[str, Any]) -> Tuple[Dict[str, Any
         post_data (Dict[str, Any]): JSON data for a single post.
         
     Returns:
-        Tuple[Dict[str, Any], bool]: The cached data and a flag indicating if it was newly created.
+        Tuple[Dict[str, Any], bool]: Cached data and a flag indicating if it was newly created.
     """
     folder = get_cache_folder(subreddit)
     post_id = post_data.get("id")
@@ -143,7 +143,7 @@ def generate_flair_report(subreddit: str, report_limit: Optional[int] = None) ->
         report_limit (Optional[int]): Limit the number of cached posts scanned.
         
     Returns:
-        Dict[str, int]: Mapping of flair texts to their occurrence counts.
+        Dict[str, int]: Mapping of flair texts to occurrence counts.
     """
     flair_counts: Dict[str, int] = {}
     folder = get_cache_folder(subreddit)
@@ -167,14 +167,14 @@ def generate_flair_report(subreddit: str, report_limit: Optional[int] = None) ->
 
 def generate_show_report(subreddit: str, n: int) -> List[Dict[str, Any]]:
     """
-    Generate a report showing the title, selftext, author, and flair for the last n cached posts.
+    Generate a report showing selected fields for the last n cached posts.
     
     Parameters:
         subreddit (str): Subreddit name.
-        n (int): Number of posts to include.
+        n (int): Number of posts.
         
     Returns:
-        List[Dict[str, Any]]: A list of posts with selected fields.
+        List[Dict[str, Any]]: List of posts with title, selftext, author, and flair.
     """
     posts_list = []
     folder = get_cache_folder(subreddit)
@@ -202,16 +202,15 @@ def generate_show_report(subreddit: str, n: int) -> List[Dict[str, Any]]:
 def generate_monthly_digest_report(subreddit: str, digest_pattern: str = "Monthly Digest", 
                                    limit: Optional[int] = None) -> Dict[str, Any]:
     """
-    Generate a Monthly Digest report section by scanning cached posts whose titles contain
-    the given digest_pattern and synthesizing a digest-style summary.
+    Generate a Monthly Digest report section by scanning cached posts whose titles match a pattern.
     
     Parameters:
         subreddit (str): Subreddit name.
-        digest_pattern (str): Pattern to search for in titles.
-        limit (Optional[int]): Limit the number of cached posts scanned.
+        digest_pattern (str): Pattern to search for (default "Monthly Digest").
+        limit (Optional[int]): Limit the posts scanned.
         
     Returns:
-        Dict[str, Any]: A digest report or a message if none found.
+        Dict[str, Any]: Digest report with header, narrative, and digest_posts or a message.
     """
     posts_list = []
     folder = get_cache_folder(subreddit)
@@ -254,7 +253,7 @@ def generate_monthly_digest_report(subreddit: str, digest_pattern: str = "Monthl
 
 def remove_fenced_code(text: str) -> str:
     """
-    Remove fenced code blocks (delimited by lines starting with ```) from the text.
+    Remove fenced code blocks (delimited by lines starting with ```) from text.
     
     Parameters:
         text (str): Raw markdown text.
@@ -275,8 +274,7 @@ def remove_fenced_code(text: str) -> str:
 
 def remove_indented_code(text: str) -> str:
     """
-    Remove indented code blocks from the text.
-    Lines that are indented by 4 or more spaces (or a tab) are considered properly formatted code.
+    Remove indented code blocks (lines indented by 4+ spaces or a tab) from text.
     
     Parameters:
         text (str): Raw markdown text.
@@ -294,8 +292,7 @@ def remove_indented_code(text: str) -> str:
 
 def clean_text(text: str) -> str:
     """
-    Remove properly formatted code blocks from the text.
-    This includes both fenced code blocks and indented code blocks.
+    Remove properly formatted code blocks from text (both fenced and indented).
     
     Parameters:
         text (str): Raw markdown text.
@@ -313,7 +310,7 @@ def is_code_line(line: str) -> bool:
         line (str): A single line of text.
         
     Returns:
-        bool: True if the line appears to be code, False otherwise.
+        bool: True if the line appears to be code.
     """
     code_patterns = [
         re.compile(r'#include\s*<[^>]+>'),
@@ -325,7 +322,8 @@ def is_code_line(line: str) -> bool:
         re.compile(r'\bpinMode\s*\('),
         re.compile(r'\bdigitalWrite\s*\('),
         re.compile(r'\banalogRead\s*\('),
-        re.compile(r'\banalogWrite\s*\(')
+        re.compile(r'\banalogWrite\s*\('),
+        re.compile(r'printf\s*\(')  # Updated: no \b to capture lines like "printf("Hello");"
     ]
     for pattern in code_patterns:
         if pattern.search(line):
@@ -334,14 +332,14 @@ def is_code_line(line: str) -> bool:
 
 def has_unformatted_code(text: str) -> bool:
     """
-    Determine if the text contains a contiguous block of 4 or more consecutive lines
-    that appear to contain Arduino/C/C++ source code, ignoring properly formatted code blocks.
+    Determine if text contains a contiguous block of 3 or more consecutive lines
+    that appear to contain Arduino/C/C++ code (ignoring properly formatted code blocks).
     
     Parameters:
         text (str): Raw markdown text.
         
     Returns:
-        bool: True if a block is detected, False otherwise.
+        bool: True if such a block is detected.
     """
     cleaned = clean_text(text)
     lines = cleaned.splitlines()
@@ -352,7 +350,7 @@ def has_unformatted_code(text: str) -> bool:
             continue
         if is_code_line(line):
             code_run += 1
-            if code_run >= 4:
+            if code_run >= 3:
                 return True
         else:
             code_run = 0
@@ -438,27 +436,26 @@ def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]
 
 def check_code_format_violations(subreddit: str, limit: Optional[int] = None) -> List[Dict[str, Any]]:
     """
-    Interactively scan cached posts for code formatting violations using improved logic.
+    Interactively scan cached posts for code formatting violations.
     
-    A violation is defined as a contiguous block of 4 or more non-empty lines (outside of properly formatted code blocks)
+    A violation is defined as a contiguous block of 3 or more non-empty lines (outside of properly formatted code blocks)
     that each contain code as determined by common Arduino/C/C++ code patterns.
     
-    For each post that meets this criteria and is not already recorded in the configuration as "no violation",
-    the complete raw post body is shown, and the user is prompted:
+    For each post meeting the criteria and not already recorded as "no violation", the full post body is shown,
+    and the user is prompted:
         y: Yes, it contains unformatted code (flag it).
-        n: No, it does not contain unformatted code (record in config to avoid re-checking).
+        n: No, it does not contain unformatted code (record in config so it isn’t flagged again).
         s: Skip this post.
         c: Cancel further checking.
     
-    The configuration is stored in "caches/app.ini" under the section [CodeFormat],
-    with each post ID marked as "n" to avoid future prompts.
+    The configuration is stored in "caches/app.ini" under [CodeFormat], with each post ID marked as "n" to avoid future prompts.
     
     Parameters:
         subreddit (str): Subreddit name.
-        limit (Optional[int]): Limit the number of cached posts to scan.
+        limit (Optional[int]): Limit the number of posts to scan.
         
     Returns:
-        List[Dict[str, Any]]: List of dicts for posts with confirmed code formatting violations.
+        List[Dict[str, Any]]: List of posts with confirmed code formatting violations.
     """
     config, config_path = get_config()
     no_violation_ids = config["CodeFormat"] if "CodeFormat" in config else {}
@@ -508,100 +505,6 @@ def check_code_format_violations(subreddit: str, limit: Optional[int] = None) ->
     config["CodeFormat"] = no_violation_ids
     save_config(config, config_path)
     return violations
-
-def is_code_line(line: str) -> bool:
-    """
-    Check if a line likely contains Arduino/C/C++ code using common patterns.
-    
-    Parameters:
-        line (str): A single line of text.
-        
-    Returns:
-        bool: True if the line appears to be code, False otherwise.
-    """
-    code_patterns = [
-        re.compile(r'#include\s*<[^>]+>'),
-        re.compile(r'\bvoid\s+\w+\s*\([^)]*\)\s*{'),
-        re.compile(r'\bfor\s*\([^)]*\)'),
-        re.compile(r'\bwhile\s*\([^)]*\)'),
-        re.compile(r'\bif\s*\([^)]*\)'),
-        re.compile(r'\bSerial\.println\s*\('),
-        re.compile(r'\bpinMode\s*\('),
-        re.compile(r'\bdigitalWrite\s*\('),
-        re.compile(r'\banalogRead\s*\('),
-        re.compile(r'\banalogWrite\s*\(')
-    ]
-    for pattern in code_patterns:
-        if pattern.search(line):
-            return True
-    return False
-
-def has_unformatted_code(text: str) -> bool:
-    """
-    Determine if the provided text contains a contiguous block of 4 or more consecutive lines
-    that appear to contain Arduino/C/C++ source code (outside of properly formatted code blocks).
-    
-    Parameters:
-        text (str): Raw markdown text.
-        
-    Returns:
-        bool: True if a block is detected, False otherwise.
-    """
-    cleaned_text = remove_fenced_code(text)
-    cleaned_text = remove_indented_code(cleaned_text)
-    lines = cleaned_text.splitlines()
-    code_run = 0
-    for line in lines:
-        if line.strip() == "":
-            code_run = 0
-            continue
-        if is_code_line(line):
-            code_run += 1
-            if code_run >= 4:
-                return True
-        else:
-            code_run = 0
-    return False
-
-def remove_fenced_code(text: str) -> str:
-    """
-    Remove fenced code blocks (delimited by lines starting with ```) from the text.
-    
-    Parameters:
-        text (str): Raw markdown text.
-        
-    Returns:
-        str: Text with fenced code blocks removed.
-    """
-    lines = text.splitlines()
-    result_lines = []
-    inside = False
-    for line in lines:
-        if line.strip().startswith("```"):
-            inside = not inside
-            continue
-        if not inside:
-            result_lines.append(line)
-    return "\n".join(result_lines)
-
-def remove_indented_code(text: str) -> str:
-    """
-    Remove indented code blocks from the text.
-    Lines that are indented by 4 or more spaces (or a tab) are considered properly formatted code.
-    
-    Parameters:
-        text (str): Raw markdown text.
-        
-    Returns:
-        str: Text with indented code blocks removed.
-    """
-    lines = text.splitlines()
-    result_lines = []
-    for line in lines:
-        if line.startswith("    ") or line.startswith("\t"):
-            continue
-        result_lines.append(line)
-    return "\n".join(result_lines)
 
 def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str, Any]) -> None:
     """

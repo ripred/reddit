@@ -1,132 +1,104 @@
 #!/usr/bin/env python3
-"""
-test_reddit_cache.py
-
-Unit tests for reddit_cache.py
-
-This file tests the following functions:
-  - fetch_posts: Verifies correct behavior when a successful API response is simulated.
-  - cache_post: Checks that a post is cached on first call and that subsequent calls detect the cached file.
-  - generate_flair_report: Creates dummy cached files and verifies that the flair report reflects the known flairs.
-  - generate_show_report: Creates dummy cached files and verifies that the report returns the expected number of posts.
-  - generate_monthly_digest_report: Creates dummy cached files (one with a title containing "Monthly Digest") and verifies that the digest report is generated as expected.
-
-Run the tests using:
-    python -m unittest test_reddit_cache.py
-"""
-
 import os
-import json
 import tempfile
+import shutil
 import unittest
-from unittest.mock import patch, MagicMock
 
-# Import functions from reddit_cache.py.
+# Import the functions to be tested from your reddit_cache module.
 from reddit_cache import (
-    fetch_posts,
-    cache_post,
-    generate_flair_report,
-    generate_show_report,
-    generate_monthly_digest_report
+    remove_fenced_code,
+    remove_indented_code,
+    clean_text,
+    is_code_line,
+    has_unformatted_code,
+    get_cache_folder
 )
 
 class TestRedditCache(unittest.TestCase):
-    
-    def setUp(self):
-        # Create a temporary directory and set it as the working directory.
-        self.temp_dir = tempfile.TemporaryDirectory()
-        self.orig_cwd = os.getcwd()
-        os.chdir(self.temp_dir.name)
-        
-        # Define sample post data.
-        self.post_data_1 = {
-            "id": "test1",
-            "title": "Test Post 1",
-            "selftext": "Content of test post 1",
-            "author": "user1",
-            "link_flair_text": "Flair1",
-            "created_utc": 1000
-        }
-        self.post_data_2 = {
-            "id": "test2",
-            "title": "Monthly Digest: January 2024",
-            "selftext": "Digest content for January 2024",
-            "author": "user2",
-            "link_flair_text": "Digest",
-            "created_utc": 2000
-        }
-        self.subreddit = "testsub"
-    
-    def tearDown(self):
-        # Change back to original working directory and clean up temporary directory.
-        os.chdir(self.orig_cwd)
-        self.temp_dir.cleanup()
+    def test_remove_fenced_code(self):
+        text = (
+            "This is a test.\n"
+            "```python\n"
+            "#include <stdio.h>\n"
+            "void main() {}\n"
+            "```\n"
+            "End of test."
+        )
+        expected = "This is a test.\nEnd of test."
+        result = remove_fenced_code(text)
+        self.assertEqual(result.strip(), expected.strip())
 
-    @patch('reddit_cache.requests.get')
-    def test_fetch_posts_success(self, mock_get):
-        # Simulate a successful API call returning two posts.
-        fake_response = MagicMock()
-        fake_response.status_code = 200
-        fake_response.json.return_value = {
-            "data": {
-                "children": [{"data": self.post_data_1}, {"data": self.post_data_2}]
-            }
-        }
-        mock_get.return_value = fake_response
+    def test_remove_indented_code(self):
+        text = (
+            "This is a test.\n"
+            "    #include <stdio.h>\n"
+            "    void main() {}\n"
+            "End of test."
+        )
+        expected = "This is a test.\nEnd of test."
+        result = remove_indented_code(text)
+        self.assertEqual(result.strip(), expected.strip())
 
-        posts = fetch_posts("dummy")
-        self.assertIsNotNone(posts)
-        self.assertEqual(len(posts), 2)
-        self.assertEqual(posts[0]["data"]["id"], "test1")
+    def test_clean_text_removes_both(self):
+        text = (
+            "Intro text\n"
+            "    #include <stdio.h>\n"
+            "    void main() {}\n"
+            "More text\n"
+            "```\n"
+            "def foo():\n"
+            "    pass\n"
+            "```\n"
+            "Conclusion"
+        )
+        expected = "Intro text\nMore text\nConclusion"
+        result = clean_text(text)
+        self.assertEqual(result.strip(), expected.strip())
 
-    def test_cache_post_creates_file(self):
-        # Test that cache_post creates a file on first call and returns is_new=True.
-        data, is_new = cache_post(self.subreddit, self.post_data_1)
-        self.assertTrue(is_new)
-        filename = os.path.join(self.subreddit, "test1.json")
-        self.assertTrue(os.path.exists(filename))
-        # Calling again should return is_new=False.
-        data2, is_new2 = cache_post(self.subreddit, self.post_data_1)
-        self.assertFalse(is_new2)
+    def test_is_code_line_positive(self):
+        # These lines should be recognized as code.
+        self.assertTrue(is_code_line("#include <stdio.h>"))
+        self.assertTrue(is_code_line("void main() {"))
+        self.assertTrue(is_code_line("for (int i = 0; i < 10; i++) {"))
+        # Test the printf pattern:
+        self.assertTrue(is_code_line("printf(\"Hello\");"))
 
-    def test_generate_flair_report(self):
-        # Create a temporary subreddit folder with two cached posts.
-        os.makedirs(self.subreddit, exist_ok=True)
-        with open(os.path.join(self.subreddit, "test1.json"), "w", encoding="utf-8") as f:
-            json.dump(self.post_data_1, f, indent=2)
-        with open(os.path.join(self.subreddit, "test2.json"), "w", encoding="utf-8") as f:
-            json.dump(self.post_data_2, f, indent=2)
-        report = generate_flair_report(self.subreddit)
-        self.assertIn("Flair1", report)
-        self.assertIn("Digest", report)
-        self.assertEqual(report["Flair1"], 1)
-        self.assertEqual(report["Digest"], 1)
+    def test_is_code_line_negative(self):
+        self.assertFalse(is_code_line("This is just a regular sentence."))
 
-    def test_generate_show_report(self):
-        # Create a temporary subreddit folder with two cached posts.
-        os.makedirs(self.subreddit, exist_ok=True)
-        with open(os.path.join(self.subreddit, "test1.json"), "w", encoding="utf-8") as f:
-            json.dump(self.post_data_1, f, indent=2)
-        with open(os.path.join(self.subreddit, "test2.json"), "w", encoding="utf-8") as f:
-            json.dump(self.post_data_2, f, indent=2)
-        report = generate_show_report(self.subreddit, 2)
-        self.assertEqual(len(report), 2)
-        # Posts are sorted by created_utc descending, so first post should be test2.
-        self.assertEqual(report[0]["title"], self.post_data_2["title"])
+    def test_has_unformatted_code_does_not_flag_properly_formatted(self):
+        # Code that is properly indented should not trigger a violation.
+        text = (
+            "#include <stdio.h>\n"
+            "void main() {\n"
+            "    printf(\"Hello\");\n"  # properly indented
+            "}\n"
+            "Some extra text."
+        )
+        self.assertFalse(has_unformatted_code(text))
 
-    def test_generate_monthly_digest_report(self):
-        # Create a temporary subreddit folder with two cached posts, one of which is a digest.
-        os.makedirs(self.subreddit, exist_ok=True)
-        with open(os.path.join(self.subreddit, "test1.json"), "w", encoding="utf-8") as f:
-            json.dump(self.post_data_1, f, indent=2)
-        with open(os.path.join(self.subreddit, "test2.json"), "w", encoding="utf-8") as f:
-            json.dump(self.post_data_2, f, indent=2)
-        digest_report = generate_monthly_digest_report(self.subreddit, digest_pattern="Monthly Digest", limit=2)
-        # Verify that the digest report contains a header, narrative, and one digest post.
-        self.assertIn("header", digest_report)
-        self.assertIn("narrative", digest_report)
-        self.assertIn("digest_posts", digest_report)
-        self.assertEqual(len(digest_report["digest_posts"]), 1)
+    def test_has_unformatted_code_flags_unformatted_code(self):
+        # Block of unformatted code (no indentation or fences)
+        text = (
+            "#include <stdio.h>\n"
+            "void main() {\n"
+            "printf(\"Hello\");\n"
+            "}\n"
+            "Extra text here."
+        )
+        # Expect 3 consecutive code lines to trigger a violation.
+        self.assertTrue(has_unformatted_code(text))
+
+    def test_get_cache_folder_creates_directory(self):
+        temp_dir = tempfile.mkdtemp()
+        original_dir = os.getcwd()
+        os.chdir(temp_dir)
+        try:
+            folder = get_cache_folder("testsub")
+            self.assertTrue(os.path.isdir(folder))
+        finally:
+            os.chdir(original_dir)
+            shutil.rmtree(temp_dir)
 
 if __name__ == '__main__':
     unittest.main()

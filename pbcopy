@@ -1,0 +1,45 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.10.6, pytest-8.0.2, pluggy-1.4.0
+rootdir: /Users/trent/Desktop/reddit
+plugins: playwright-0.4.4, anyio-4.1.0, base-url-2.1.0
+collected 8 items
+
+test_reddit_cache.py ...F.F..                                            [100%]
+
+=================================== FAILURES ===================================
+_______ TestRedditCache.test_has_unformatted_code_flags_unformatted_code _______
+
+self = <test_reddit_cache.TestRedditCache testMethod=test_has_unformatted_code_flags_unformatted_code>
+
+    def test_has_unformatted_code_flags_unformatted_code(self):
+        # Create a block of 4 lines that look like code but are not indented or fenced.
+        text = (
+            "#include <stdio.h>\n"
+            "void main() {\n"
+            "printf(\"Hello\");\n"
+            "}\n"
+            "Extra text here."
+        )
+        # After cleaning, we expect 3 consecutive code lines to trigger a violation.
+>       self.assertTrue(has_unformatted_code(text))
+E       AssertionError: False is not true
+
+test_reddit_cache.py:92: AssertionError
+__________________ TestRedditCache.test_is_code_line_positive __________________
+
+self = <test_reddit_cache.TestRedditCache testMethod=test_is_code_line_positive>
+
+    def test_is_code_line_positive(self):
+        # These lines should be recognized as code.
+        self.assertTrue(is_code_line("#include <stdio.h>"))
+        self.assertTrue(is_code_line("void main() {"))
+        self.assertTrue(is_code_line("for (int i = 0; i < 10; i++) {"))
+        # Now, our new pattern for printf:
+>       self.assertTrue(is_code_line("printf(\"Hello\");"))
+E       AssertionError: False is not true
+
+test_reddit_cache.py:65: AssertionError
+=========================== short test summary info ============================
+FAILED test_reddit_cache.py::TestRedditCache::test_has_unformatted_code_flags_unformatted_code
+FAILED test_reddit_cache.py::TestRedditCache::test_is_code_line_positive - As...
+========================= 2 failed, 6 passed in 0.21s ==========================
