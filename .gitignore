@@ -171,5 +171,5 @@ cython_debug/
 .pypirc
 
 # Project runtime caches
-./caches/
+caches/*
 
