@@ -1,0 +1,313 @@
+{
+  "approved_at_utc": null,
+  "subreddit": "arduino",
+  "selftext": "Does anyone know why only half my screen is lighting up? Would it be code related or hardware?\nMany thanks :)",
+  "author_fullname": "t2_1ajda120",
+  "saved": false,
+  "mod_reason_title": null,
+  "gilded": 0,
+  "clicked": false,
+  "is_gallery": true,
+  "title": "Why does only half the screen light up?",
+  "link_flair_richtext": [
+    {
+      "a": ":Beginners-Project:",
+      "e": "emoji",
+      "u": "https://emoji.redditmedia.com/cv2ep11rzyq91_t5_2qknj/Beginners-Project"
+    },
+    {
+      "e": "text",
+      "t": "Beginner's Project"
+    }
+  ],
+  "subreddit_name_prefixed": "r/arduino",
+  "hidden": false,
+  "pwls": 6,
+  "link_flair_css_class": "",
+  "downs": 0,
+  "thumbnail_height": 140,
+  "top_awarded_type": null,
+  "hide_score": false,
+  "media_metadata": {
+    "4l4ra7b6akhe1": {
+      "status": "valid",
+      "e": "Image",
+      "m": "image/jpg",
+      "p": [
+        {
+          "y": 144,
+          "x": 108,
+          "u": "https://preview.redd.it/4l4ra7b6akhe1.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=52281137da2ba99767bee7fa1b2656e7084ea76a"
+        },
+        {
+          "y": 288,
+          "x": 216,
+          "u": "https://preview.redd.it/4l4ra7b6akhe1.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=ce1c75b52332d869b1cda3d868e52bb6d99c32b9"
+        },
+        {
+          "y": 426,
+          "x": 320,
+          "u": "https://preview.redd.it/4l4ra7b6akhe1.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=d5bb61af516aaa2012a7f0491a54f7245415a26b"
+        },
+        {
+          "y": 853,
+          "x": 640,
+          "u": "https://preview.redd.it/4l4ra7b6akhe1.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=d176402a615a575e72a2fb0dfc65a3ec9c836a62"
+        },
+        {
+          "y": 1280,
+          "x": 960,
+          "u": "https://preview.redd.it/4l4ra7b6akhe1.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=492aee3eddbcdfd1c744dcca6404d1ab7c69b9c2"
+        },
+        {
+          "y": 1440,
+          "x": 1080,
+          "u": "https://preview.redd.it/4l4ra7b6akhe1.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=2912ec866726355c4658318c3fa5affaba040177"
+        }
+      ],
+      "s": {
+        "y": 4032,
+        "x": 3024,
+        "u": "https://preview.redd.it/4l4ra7b6akhe1.jpg?width=3024&amp;format=pjpg&amp;auto=webp&amp;s=b6b33d2838648dd4e9a9c69537f8e057f7c8ad4b"
+      },
+      "id": "4l4ra7b6akhe1"
+    },
+    "1wa1eka6akhe1": {
+      "status": "valid",
+      "e": "Image",
+      "m": "image/jpg",
+      "p": [
+        {
+          "y": 144,
+          "x": 108,
+          "u": "https://preview.redd.it/1wa1eka6akhe1.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=892ce9902552b292ab3612b706e2454af75f2fe5"
+        },
+        {
+          "y": 288,
+          "x": 216,
+          "u": "https://preview.redd.it/1wa1eka6akhe1.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=80f2e48efc20cd289de7a9d63ca1ca4433cd3736"
+        },
+        {
+          "y": 426,
+          "x": 320,
+          "u": "https://preview.redd.it/1wa1eka6akhe1.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=ad228b6d379a42d2ccb03d4eb49b2e9bd25581c0"
+        },
+        {
+          "y": 853,
+          "x": 640,
+          "u": "https://preview.redd.it/1wa1eka6akhe1.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=8d75b29cf25d023d66ed46de757d1410b869940a"
+        },
+        {
+          "y": 1280,
+          "x": 960,
+          "u": "https://preview.redd.it/1wa1eka6akhe1.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=6413966c16ba6bf8e108a6f607e0344645ea36e5"
+        },
+        {
+          "y": 1440,
+          "x": 1080,
+          "u": "https://preview.redd.it/1wa1eka6akhe1.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=0fc3fcc6b645e6b1b01588c51f170f3c9be028ba"
+        }
+      ],
+      "s": {
+        "y": 4032,
+        "x": 3024,
+        "u": "https://preview.redd.it/1wa1eka6akhe1.jpg?width=3024&amp;format=pjpg&amp;auto=webp&amp;s=555f2f0805bd346c6b0aac8fcbd172a79be6ce56"
+      },
+      "id": "1wa1eka6akhe1"
+    },
+    "d36x9la6akhe1": {
+      "status": "valid",
+      "e": "Image",
+      "m": "image/jpg",
+      "p": [
+        {
+          "y": 144,
+          "x": 108,
+          "u": "https://preview.redd.it/d36x9la6akhe1.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=85a25363e0e34620712fa58c2ebb7541a06a12e7"
+        },
+        {
+          "y": 288,
+          "x": 216,
+          "u": "https://preview.redd.it/d36x9la6akhe1.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=67b43ad76e9e1cd1d2b085480094efb59c8ac61e"
+        },
+        {
+          "y": 426,
+          "x": 320,
+          "u": "https://preview.redd.it/d36x9la6akhe1.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=2c929c4a44c3f9c220b00fed56634781a28cc6bf"
+        },
+        {
+          "y": 853,
+          "x": 640,
+          "u": "https://preview.redd.it/d36x9la6akhe1.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=3af2f6d589d8428c92195862246d23055b6c120d"
+        },
+        {
+          "y": 1280,
+          "x": 960,
+          "u": "https://preview.redd.it/d36x9la6akhe1.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=91ca84aceb8fa4c3038c1579eaa4e3ebf3e213b5"
+        },
+        {
+          "y": 1440,
+          "x": 1080,
+          "u": "https://preview.redd.it/d36x9la6akhe1.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=c7fa3c1575057f107c0e47ec38df5f7045e13ca7"
+        }
+      ],
+      "s": {
+        "y": 4032,
+        "x": 3024,
+        "u": "https://preview.redd.it/d36x9la6akhe1.jpg?width=3024&amp;format=pjpg&amp;auto=webp&amp;s=fef9fa039267a8d20ee7e19ec83b670bc3cbad5e"
+      },
+      "id": "d36x9la6akhe1"
+    },
+    "3gd7bma6akhe1": {
+      "status": "valid",
+      "e": "Image",
+      "m": "image/jpg",
+      "p": [
+        {
+          "y": 144,
+          "x": 108,
+          "u": "https://preview.redd.it/3gd7bma6akhe1.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=8e99eb34f83148155bc4e8b9dcccd7807e886d2a"
+        },
+        {
+          "y": 288,
+          "x": 216,
+          "u": "https://preview.redd.it/3gd7bma6akhe1.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=0183a964c4b8f5323c1de5839c8d9f9711de90a0"
+        },
+        {
+          "y": 426,
+          "x": 320,
+          "u": "https://preview.redd.it/3gd7bma6akhe1.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=24a66797ef56c8b3efd800abef696b9130702855"
+        },
+        {
+          "y": 853,
+          "x": 640,
+          "u": "https://preview.redd.it/3gd7bma6akhe1.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=194fce55eb03f1d4ba7998bf3d0f4f2b2e29121a"
+        },
+        {
+          "y": 1280,
+          "x": 960,
+          "u": "https://preview.redd.it/3gd7bma6akhe1.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=b84a24fd332d54f064561e9c366c4d184ce0f53b"
+        },
+        {
+          "y": 1440,
+          "x": 1080,
+          "u": "https://preview.redd.it/3gd7bma6akhe1.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=1e5dc12fbbe6dfbf055ccd693b11e47bf20636b0"
+        }
+      ],
+      "s": {
+        "y": 4032,
+        "x": 3024,
+        "u": "https://preview.redd.it/3gd7bma6akhe1.jpg?width=3024&amp;format=pjpg&amp;auto=webp&amp;s=5ecdda5f31873178256ff69c87721a9a6c735828"
+      },
+      "id": "3gd7bma6akhe1"
+    }
+  },
+  "name": "t3_1ij9gb2",
+  "quarantine": false,
+  "link_flair_text_color": "light",
+  "upvote_ratio": 0.94,
+  "author_flair_background_color": null,
+  "ups": 164,
+  "domain": "reddit.com",
+  "media_embed": {},
+  "thumbnail_width": 140,
+  "author_flair_template_id": null,
+  "is_original_content": false,
+  "user_reports": [],
+  "secure_media": null,
+  "is_reddit_media_domain": false,
+  "is_meta": false,
+  "category": null,
+  "secure_media_embed": {},
+  "gallery_data": {
+    "items": [
+      {
+        "media_id": "d36x9la6akhe1",
+        "id": 600311295
+      },
+      {
+        "media_id": "3gd7bma6akhe1",
+        "id": 600311296
+      },
+      {
+        "media_id": "1wa1eka6akhe1",
+        "id": 600311297
+      },
+      {
+        "media_id": "4l4ra7b6akhe1",
+        "id": 600311298
+      }
+    ]
+  },
+  "link_flair_text": ":Beginners-Project:Beginner's Project",
+  "can_mod_post": false,
+  "score": 164,
+  "approved_by": null,
+  "is_created_from_ads_ui": false,
+  "author_premium": false,
+  "thumbnail": "https://b.thumbs.redditmedia.com/vDcigZIoe1NLSNzbAQQ0KcRdPvR_y2ZrH7hglL6Il_Y.jpg",
+  "edited": false,
+  "author_flair_css_class": null,
+  "author_flair_richtext": [],
+  "gildings": {},
+  "content_categories": null,
+  "is_self": false,
+  "subreddit_type": "public",
+  "created": 1738866270.0,
+  "link_flair_type": "richtext",
+  "wls": 6,
+  "removed_by_category": null,
+  "banned_by": null,
+  "author_flair_type": "text",
+  "total_awards_received": 0,
+  "allow_live_comments": false,
+  "selftext_html": "&lt;!-- SC_OFF --&gt;&lt;div class=\"md\"&gt;&lt;p&gt;Does anyone know why only half my screen is lighting up? Would it be code related or hardware?\nMany thanks :)&lt;/p&gt;\n&lt;/div&gt;&lt;!-- SC_ON --&gt;",
+  "likes": null,
+  "suggested_sort": "confidence",
+  "banned_at_utc": null,
+  "url_overridden_by_dest": "https://www.reddit.com/gallery/1ij9gb2",
+  "view_count": null,
+  "archived": false,
+  "no_follow": false,
+  "is_crosspostable": false,
+  "pinned": false,
+  "over_18": false,
+  "all_awardings": [],
+  "awarders": [],
+  "media_only": false,
+  "link_flair_template_id": "a7d420e6-40a7-11ed-8944-e6be460d899d",
+  "can_gild": false,
+  "spoiler": false,
+  "locked": false,
+  "author_flair_text": null,
+  "treatment_tags": [],
+  "visited": false,
+  "removed_by": null,
+  "mod_note": null,
+  "distinguished": null,
+  "subreddit_id": "t5_2qknj",
+  "author_is_blocked": false,
+  "mod_reason_by": null,
+  "num_reports": null,
+  "removal_reason": null,
+  "link_flair_background_color": "#373c3f",
+  "id": "1ij9gb2",
+  "is_robot_indexable": true,
+  "report_reasons": null,
+  "author": "its-ya-boi-ben",
+  "discussion_type": null,
+  "num_comments": 22,
+  "send_replies": true,
+  "contest_mode": false,
+  "mod_reports": [],
+  "author_patreon_flair": false,
+  "author_flair_text_color": null,
+  "permalink": "/r/arduino/comments/1ij9gb2/why_does_only_half_the_screen_light_up/",
+  "stickied": false,
+  "url": "https://www.reddit.com/gallery/1ij9gb2",
+  "subreddit_subscribers": 691374,
+  "created_utc": 1738866270.0,
+  "num_crossposts": 0,
+  "media": null,
+  "is_video": false
+}
