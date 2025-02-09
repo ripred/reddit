@@ -305,40 +305,40 @@ def clean_text(text: str) -> str:
 def is_code_line(line: str) -> bool:
     """
     Check if a line likely contains Arduino/C/C++ code using common patterns.
-
+    Allows for optional leading whitespace.
+    
     Parameters:
         line (str): A single line of text.
-
+        
     Returns:
         bool: True if the line appears to be code, False otherwise.
     """
     code_patterns = [
-        re.compile(r'(?:#\s*)?include\s*<[^>]+>', re.IGNORECASE),
-        re.compile(r'\bvoid\s+\w+\s*\([^)]*\)\s*{', re.IGNORECASE),
-        re.compile(r'\bfor\s*\([^)]*\)', re.IGNORECASE),
-        re.compile(r'\bwhile\s*\([^)]*\)', re.IGNORECASE),
-        re.compile(r'\bif\s*\([^)]*\)', re.IGNORECASE),
-        re.compile(r'\bSerial\.println\s*\(', re.IGNORECASE),
-        re.compile(r'\bpinMode\s*\(', re.IGNORECASE),
-        re.compile(r'\bdigitalWrite\s*\(', re.IGNORECASE),
-        re.compile(r'\banalogRead\s*\(', re.IGNORECASE),
-        re.compile(r'\banalogWrite\s*\(', re.IGNORECASE),
-        re.compile(r'printf\s*\(', re.IGNORECASE)
+        re.compile(r'^\s*(?:#\s*)?include\s*<[^>]+>', re.IGNORECASE),
+        re.compile(r'^\s*\bvoid\s+\w+\s*\([^)]*\)\s*{', re.IGNORECASE),
+        re.compile(r'^\s*\bfor\s*\([^)]*\)', re.IGNORECASE),
+        re.compile(r'^\s*\bwhile\s*\([^)]*\)', re.IGNORECASE),
+        re.compile(r'^\s*\bif\s*\([^)]*\)', re.IGNORECASE),
+        re.compile(r'^\s*\bSerial\.println\s*\(', re.IGNORECASE),
+        re.compile(r'^\s*\bpinMode\s*\(', re.IGNORECASE),
+        re.compile(r'^\s*\bdigitalWrite\s*\(', re.IGNORECASE),
+        re.compile(r'^\s*\banalogRead\s*\(', re.IGNORECASE),
+        re.compile(r'^\s*\banalogWrite\s*\(', re.IGNORECASE),
+        re.compile(r'^\s*printf\s*\(', re.IGNORECASE)
     ]
     for pattern in code_patterns:
         if pattern.search(line):
             return True
     return False
 
-
 def has_unformatted_code(text: str) -> bool:
     """
     Determine if text contains a contiguous block of 3 or more consecutive lines
     that appear to contain Arduino/C/C++ source code, ignoring properly formatted code blocks.
-
+    
     Parameters:
         text (str): Raw markdown text.
-
+        
     Returns:
         bool: True if such a block is detected, False otherwise.
     """

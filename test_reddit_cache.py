@@ -56,18 +56,15 @@ class TestRedditCache(unittest.TestCase):
         self.assertEqual(result.strip(), expected.strip())
 
     def test_is_code_line_positive(self):
-        # These lines should be recognized as code.
         self.assertTrue(is_code_line("#include <stdio.h>"))
         self.assertTrue(is_code_line("void main() {"))
         self.assertTrue(is_code_line("for (int i = 0; i < 10; i++) {"))
-        # Test the printf pattern:
         self.assertTrue(is_code_line("printf(\"Hello\");"))
 
     def test_is_code_line_negative(self):
         self.assertFalse(is_code_line("This is just a regular sentence."))
 
     def test_has_unformatted_code_does_not_flag_properly_formatted(self):
-        # Code that is properly indented should not trigger a violation.
         text = (
             "#include <stdio.h>\n"
             "void main() {\n"
@@ -78,14 +75,19 @@ class TestRedditCache(unittest.TestCase):
         self.assertFalse(has_unformatted_code(text))
 
     def test_has_unformatted_code_flags_unformatted_code(self):
-        # Block of unformatted code (no indentation or fences) should trigger a violation.
         text = (
-            "#include <stdio.h>\n"
-            "void main() {\n"
-            "printf(\"Hello\");\n"
-            "}\n"
-            "Extra text here."
+            "This is a test post that contains unformatted source code.\n"
+            "This is a test post that contains improperly formatted source code.\n"
+            "include <Arduino.h>\n"
+            "void setup() { Serial.begin(115200); Serial.println(F(\"This is a test post\\n\")); }\n"
+            "void loop() { }\n"
+            "I sure hope that\n"
+            "these automated tests\n"
+            "can be useful\n"
+            "once they are\n"
+            "debugged"
         )
+        # Expect at least 3 consecutive code lines (lines 3-5) to trigger a violation.
         self.assertTrue(has_unformatted_code(text))
 
     def test_get_cache_folder_creates_directory(self):
