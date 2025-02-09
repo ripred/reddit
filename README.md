@@ -1,1 +1,139 @@
-# reddit
+```markdown
+# Reddit Cache Utility for Moderators
+
+## Overview
+
+The **Reddit Cache Utility** is a command-line tool designed to help moderators quickly fetch, cache, and analyze the latest posts from one or more subreddits. The tool minimizes network traffic by caching posts locally and provides various reports and an interactive code formatting check. This helps us easily identify posts that may need further review or formatting corrections.
+
+## Features
+
+- **Caching:**  
+  Retrieves and caches the latest 100 posts from a subreddit. Only new posts are fetched on subsequent runs.
+
+- **Flair Reports:**  
+  Generate reports that summarize the unique flair counts from cached posts.
+
+- **Show Posts:**  
+  Display detailed information (title, author, full selftext, and flair) for a specified number of cached posts.
+
+- **Monthly Digest:**  
+  Automatically compile a digest from posts with titles containing "Monthly Digest".
+
+- **Interactive Code Format Check:**  
+  Scans cached posts for unformatted source code (e.g., Arduino/C/C++ code that isn’t properly fenced or indented). When a post is detected as a violation, the full, untruncated post body is printed, and you’re prompted to flag, skip, or cancel further checks.
+
+- **ANSI Colored Output:**  
+  The utility uses ANSI color codes to make the output more readable. For example:
+  - **Blue**: Subreddit names  
+  - **Green**: Summary statistics  
+  - **Magenta**: Report headers  
+  - **Yellow**: Warnings and applied filters
+
+*Note: The screenshots below simulate the expected colorized output in the terminal.*
+
+![ANSI Output Screenshot](https://via.placeholder.com/800x200?text=ANSI+Colored+Output+Screenshot)
+
+## Usage
+
+Run the utility from the command line. Below is the basic help output:
+
+
+```
+
+Usage: reddit_cache.py [subreddits ...] [options]
+
+Positional arguments: subreddits One or more subreddit names to fetch posts from (default: arduino)
+
+Optional arguments: -h, --help Show this help message and exit -r, --report REPORT Generate a report. Available option: flair -l, --show N Show title, selftext, author, and flair for the last N cached posts -L, --limit-report M Limit the number of cached posts scanned for reports to M posts (default: no limit) -D, --digest Include a Monthly Digest report section (scans posts with "Monthly Digest" in the title) --check-code-format Interactively check cached posts for code formatting violations --output OUTPUT Output format: 'json', 'report', or 'markdown' (default: json)
+
+```
+
+### How It Works
+
+1. **Caching:**  
+   The tool checks the local `caches/` folder for stored post data. If found, it only fetches new posts from Reddit.
+
+2. **Reporting:**  
+   Based on the options, the tool generates various reports (flair, show posts, monthly digest) using the local cache to avoid unnecessary network calls.
+
+3. **Interactive Code Check:**  
+   When the `--check-code-format` flag is used, the utility scans each post’s selftext (after unescaping HTML entities) for blocks of 3 or more consecutive non-empty lines that look like Arduino/C/C++ code (ignoring properly formatted code blocks). If a violation is detected, the complete post body is shown for review.
+
+4. **ANSI Colors:**  
+   All output is colorized (using ANSI escape sequences) for clarity. For example, summary stats appear in green, report headers in magenta, etc.
+
+## Example Use Cases (TL;DR)
+
+Below are some common usage examples. These examples are shown in a simulated bash session with example (colorized) outputs.
+
+```bash
+# 1. Fetch and cache posts from the default subreddit (r/arduino)
+$ ./reddit_cache.py
+--- Result ---
+Filters applied: {'limit_report': 'None', 'report': 'None', 'show': 'None', 'digest': 'None', 'check_code_format': 'None', 'output': 'json'}
+[ANSI output with summary stats in green and white, showing 100 posts fetched from r/arduino]
+
+# 2. Generate a flair report for r/arduino (cached data only)
+$ ./reddit_cache.py arduino -r flair
+--- Result ---
+Filters applied: {'limit_report': 'None', 'report': 'flair', 'show': 'None', 'digest': 'None', 'check_code_format': 'None', 'output': 'json'}
+[ANSI output: flair report in magenta, showing counts for each flair]
+
+# 3. Display the last 5 cached posts from r/programming with full post details
+$ ./reddit_cache.py programming -l 5
+--- Result ---
+Filters applied: {'limit_report': 'None', 'report': 'None', 'show': 5, 'digest': 'None', 'check_code_format': 'None', 'output': 'json'}
+[ANSI output: Detailed information for 5 posts, including full selftext]
+
+# 4. Generate a Monthly Digest report for r/arduino in Markdown format
+$ ./reddit_cache.py arduino -D --output markdown
+--- Result ---
+Filters applied: {'limit_report': 'None', 'report': 'None', 'show': 'None', 'digest': 'Enabled', 'check_code_format': 'None', 'output': 'markdown'}
+[Markdown output: Monthly Digest report with headers and full post texts]
+
+# 5. Interactively check for posts with unformatted code in r/ripred
+$ ./reddit_cache.py ripred --check-code-format --output report
+Processing subreddits: [ANSI progress bar]
+Potential Code Format Violation Detected:
+Post ID: abc123
+Title: "Test Post # 1 – Should FAIL Formatting Check"
+Author: ripred3
+Complete Selftext:
+[Full, untruncated post body with improperly formatted source code]
+Does this post contain unformatted code? (y/n/s/c): 
+[Interactive prompt with ANSI colored text]
+
+```
+
+## TL;DR – Quick Command Examples
+
+```bash
+# Fetch posts from r/arduino (default)
+$ ./reddit_cache.py
+
+# Generate a flair report for r/arduino
+$ ./reddit_cache.py arduino -r flair
+
+# Show the last 5 cached posts from r/programming
+$ ./reddit_cache.py programming -l 5
+
+# Generate a Monthly Digest report for r/arduino in Markdown
+$ ./reddit_cache.py arduino -D --output markdown
+
+# Interactively check r/ripred for unformatted code violations
+$ ./reddit_cache.py ripred --check-code-format --output report
+
+```
+
+## Additional Notes
+
+-   **Non-interactive Mode:**  
+    For automated testing, set the environment variable `TEST_NONINTERACTIVE=1` to simulate a "y" response during code format checks.
+    
+-   **ANSI Color Output:**  
+    The utility’s output is colorized using ANSI escape sequences. Screenshots of the output are provided above; please refer to your terminal for the live colored output.
+    
+-   **Feedback and Issues:**  
+    Please test the utility on your respective subreddits and let us know if you encounter any issues or have suggestions for additional features. Your feedback is highly appreciated!
+    
+
