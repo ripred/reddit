@@ -1,4 +1,3 @@
-```markdown
 # Reddit Cache Utility for Moderators
 
 ## Overview
@@ -39,13 +38,46 @@ Run the utility from the command line. Below is the basic help output:
 
 
 ```
+./reddit_cache.py --help
+usage: reddit_cache.py [-h] [-r {flair}] [-l N] [-L M] [-D] [--check-code-format]
+       [--output {json,report,markdown}] [subreddits ...]
 
-Usage: reddit_cache.py [subreddits ...] [options]
+Fetch and cache the newest 100 posts from one or more subreddits, displaying only new posts
+       and summary stats.
+If multiple subreddits are specified, a global summary is also provided.
 
-Positional arguments: subreddits One or more subreddit names to fetch posts from (default: arduino)
+Positional arguments:
+  subreddits  : One or more subreddit names to fetch posts from (default: arduino).
 
-Optional arguments: -h, --help Show this help message and exit -r, --report REPORT Generate a report. Available option: flair -l, --show N Show title, selftext, author, and flair for the last N cached posts -L, --limit-report M Limit the number of cached posts scanned for reports to M posts (default: no limit) -D, --digest Include a Monthly Digest report section (scans posts with "Monthly Digest" in the title) --check-code-format Interactively check cached posts for code formatting violations --output OUTPUT Output format: 'json', 'report', or 'markdown' (default: json)
+Optional arguments:
+  -r, --report REPORT  : Generate a report. Available option: flair
+  -l, --show N         : Show title, selftext, author, and flair for the last N cached posts
+  -L, --limit-report M : Limit the number of cached posts scanned for reports to M
+                         posts (default: no limit)
+  -D, --digest         : Include a Monthly Digest report section (scans cached posts with
+                         titles containing 'Monthly Digest')
+  --check-code-format  : Check cached posts for code formatting violations interactively
+  --output OUTPUT      : Output format: 'json', 'report', or 'markdown' (default: json)
 
+positional arguments:
+  subreddits            Subreddit names (default: arduino)
+
+options:
+  -h, --help            show this help message and exit
+  -r {flair}, --report {flair}
+                        Generate a report. Available option: flair
+  -l N, --show N        Show title, selftext, author, and flair for the last N cached posts
+  -L M, --limit-report M
+                        Limit the number of cached posts scanned for reports to M posts (default:
+                        no limit)
+  -D, --digest          Include a Monthly Digest report section (scans cached posts with titles containing
+                        'Monthly Digest')
+  --check-code-format   Check cached posts for code formatting violations interactively
+  --output {json,report,markdown}
+                        Output format: 'json' for JSON output, 'report' for human-readable ANSI report,
+                        'markdown' for Markdown-formatted report (default: json)
+
+Example: ./reddit_cache.py arduino arduino_ai --check-code-format --output report
 ```
 
 ### How It Works
@@ -123,7 +155,6 @@ $ ./reddit_cache.py arduino -D --output markdown
 # Interactively check r/ripred for unformatted code violations
 $ ./reddit_cache.py ripred --check-code-format --output report
 
-```
 
 ## Additional Notes
 
