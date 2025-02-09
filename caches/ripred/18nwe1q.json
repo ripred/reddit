@@ -1,0 +1,398 @@
+{
+  "approved_at_utc": null,
+  "subreddit": "ripred",
+  "selftext": "",
+  "user_reports": [],
+  "saved": false,
+  "mod_reason_title": null,
+  "gilded": 0,
+  "clicked": false,
+  "title": "Add support to *any* Arduino for free internet, a full disc drive, the current time, and anything else your PC/Mac/Linux machine can do - And it's free!",
+  "link_flair_richtext": [
+    {
+      "e": "text",
+      "t": "Project"
+    }
+  ],
+  "subreddit_name_prefixed": "r/ripred",
+  "hidden": false,
+  "pwls": null,
+  "link_flair_css_class": "",
+  "downs": 0,
+  "thumbnail_height": 70,
+  "top_awarded_type": null,
+  "hide_score": false,
+  "name": "t3_18nwe1q",
+  "quarantine": false,
+  "link_flair_text_color": "light",
+  "upvote_ratio": 1.0,
+  "author_flair_background_color": "transparent",
+  "subreddit_type": "public",
+  "ups": 1,
+  "total_awards_received": 0,
+  "media_embed": {},
+  "thumbnail_width": 140,
+  "author_flair_template_id": "9fa2ceaa-053c-11ed-bb97-124dff5ea4b4",
+  "is_original_content": false,
+  "author_fullname": "t2_adfkq",
+  "secure_media": null,
+  "is_reddit_media_domain": false,
+  "is_meta": false,
+  "category": null,
+  "secure_media_embed": {},
+  "link_flair_text": "Project",
+  "can_mod_post": false,
+  "score": 1,
+  "approved_by": null,
+  "is_created_from_ads_ui": false,
+  "author_premium": false,
+  "thumbnail": "https://b.thumbs.redditmedia.com/3UBhcBvM1uGTx6DF9W9M6RvOKoRNGh_Zs1XhjOdtO1A.jpg",
+  "edited": false,
+  "author_flair_css_class": null,
+  "author_flair_richtext": [
+    {
+      "a": ":snoo_facepalm:",
+      "e": "emoji",
+      "u": "https://emoji.redditmedia.com/wzxf63qpaezz_t5_3nqvj/snoo_facepalm"
+    }
+  ],
+  "gildings": {},
+  "post_hint": "link",
+  "content_categories": null,
+  "is_self": false,
+  "mod_note": null,
+  "crosspost_parent_list": [
+    {
+      "approved_at_utc": null,
+      "subreddit": "arduino",
+      "selftext": "**edit**: Well, \"free\" as in you don't have to buy a shield heh.\n\nI had this idea a while back and I finally got around to trying it and it's incredibly useful! The full Python and Arduino source code for both sides is included at the end of this post.\n\nThe basic idea is simple: Write a Python agent that runs on your PC/Mac/Linux machine that takes serial commands from your Arduino and then executes them on the host machine. And by optionally adding an additional FTDI module or another Arduino you can receive the results of the issued command!\n\nThis basically turns your host machine and all of it's abilities into a \"service\" at the beck and call of your Arduino projects!  \ud83d\ude04\n\n**Update**: To be clear - There is **no Python coding involved** at all! Everything is done on the Arduino side by just sending a command line to the (already written below) Python Agent to execute and it will send the results back (if you are using an FTDI adapter or second Arduino).\n\nAll that is required is a simple Arduino sketch like you already know how to do! Just do something like this:\n\n        command_serial.println(\"dir /W\") // Windows\n    // or\n        command_serial.println(\"ls -lh\") // Linux or Mac\n\nAnd that would cause your PC to display the current working directory. This is just a simple example. Much much more can be done!\n\n**Update**: I created [a public gallery for people to submit pull requests for their sketches](https://github.com/ripred/ArduinoCLI) to showcase the various uses! So far I have written and added the following sketches to the [**PublicGallery**](https://github.com/ripred/ArduinoCLI/tree/main/PublicGallery) folder:\n\n* [**ArduinoCLI.ino**](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/arduinoCLI/arduinoCLI.ino) example sketch\n* [**macFreeDiskSpace.ino**](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/macFreeDiskSpace/macFreeDiskSpace.ino) sketch to monitor and blink an LED if your PC/Mac/Linux disk drive falls below a certain amount of free space\n* [**macPlayMusic.ino**](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/macPlayMusic/macPlayMusic.ino) sketch to play any song in your music library when your Arduino sketch tells it to play it\n* [**macSpeechSynthesizer.ino**](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/macSpeechSynthesizer/macSpeechSynthesizer.ino) sketch to make your Mac speak anything your Arduino tells it to\n* [**openWeatherMap.ino**](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/openWeatherMap/openWeatherMap.ino)  sketch to retrieve the city name, latitude, longitude, current  conditions, temperature, 'feels like' temperature, humidity, wind speed,  and wind direction for any zip code.\n* [**datetime.ino**](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/datetime/datetime.ino) sketch to retrieve the current date and time from Windows, Mac, and Linux hosts!\n* [**isMacAsleep.ino**](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/isMacAsleep/isMacAsleep.ino) sketch to retrieve whether the host machine is asleep or not!\n* [**power.ino**](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/power/power.ino) sketch for Windows, Mac, and Linux to tell the host machine to go to sleep, reboot, or shutdown\n* [**pjlink.ino**](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/pjlink/pjlink.ino) sketch for an example of invoking the pjlink  \n command line tool for controlling and retrieving information from projectors and other PJLINK capable devices\n* [**hue.ino**](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/hue/hue.ino) example sketch for controlling the lights in your home via the Hue Bridge using 'curl' commands.\n\nThis is useful as can be for all kinds of things such as:\n\n* Invoke 'curl' commands to send internet requests and optionally retrieve the response back to your Arduino. Many of the following ideas are just expanded ideas of this basic ability.\n* Play and stop music or movies on your host machine\n* Retrieve weather info and control devices based on the results\n* Retrieve sports updates using public API's such as NHL's and MLB's api's\n* Write and retrieve data to files on your host machine and take advantage of it's muchlarger capacity versus an SD card! Basically all file functionality that you can do from the command line like creating files, appending to them, reading them back, and deleting them, etc.\n* Post or retrieve posts with reddit without using a complex reddit api (and their limitations! \ud83d\ude09)\n* Access and use a running database server on your host machine\n* Submit sensor data to running machine learning training\n* Submit Queries to a running machine learning model\n* Retrieve the current time from the host machine\n* Post updates or retrieve information from social media platforms.\n* Monitor social media channels for specific keywords or trends.\n* Retrieve and manipulate calendar events.\n* Set reminders or schedule tasks on the host machine.\n* Monitor system security logs for security events.\n* Perform advanced text processing tasks, such as parsing log files or analyzing textual data.\n* Perform Git operations like cloning repositories, pulling updates, and pushing changes.\n* Integrate with version control systems for automated tasks.\n* Send and receive emails using command-line tools.\n* Monitor email accounts for specific conditions (e.g., new messages from a particular sender).\n* Scrape data from websites for information retrieval.\n* Automate form submissions on websites.\n* Network: Ping a list of servers to check their availability.\n* Perform traceroute to analyze network paths.\n* Change network configurations dynamically.\n* Image and Video Processing\\*\\*:\\*\\* Manipulate images or videos using command-line tools.\n* Extract frames from videos or perform basic image recognition tasks.\n* Implement basic intrusion detection or prevention mechanisms.\n* Control your local intranet based lighting systems without complex software.\n* Invoke the speech functionality supported by the macOS's \"say\" command or using Windows Powershell's ability to run the System.Speech.Synthesis.SpeechSynthesizer.\n* Start any program on your host machine\n* Turn your machine off by issuing a \"shutdown\" command\n* Post and retrieve content from a Cloud service\n* Print things on your local printer from your Arduino!\n\n[Example using an FTDI USB-ttl converter and an Arduino Nano](https://preview.redd.it/ximv2mxh8y4c1.png?width=1249&amp;format=png&amp;auto=webp&amp;s=b0687990d4903f4dfe1ee9368af46b8daa59ee0c)\n\n**The Python Agent**:\n\n    import sys\n    import serial\n    import subprocess\n    \n    # Check if there are command-line arguments\n    if len(sys.argv) &gt; 1:\n        # Retrieve and print command-line arguments\n        command_port = sys.argv[1]\n    else:\n        print(\"No COM port argument provided.\")\n        exit(-1)\n    \n    #command_port = '/dev/cu.usbserial-A4016Z9Q'\n    \n    cmd_serial = serial.Serial(command_port, 9600, timeout=1)\n    \n    if cmd_serial:\n        print(f\"Succesfully opened serial port {command_port}\")\n    else:\n        print(f\"Could not open the serial port {command_port}\")\n        exit(0)\n    \n    def execute_command(command):\n        print(f\"Executing: {command}\")  # Output for the user\n        try:\n            # Execute the command and capture the output\n            result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)\n            return result.decode('utf-8')  # Decode bytes to string\n        except subprocess.CalledProcessError as e:\n            # If the command execution fails, return the error message\n            return str(e.output)\n    \n    prompted = False\n    while True:\n        if not prompted:\n            print(\"Waiting for a command from the Arduino...\")\n        prompted = True\n    \n        # Read a line from the Arduino\n        arduino_command = cmd_serial.readline().decode('utf-8').strip()\n    \n        # Strip whitespace from the beginning and end of the line\n        arduino_command = arduino_command.strip()\n    \n        if arduino_command:\n            print(f\"Received command from Arduino: '{arduino_command}'\")\n    \n            # Execute the command\n            result_output = execute_command(arduino_command)\n    \n            # Split the result into lines and send each line individually\n            for line in result_output.split('\\n'):\n                print(line + '\\n')\n                if cmd_serial:\n                    cmd_serial.write(line.encode('utf-8') + b'\\n')\n    \n            prompted = False\n\n**And the Arduino Sketch**:\n\n    /*\n     * ArduinoCLI.ino\n     *\n     * Example use of using your PC/Mac/Linux machine\n     * as a service for your Arduino projects.\n     *\n     */\n    \n    #include &lt;SoftwareSerial.h&gt;\n    \n    #define  RX_PIN   7\n    #define  TX_PIN   8\n    \n    SoftwareSerial command_serial(RX_PIN, TX_PIN);  // RX, TX\n    \n    void setup() {\n        Serial.begin(115200);\n        command_serial.begin(9600);\n        command_serial.println(F(\"echo \\\"Hello Arduino!\\\"\"));\n    }\n    \n    void loop() {\n        if (Serial.available()) {\n            String cmd = Serial.readString();\n            cmd.trim();\n            if (cmd.length()) {\n                Serial.print(F(\"User command \\\"\"));\n                Serial.print(cmd);\n                Serial.println(F(\"\\\" received\"));\n                command_serial.println(cmd);\n            }\n        }\n    \n       while (command_serial.available() &gt; 0) {\n            String output = command_serial.readString();\n            output.trim();\n            if (output.length() != 0) {\n                Serial.println(output);\n            }\n        }\n    }\n\n**edit**: As someone pointed out: don't use this using a WiFi connection unless it's encrypted! This is a gateway to your command line after all!",
+      "author_fullname": "t2_adfkq",
+      "saved": false,
+      "mod_reason_title": null,
+      "gilded": 0,
+      "clicked": false,
+      "title": "Add support to *any* Arduino for free internet, a full disc drive, the current time, and anything else your PC/Mac/Linux machine can do - And it's free!",
+      "link_flair_richtext": [
+        {
+          "e": "text",
+          "t": "Look what I made!"
+        }
+      ],
+      "subreddit_name_prefixed": "r/arduino",
+      "hidden": false,
+      "pwls": 6,
+      "link_flair_css_class": "",
+      "downs": 0,
+      "thumbnail_height": 70,
+      "top_awarded_type": null,
+      "hide_score": false,
+      "media_metadata": {
+        "ximv2mxh8y4c1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 69,
+              "x": 108,
+              "u": "https://preview.redd.it/ximv2mxh8y4c1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=082d81aba787558f6a02821791c3716570a2af05"
+            },
+            {
+              "y": 139,
+              "x": 216,
+              "u": "https://preview.redd.it/ximv2mxh8y4c1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=b30f920e676ec9c875ceb8b0987cea3720f3c2b2"
+            },
+            {
+              "y": 206,
+              "x": 320,
+              "u": "https://preview.redd.it/ximv2mxh8y4c1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=74414c38004f63ce2bcd17767cb33acf14ed8977"
+            },
+            {
+              "y": 412,
+              "x": 640,
+              "u": "https://preview.redd.it/ximv2mxh8y4c1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=2cc18cc5ac71d00b8717c32624d144e4e6762ca6"
+            },
+            {
+              "y": 618,
+              "x": 960,
+              "u": "https://preview.redd.it/ximv2mxh8y4c1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=095dcf8c57a91eafb009ce9286f17db603ebd38d"
+            },
+            {
+              "y": 696,
+              "x": 1080,
+              "u": "https://preview.redd.it/ximv2mxh8y4c1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=83c902d79bfefacca7cfd0de78e5c86a791339a2"
+            }
+          ],
+          "s": {
+            "y": 805,
+            "x": 1249,
+            "u": "https://preview.redd.it/ximv2mxh8y4c1.png?width=1249&amp;format=png&amp;auto=webp&amp;s=b0687990d4903f4dfe1ee9368af46b8daa59ee0c"
+          },
+          "id": "ximv2mxh8y4c1"
+        }
+      },
+      "name": "t3_18d8o70",
+      "quarantine": false,
+      "link_flair_text_color": null,
+      "upvote_ratio": 0.88,
+      "author_flair_background_color": "#00a6a5",
+      "ups": 12,
+      "total_awards_received": 0,
+      "media_embed": {},
+      "thumbnail_width": 140,
+      "author_flair_template_id": "5cb3c302-0ef5-11ed-b9fd-aab9a872a9c2",
+      "is_original_content": false,
+      "user_reports": [],
+      "secure_media": null,
+      "is_reddit_media_domain": false,
+      "is_meta": false,
+      "category": null,
+      "secure_media_embed": {},
+      "link_flair_text": "Look what I made!",
+      "can_mod_post": false,
+      "score": 12,
+      "approved_by": null,
+      "is_created_from_ads_ui": false,
+      "author_premium": false,
+      "thumbnail": "https://b.thumbs.redditmedia.com/3UBhcBvM1uGTx6DF9W9M6RvOKoRNGh_Zs1XhjOdtO1A.jpg",
+      "edited": 1702673396.0,
+      "author_flair_css_class": null,
+      "author_flair_richtext": [
+        {
+          "a": ":400K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/apsbyvbwmfe91_t5_2qknj/400K"
+        },
+        {
+          "a": ":Arduino_500k:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/o5qzzwwkvk5a1_t5_2qknj/Arduino_500k"
+        },
+        {
+          "a": ":600K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/z23hxjk4hpeb1_t5_2qknj/600K"
+        },
+        {
+          "a": ":640K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/g9r24xjaydqc1_t5_2qknj/640K"
+        },
+        {
+          "e": "text",
+          "t": " My other dev board is a Porsche"
+        }
+      ],
+      "gildings": {},
+      "post_hint": "self",
+      "content_categories": null,
+      "is_self": true,
+      "subreddit_type": "public",
+      "created": 1701991317.0,
+      "link_flair_type": "richtext",
+      "wls": 6,
+      "removed_by_category": null,
+      "banned_by": null,
+      "author_flair_type": "richtext",
+      "domain": "self.arduino",
+      "allow_live_comments": false,
+      "selftext_html": "&lt;!-- SC_OFF --&gt;&lt;div class=\"md\"&gt;&lt;p&gt;&lt;strong&gt;edit&lt;/strong&gt;: Well, &amp;quot;free&amp;quot; as in you don&amp;#39;t have to buy a shield heh.&lt;/p&gt;\n\n&lt;p&gt;I had this idea a while back and I finally got around to trying it and it&amp;#39;s incredibly useful! The full Python and Arduino source code for both sides is included at the end of this post.&lt;/p&gt;\n\n&lt;p&gt;The basic idea is simple: Write a Python agent that runs on your PC/Mac/Linux machine that takes serial commands from your Arduino and then executes them on the host machine. And by optionally adding an additional FTDI module or another Arduino you can receive the results of the issued command!&lt;/p&gt;\n\n&lt;p&gt;This basically turns your host machine and all of it&amp;#39;s abilities into a &amp;quot;service&amp;quot; at the beck and call of your Arduino projects!  \ud83d\ude04&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: To be clear - There is &lt;strong&gt;no Python coding involved&lt;/strong&gt; at all! Everything is done on the Arduino side by just sending a command line to the (already written below) Python Agent to execute and it will send the results back (if you are using an FTDI adapter or second Arduino).&lt;/p&gt;\n\n&lt;p&gt;All that is required is a simple Arduino sketch like you already know how to do! Just do something like this:&lt;/p&gt;\n\n&lt;pre&gt;&lt;code&gt;    command_serial.println(&amp;quot;dir /W&amp;quot;) // Windows\n// or\n    command_serial.println(&amp;quot;ls -lh&amp;quot;) // Linux or Mac\n&lt;/code&gt;&lt;/pre&gt;\n\n&lt;p&gt;And that would cause your PC to display the current working directory. This is just a simple example. Much much more can be done!&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: I created &lt;a href=\"https://github.com/ripred/ArduinoCLI\"&gt;a public gallery for people to submit pull requests for their sketches&lt;/a&gt; to showcase the various uses! So far I have written and added the following sketches to the &lt;a href=\"https://github.com/ripred/ArduinoCLI/tree/main/PublicGallery\"&gt;&lt;strong&gt;PublicGallery&lt;/strong&gt;&lt;/a&gt; folder:&lt;/p&gt;\n\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/arduinoCLI/arduinoCLI.ino\"&gt;&lt;strong&gt;ArduinoCLI.ino&lt;/strong&gt;&lt;/a&gt; example sketch&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/macFreeDiskSpace/macFreeDiskSpace.ino\"&gt;&lt;strong&gt;macFreeDiskSpace.ino&lt;/strong&gt;&lt;/a&gt; sketch to monitor and blink an LED if your PC/Mac/Linux disk drive falls below a certain amount of free space&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/macPlayMusic/macPlayMusic.ino\"&gt;&lt;strong&gt;macPlayMusic.ino&lt;/strong&gt;&lt;/a&gt; sketch to play any song in your music library when your Arduino sketch tells it to play it&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/macSpeechSynthesizer/macSpeechSynthesizer.ino\"&gt;&lt;strong&gt;macSpeechSynthesizer.ino&lt;/strong&gt;&lt;/a&gt; sketch to make your Mac speak anything your Arduino tells it to&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/openWeatherMap/openWeatherMap.ino\"&gt;&lt;strong&gt;openWeatherMap.ino&lt;/strong&gt;&lt;/a&gt;  sketch to retrieve the city name, latitude, longitude, current  conditions, temperature, &amp;#39;feels like&amp;#39; temperature, humidity, wind speed,  and wind direction for any zip code.&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/datetime/datetime.ino\"&gt;&lt;strong&gt;datetime.ino&lt;/strong&gt;&lt;/a&gt; sketch to retrieve the current date and time from Windows, Mac, and Linux hosts!&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/isMacAsleep/isMacAsleep.ino\"&gt;&lt;strong&gt;isMacAsleep.ino&lt;/strong&gt;&lt;/a&gt; sketch to retrieve whether the host machine is asleep or not!&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/power/power.ino\"&gt;&lt;strong&gt;power.ino&lt;/strong&gt;&lt;/a&gt; sketch for Windows, Mac, and Linux to tell the host machine to go to sleep, reboot, or shutdown&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/pjlink/pjlink.ino\"&gt;&lt;strong&gt;pjlink.ino&lt;/strong&gt;&lt;/a&gt; sketch for an example of invoking the pjlink&lt;br/&gt;\ncommand line tool for controlling and retrieving information from projectors and other PJLINK capable devices&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/hue/hue.ino\"&gt;&lt;strong&gt;hue.ino&lt;/strong&gt;&lt;/a&gt; example sketch for controlling the lights in your home via the Hue Bridge using &amp;#39;curl&amp;#39; commands.&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;This is useful as can be for all kinds of things such as:&lt;/p&gt;\n\n&lt;ul&gt;\n&lt;li&gt;Invoke &amp;#39;curl&amp;#39; commands to send internet requests and optionally retrieve the response back to your Arduino. Many of the following ideas are just expanded ideas of this basic ability.&lt;/li&gt;\n&lt;li&gt;Play and stop music or movies on your host machine&lt;/li&gt;\n&lt;li&gt;Retrieve weather info and control devices based on the results&lt;/li&gt;\n&lt;li&gt;Retrieve sports updates using public API&amp;#39;s such as NHL&amp;#39;s and MLB&amp;#39;s api&amp;#39;s&lt;/li&gt;\n&lt;li&gt;Write and retrieve data to files on your host machine and take advantage of it&amp;#39;s muchlarger capacity versus an SD card! Basically all file functionality that you can do from the command line like creating files, appending to them, reading them back, and deleting them, etc.&lt;/li&gt;\n&lt;li&gt;Post or retrieve posts with reddit without using a complex reddit api (and their limitations! \ud83d\ude09)&lt;/li&gt;\n&lt;li&gt;Access and use a running database server on your host machine&lt;/li&gt;\n&lt;li&gt;Submit sensor data to running machine learning training&lt;/li&gt;\n&lt;li&gt;Submit Queries to a running machine learning model&lt;/li&gt;\n&lt;li&gt;Retrieve the current time from the host machine&lt;/li&gt;\n&lt;li&gt;Post updates or retrieve information from social media platforms.&lt;/li&gt;\n&lt;li&gt;Monitor social media channels for specific keywords or trends.&lt;/li&gt;\n&lt;li&gt;Retrieve and manipulate calendar events.&lt;/li&gt;\n&lt;li&gt;Set reminders or schedule tasks on the host machine.&lt;/li&gt;\n&lt;li&gt;Monitor system security logs for security events.&lt;/li&gt;\n&lt;li&gt;Perform advanced text processing tasks, such as parsing log files or analyzing textual data.&lt;/li&gt;\n&lt;li&gt;Perform Git operations like cloning repositories, pulling updates, and pushing changes.&lt;/li&gt;\n&lt;li&gt;Integrate with version control systems for automated tasks.&lt;/li&gt;\n&lt;li&gt;Send and receive emails using command-line tools.&lt;/li&gt;\n&lt;li&gt;Monitor email accounts for specific conditions (e.g., new messages from a particular sender).&lt;/li&gt;\n&lt;li&gt;Scrape data from websites for information retrieval.&lt;/li&gt;\n&lt;li&gt;Automate form submissions on websites.&lt;/li&gt;\n&lt;li&gt;Network: Ping a list of servers to check their availability.&lt;/li&gt;\n&lt;li&gt;Perform traceroute to analyze network paths.&lt;/li&gt;\n&lt;li&gt;Change network configurations dynamically.&lt;/li&gt;\n&lt;li&gt;Image and Video Processing**:** Manipulate images or videos using command-line tools.&lt;/li&gt;\n&lt;li&gt;Extract frames from videos or perform basic image recognition tasks.&lt;/li&gt;\n&lt;li&gt;Implement basic intrusion detection or prevention mechanisms.&lt;/li&gt;\n&lt;li&gt;Control your local intranet based lighting systems without complex software.&lt;/li&gt;\n&lt;li&gt;Invoke the speech functionality supported by the macOS&amp;#39;s &amp;quot;say&amp;quot; command or using Windows Powershell&amp;#39;s ability to run the System.Speech.Synthesis.SpeechSynthesizer.&lt;/li&gt;\n&lt;li&gt;Start any program on your host machine&lt;/li&gt;\n&lt;li&gt;Turn your machine off by issuing a &amp;quot;shutdown&amp;quot; command&lt;/li&gt;\n&lt;li&gt;Post and retrieve content from a Cloud service&lt;/li&gt;\n&lt;li&gt;Print things on your local printer from your Arduino!&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/ximv2mxh8y4c1.png?width=1249&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=b0687990d4903f4dfe1ee9368af46b8daa59ee0c\"&gt;Example using an FTDI USB-ttl converter and an Arduino Nano&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;The Python Agent&lt;/strong&gt;:&lt;/p&gt;\n\n&lt;pre&gt;&lt;code&gt;import sys\nimport serial\nimport subprocess\n\n# Check if there are command-line arguments\nif len(sys.argv) &amp;gt; 1:\n    # Retrieve and print command-line arguments\n    command_port = sys.argv[1]\nelse:\n    print(&amp;quot;No COM port argument provided.&amp;quot;)\n    exit(-1)\n\n#command_port = &amp;#39;/dev/cu.usbserial-A4016Z9Q&amp;#39;\n\ncmd_serial = serial.Serial(command_port, 9600, timeout=1)\n\nif cmd_serial:\n    print(f&amp;quot;Succesfully opened serial port {command_port}&amp;quot;)\nelse:\n    print(f&amp;quot;Could not open the serial port {command_port}&amp;quot;)\n    exit(0)\n\ndef execute_command(command):\n    print(f&amp;quot;Executing: {command}&amp;quot;)  # Output for the user\n    try:\n        # Execute the command and capture the output\n        result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)\n        return result.decode(&amp;#39;utf-8&amp;#39;)  # Decode bytes to string\n    except subprocess.CalledProcessError as e:\n        # If the command execution fails, return the error message\n        return str(e.output)\n\nprompted = False\nwhile True:\n    if not prompted:\n        print(&amp;quot;Waiting for a command from the Arduino...&amp;quot;)\n    prompted = True\n\n    # Read a line from the Arduino\n    arduino_command = cmd_serial.readline().decode(&amp;#39;utf-8&amp;#39;).strip()\n\n    # Strip whitespace from the beginning and end of the line\n    arduino_command = arduino_command.strip()\n\n    if arduino_command:\n        print(f&amp;quot;Received command from Arduino: &amp;#39;{arduino_command}&amp;#39;&amp;quot;)\n\n        # Execute the command\n        result_output = execute_command(arduino_command)\n\n        # Split the result into lines and send each line individually\n        for line in result_output.split(&amp;#39;\\n&amp;#39;):\n            print(line + &amp;#39;\\n&amp;#39;)\n            if cmd_serial:\n                cmd_serial.write(line.encode(&amp;#39;utf-8&amp;#39;) + b&amp;#39;\\n&amp;#39;)\n\n        prompted = False\n&lt;/code&gt;&lt;/pre&gt;\n\n&lt;p&gt;&lt;strong&gt;And the Arduino Sketch&lt;/strong&gt;:&lt;/p&gt;\n\n&lt;pre&gt;&lt;code&gt;/*\n * ArduinoCLI.ino\n *\n * Example use of using your PC/Mac/Linux machine\n * as a service for your Arduino projects.\n *\n */\n\n#include &amp;lt;SoftwareSerial.h&amp;gt;\n\n#define  RX_PIN   7\n#define  TX_PIN   8\n\nSoftwareSerial command_serial(RX_PIN, TX_PIN);  // RX, TX\n\nvoid setup() {\n    Serial.begin(115200);\n    command_serial.begin(9600);\n    command_serial.println(F(&amp;quot;echo \\&amp;quot;Hello Arduino!\\&amp;quot;&amp;quot;));\n}\n\nvoid loop() {\n    if (Serial.available()) {\n        String cmd = Serial.readString();\n        cmd.trim();\n        if (cmd.length()) {\n            Serial.print(F(&amp;quot;User command \\&amp;quot;&amp;quot;));\n            Serial.print(cmd);\n            Serial.println(F(&amp;quot;\\&amp;quot; received&amp;quot;));\n            command_serial.println(cmd);\n        }\n    }\n\n   while (command_serial.available() &amp;gt; 0) {\n        String output = command_serial.readString();\n        output.trim();\n        if (output.length() != 0) {\n            Serial.println(output);\n        }\n    }\n}\n&lt;/code&gt;&lt;/pre&gt;\n\n&lt;p&gt;&lt;strong&gt;edit&lt;/strong&gt;: As someone pointed out: don&amp;#39;t use this using a WiFi connection unless it&amp;#39;s encrypted! This is a gateway to your command line after all!&lt;/p&gt;\n&lt;/div&gt;&lt;!-- SC_ON --&gt;",
+      "likes": null,
+      "suggested_sort": "confidence",
+      "banned_at_utc": null,
+      "view_count": null,
+      "archived": false,
+      "no_follow": false,
+      "is_crosspostable": false,
+      "pinned": false,
+      "over_18": false,
+      "preview": {
+        "images": [
+          {
+            "source": {
+              "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?auto=webp&amp;s=5706f100b9f28dfda33e75c9d6f4140195a0e4d7",
+              "width": 1200,
+              "height": 600
+            },
+            "resolutions": [
+              {
+                "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=48f3cc4ccac980d2fe7079350cb796f149471d54",
+                "width": 108,
+                "height": 54
+              },
+              {
+                "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=36c3bbf7fc984f610eed730402500826c29a49ba",
+                "width": 216,
+                "height": 108
+              },
+              {
+                "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=684f7e287ed9f6b74211f650b12ab93e6d86114f",
+                "width": 320,
+                "height": 160
+              },
+              {
+                "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=7e9664c24aab7208879f9d000f11a0d4329f7e17",
+                "width": 640,
+                "height": 320
+              },
+              {
+                "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=af7344ba5ddd421cfa3098341d7b45c3816bd960",
+                "width": 960,
+                "height": 480
+              },
+              {
+                "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=991653829bc96cf7aa9a7cb00799a06157e44b5e",
+                "width": 1080,
+                "height": 540
+              }
+            ],
+            "variants": {},
+            "id": "tscRZtk9Pb1masotLO061JVYvR6iJAPVl7OWdhC9xfo"
+          }
+        ],
+        "enabled": false
+      },
+      "all_awardings": [],
+      "awarders": [],
+      "media_only": false,
+      "link_flair_template_id": "8a993096-51ce-11e9-84d9-0e29268ab306",
+      "can_gild": false,
+      "spoiler": false,
+      "locked": false,
+      "author_flair_text": ":400K::Arduino_500k::600K::640K: My other dev board is a Porsche",
+      "treatment_tags": [],
+      "visited": false,
+      "removed_by": null,
+      "mod_note": null,
+      "distinguished": null,
+      "subreddit_id": "t5_2qknj",
+      "author_is_blocked": false,
+      "mod_reason_by": null,
+      "num_reports": null,
+      "removal_reason": null,
+      "link_flair_background_color": "#94e044",
+      "id": "18d8o70",
+      "is_robot_indexable": true,
+      "report_reasons": null,
+      "author": "ripred3",
+      "discussion_type": null,
+      "num_comments": 5,
+      "send_replies": true,
+      "contest_mode": false,
+      "mod_reports": [],
+      "author_patreon_flair": false,
+      "author_flair_text_color": "light",
+      "permalink": "/r/arduino/comments/18d8o70/add_support_to_any_arduino_for_free_internet_a/",
+      "stickied": false,
+      "url": "https://www.reddit.com/r/arduino/comments/18d8o70/add_support_to_any_arduino_for_free_internet_a/",
+      "subreddit_subscribers": 691390,
+      "created_utc": 1701991317.0,
+      "num_crossposts": 2,
+      "media": null,
+      "is_video": false
+    }
+  ],
+  "created": 1703190308.0,
+  "link_flair_type": "richtext",
+  "wls": null,
+  "removed_by_category": null,
+  "banned_by": null,
+  "author_flair_type": "richtext",
+  "domain": "self.arduino",
+  "allow_live_comments": false,
+  "selftext_html": null,
+  "likes": null,
+  "suggested_sort": null,
+  "banned_at_utc": null,
+  "url_overridden_by_dest": "/r/arduino/comments/18d8o70/add_support_to_any_arduino_for_free_internet_a/",
+  "view_count": null,
+  "archived": false,
+  "no_follow": true,
+  "is_crosspostable": false,
+  "pinned": false,
+  "over_18": false,
+  "preview": {
+    "images": [
+      {
+        "source": {
+          "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?auto=webp&amp;s=5706f100b9f28dfda33e75c9d6f4140195a0e4d7",
+          "width": 1200,
+          "height": 600
+        },
+        "resolutions": [
+          {
+            "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=48f3cc4ccac980d2fe7079350cb796f149471d54",
+            "width": 108,
+            "height": 54
+          },
+          {
+            "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=36c3bbf7fc984f610eed730402500826c29a49ba",
+            "width": 216,
+            "height": 108
+          },
+          {
+            "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=684f7e287ed9f6b74211f650b12ab93e6d86114f",
+            "width": 320,
+            "height": 160
+          },
+          {
+            "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=7e9664c24aab7208879f9d000f11a0d4329f7e17",
+            "width": 640,
+            "height": 320
+          },
+          {
+            "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=af7344ba5ddd421cfa3098341d7b45c3816bd960",
+            "width": 960,
+            "height": 480
+          },
+          {
+            "url": "https://external-preview.redd.it/uWK0MdgOTSO2b6zFsrzCdEqL-NQ2V2s_vc0PFuElUPU.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=991653829bc96cf7aa9a7cb00799a06157e44b5e",
+            "width": 1080,
+            "height": 540
+          }
+        ],
+        "variants": {},
+        "id": "tscRZtk9Pb1masotLO061JVYvR6iJAPVl7OWdhC9xfo"
+      }
+    ],
+    "enabled": false
+  },
+  "all_awardings": [],
+  "awarders": [],
+  "media_only": false,
+  "link_flair_template_id": "10e54cb2-a03e-11ee-82f2-8255c429eabf",
+  "can_gild": false,
+  "spoiler": false,
+  "locked": false,
+  "author_flair_text": ":snoo_facepalm:",
+  "treatment_tags": [],
+  "visited": false,
+  "removed_by": null,
+  "num_reports": null,
+  "distinguished": null,
+  "subreddit_id": "t5_6as6rv",
+  "author_is_blocked": false,
+  "mod_reason_by": null,
+  "removal_reason": null,
+  "link_flair_background_color": "#6767f1",
+  "id": "18nwe1q",
+  "is_robot_indexable": true,
+  "report_reasons": null,
+  "author": "ripred3",
+  "discussion_type": null,
+  "num_comments": 0,
+  "send_replies": true,
+  "contest_mode": false,
+  "mod_reports": [],
+  "author_patreon_flair": false,
+  "crosspost_parent": "t3_18d8o70",
+  "author_flair_text_color": "dark",
+  "permalink": "/r/ripred/comments/18nwe1q/add_support_to_any_arduino_for_free_internet_a/",
+  "stickied": false,
+  "url": "/r/arduino/comments/18d8o70/add_support_to_any_arduino_for_free_internet_a/",
+  "subreddit_subscribers": 43,
+  "created_utc": 1703190308.0,
+  "num_crossposts": 0,
+  "media": null,
+  "is_video": false
+}

@@ -1,0 +1,352 @@
+{
+  "approved_at_utc": null,
+  "subreddit": "ripred",
+  "selftext": "",
+  "user_reports": [],
+  "saved": false,
+  "mod_reason_title": null,
+  "gilded": 0,
+  "clicked": false,
+  "title": "Great Resources for Learning and Teaching Yourself Basic Electronics",
+  "link_flair_richtext": [],
+  "subreddit_name_prefixed": "r/ripred",
+  "hidden": false,
+  "pwls": null,
+  "link_flair_css_class": null,
+  "downs": 0,
+  "thumbnail_height": null,
+  "top_awarded_type": null,
+  "hide_score": false,
+  "name": "t3_15yxbwf",
+  "quarantine": false,
+  "link_flair_text_color": "dark",
+  "upvote_ratio": 1.0,
+  "author_flair_background_color": "transparent",
+  "subreddit_type": "public",
+  "ups": 1,
+  "total_awards_received": 0,
+  "media_embed": {},
+  "thumbnail_width": null,
+  "author_flair_template_id": "9fa2ceaa-053c-11ed-bb97-124dff5ea4b4",
+  "is_original_content": false,
+  "author_fullname": "t2_adfkq",
+  "secure_media": null,
+  "is_reddit_media_domain": false,
+  "is_meta": false,
+  "category": null,
+  "secure_media_embed": {},
+  "link_flair_text": null,
+  "can_mod_post": false,
+  "score": 1,
+  "approved_by": null,
+  "is_created_from_ads_ui": false,
+  "author_premium": false,
+  "thumbnail": "default",
+  "edited": false,
+  "author_flair_css_class": null,
+  "author_flair_richtext": [
+    {
+      "a": ":snoo_facepalm:",
+      "e": "emoji",
+      "u": "https://emoji.redditmedia.com/wzxf63qpaezz_t5_3nqvj/snoo_facepalm"
+    }
+  ],
+  "gildings": {},
+  "post_hint": "link",
+  "content_categories": null,
+  "is_self": false,
+  "mod_note": null,
+  "crosspost_parent_list": [
+    {
+      "approved_at_utc": null,
+      "subreddit": "arduino",
+      "selftext": "The subject comes up from time to time and we had a recent post and question about where some great places are to learn this stuff. I dug through my massive (not kidding) list of electronics bookmarks and filtered the list by \"electronics, tutorials\". I have learned tons of stuff from the following links and I thought the wider community might like to bookmark some/all of these as well.\n\nLet me know if you all think they deserve their own section in the sidebar and if you have any thoughts on any of them. Also please comment and add to the list if you have a similar list of great electronics learning resources, We'd all love to learn from them!\n\nTwo fundamental \"Laws of Electronics\" that will take you far are [Ohm's Law](https://en.wikipedia.org/wiki/Ohm's_law) and [Kirchhoff's Laws](https://en.wikipedia.org/wiki/Kirchhoff's_circuit_laws). There are probably a lot less \"mathy\" ways of learning them than wikipedia as well. \ud83d\ude43 They are covered somewhere in one way or another in pretty much all of the rest of these links at some point also.\n\nSome of the great resources I have bookmarked are:\n\n* [https://www.electronics-tutorials.ws/](https://www.electronics-tutorials.ws/) \\- is fantastic\n* [https://www.electrical4u.com/](https://www.electrical4u.com/) \\- is also fantastic\n* [https://learn.sparkfun.com/tutorials](https://learn.sparkfun.com/tutorials)\n* [https://tronixstuff.com/tutorials/](https://tronixstuff.com/tutorials/)\n* [https://www.bristolwatch.com/](https://www.bristolwatch.com/)\n* [http://www.learningaboutelectronics.com/Articles/](http://www.learningaboutelectronics.com/Articles/)\n* [https://www.electrical4u.com/electrical-engineering-articles/electrical-laws/](https://www.electrical4u.com/electrical-engineering-articles/electrical-laws/)\n* [https://learn.adafruit.com/](https://learn.adafruit.com/)\n* [https://sound-au.com/](https://sound-au.com/)\n* [https://www.allaboutcircuits.com/](https://www.allaboutcircuits.com/)\n* [https://archive.org/details/NEETSModule01](https://archive.org/details/NEETSModule01)\n\nAll the Best!\n\nupdate: We'll do another post about your favorite learning video series.\n\nAlso yeah now we have a new post flair for\n\n* electronics\n* Windows\n* Mac\n* linux",
+      "author_fullname": "t2_adfkq",
+      "saved": false,
+      "mod_reason_title": null,
+      "gilded": 0,
+      "clicked": false,
+      "title": "Great Resources for Learning and Teaching Yourself Basic Electronics",
+      "link_flair_richtext": [
+        {
+          "a": ":electronics:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/90fhxyt10sjb1_t5_2qknj/electronics"
+        },
+        {
+          "e": "text",
+          "t": " Electronics "
+        }
+      ],
+      "subreddit_name_prefixed": "r/arduino",
+      "hidden": false,
+      "pwls": 6,
+      "link_flair_css_class": "",
+      "downs": 0,
+      "thumbnail_height": null,
+      "top_awarded_type": null,
+      "hide_score": false,
+      "name": "t3_15ywzk8",
+      "quarantine": false,
+      "link_flair_text_color": "dark",
+      "upvote_ratio": 0.98,
+      "author_flair_background_color": "#00a6a5",
+      "subreddit_type": "public",
+      "ups": 164,
+      "total_awards_received": 0,
+      "media_embed": {},
+      "thumbnail_width": null,
+      "author_flair_template_id": "5cb3c302-0ef5-11ed-b9fd-aab9a872a9c2",
+      "is_original_content": false,
+      "user_reports": [],
+      "secure_media": null,
+      "is_reddit_media_domain": false,
+      "is_meta": false,
+      "category": null,
+      "secure_media_embed": {},
+      "link_flair_text": ":electronics: Electronics ",
+      "can_mod_post": false,
+      "score": 164,
+      "approved_by": null,
+      "is_created_from_ads_ui": false,
+      "author_premium": false,
+      "thumbnail": "self",
+      "edited": 1692870177.0,
+      "author_flair_css_class": null,
+      "author_flair_richtext": [
+        {
+          "a": ":400K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/apsbyvbwmfe91_t5_2qknj/400K"
+        },
+        {
+          "a": ":Arduino_500k:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/o5qzzwwkvk5a1_t5_2qknj/Arduino_500k"
+        },
+        {
+          "a": ":600K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/z23hxjk4hpeb1_t5_2qknj/600K"
+        },
+        {
+          "a": ":640K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/g9r24xjaydqc1_t5_2qknj/640K"
+        },
+        {
+          "e": "text",
+          "t": " My other dev board is a Porsche"
+        }
+      ],
+      "gildings": {},
+      "post_hint": "self",
+      "content_categories": null,
+      "is_self": true,
+      "mod_note": null,
+      "created": 1692777186.0,
+      "link_flair_type": "richtext",
+      "wls": 6,
+      "removed_by_category": null,
+      "banned_by": null,
+      "author_flair_type": "richtext",
+      "domain": "self.arduino",
+      "allow_live_comments": false,
+      "selftext_html": "&lt;!-- SC_OFF --&gt;&lt;div class=\"md\"&gt;&lt;p&gt;The subject comes up from time to time and we had a recent post and question about where some great places are to learn this stuff. I dug through my massive (not kidding) list of electronics bookmarks and filtered the list by &amp;quot;electronics, tutorials&amp;quot;. I have learned tons of stuff from the following links and I thought the wider community might like to bookmark some/all of these as well.&lt;/p&gt;\n\n&lt;p&gt;Let me know if you all think they deserve their own section in the sidebar and if you have any thoughts on any of them. Also please comment and add to the list if you have a similar list of great electronics learning resources, We&amp;#39;d all love to learn from them!&lt;/p&gt;\n\n&lt;p&gt;Two fundamental &amp;quot;Laws of Electronics&amp;quot; that will take you far are &lt;a href=\"https://en.wikipedia.org/wiki/Ohm&amp;#x27;s_law\"&gt;Ohm&amp;#39;s Law&lt;/a&gt; and &lt;a href=\"https://en.wikipedia.org/wiki/Kirchhoff&amp;#x27;s_circuit_laws\"&gt;Kirchhoff&amp;#39;s Laws&lt;/a&gt;. There are probably a lot less &amp;quot;mathy&amp;quot; ways of learning them than wikipedia as well. \ud83d\ude43 They are covered somewhere in one way or another in pretty much all of the rest of these links at some point also.&lt;/p&gt;\n\n&lt;p&gt;Some of the great resources I have bookmarked are:&lt;/p&gt;\n\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\"https://www.electronics-tutorials.ws/\"&gt;https://www.electronics-tutorials.ws/&lt;/a&gt; - is fantastic&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://www.electrical4u.com/\"&gt;https://www.electrical4u.com/&lt;/a&gt; - is also fantastic&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://learn.sparkfun.com/tutorials\"&gt;https://learn.sparkfun.com/tutorials&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://tronixstuff.com/tutorials/\"&gt;https://tronixstuff.com/tutorials/&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://www.bristolwatch.com/\"&gt;https://www.bristolwatch.com/&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"http://www.learningaboutelectronics.com/Articles/\"&gt;http://www.learningaboutelectronics.com/Articles/&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://www.electrical4u.com/electrical-engineering-articles/electrical-laws/\"&gt;https://www.electrical4u.com/electrical-engineering-articles/electrical-laws/&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://learn.adafruit.com/\"&gt;https://learn.adafruit.com/&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://sound-au.com/\"&gt;https://sound-au.com/&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://www.allaboutcircuits.com/\"&gt;https://www.allaboutcircuits.com/&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://archive.org/details/NEETSModule01\"&gt;https://archive.org/details/NEETSModule01&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;All the Best!&lt;/p&gt;\n\n&lt;p&gt;update: We&amp;#39;ll do another post about your favorite learning video series.&lt;/p&gt;\n\n&lt;p&gt;Also yeah now we have a new post flair for&lt;/p&gt;\n\n&lt;ul&gt;\n&lt;li&gt;electronics&lt;/li&gt;\n&lt;li&gt;Windows&lt;/li&gt;\n&lt;li&gt;Mac&lt;/li&gt;\n&lt;li&gt;linux&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/div&gt;&lt;!-- SC_ON --&gt;",
+      "likes": null,
+      "suggested_sort": "confidence",
+      "banned_at_utc": null,
+      "view_count": null,
+      "archived": false,
+      "no_follow": false,
+      "is_crosspostable": false,
+      "pinned": false,
+      "over_18": false,
+      "preview": {
+        "images": [
+          {
+            "source": {
+              "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?auto=webp&amp;s=86bd6c42155c90f84dbeb46611c0f50e04692c10",
+              "width": 1200,
+              "height": 1680
+            },
+            "resolutions": [
+              {
+                "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=f6f9bb38a5f840cef5947c60d792d10a84f741f0",
+                "width": 108,
+                "height": 151
+              },
+              {
+                "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=98a873293b304397579518bd0b635052848ad152",
+                "width": 216,
+                "height": 302
+              },
+              {
+                "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=dac11920c5b3e4f861188da6472580a589dd05dd",
+                "width": 320,
+                "height": 448
+              },
+              {
+                "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=104b37f9996c7f7143b8ed3d21d9efe4bd6d62a4",
+                "width": 640,
+                "height": 896
+              },
+              {
+                "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=15b385e130e18cac3d16dad9624ee411bb3bd634",
+                "width": 960,
+                "height": 1344
+              },
+              {
+                "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=5c44fc1330464b88018e2df575eb8e2c19ea01ea",
+                "width": 1080,
+                "height": 1512
+              }
+            ],
+            "variants": {},
+            "id": "c9TgjTIZl87hVlDPSXgrKhera01sW2cJP7W3QeAhP4Y"
+          }
+        ],
+        "enabled": false
+      },
+      "all_awardings": [],
+      "awarders": [],
+      "media_only": false,
+      "link_flair_template_id": "caf885c2-418b-11ee-9580-ba149abb25fa",
+      "can_gild": false,
+      "spoiler": false,
+      "locked": false,
+      "author_flair_text": ":400K::Arduino_500k::600K::640K: My other dev board is a Porsche",
+      "treatment_tags": [],
+      "visited": false,
+      "removed_by": null,
+      "num_reports": null,
+      "distinguished": "moderator",
+      "subreddit_id": "t5_2qknj",
+      "author_is_blocked": false,
+      "mod_reason_by": null,
+      "removal_reason": null,
+      "link_flair_background_color": "#edeff1",
+      "id": "15ywzk8",
+      "is_robot_indexable": true,
+      "report_reasons": null,
+      "author": "ripred3",
+      "discussion_type": null,
+      "num_comments": 25,
+      "send_replies": true,
+      "contest_mode": false,
+      "mod_reports": [],
+      "author_patreon_flair": false,
+      "author_flair_text_color": "light",
+      "permalink": "/r/arduino/comments/15ywzk8/great_resources_for_learning_and_teaching/",
+      "stickied": false,
+      "url": "https://www.reddit.com/r/arduino/comments/15ywzk8/great_resources_for_learning_and_teaching/",
+      "subreddit_subscribers": 691390,
+      "created_utc": 1692777186.0,
+      "num_crossposts": 8,
+      "media": null,
+      "is_video": false
+    }
+  ],
+  "created": 1692778311.0,
+  "link_flair_type": "text",
+  "wls": null,
+  "removed_by_category": null,
+  "banned_by": null,
+  "author_flair_type": "richtext",
+  "domain": "self.arduino",
+  "allow_live_comments": false,
+  "selftext_html": null,
+  "likes": null,
+  "suggested_sort": null,
+  "banned_at_utc": null,
+  "url_overridden_by_dest": "/r/arduino/comments/15ywzk8/great_resources_for_learning_and_teaching/",
+  "view_count": null,
+  "archived": false,
+  "no_follow": true,
+  "is_crosspostable": false,
+  "pinned": false,
+  "over_18": false,
+  "preview": {
+    "images": [
+      {
+        "source": {
+          "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?auto=webp&amp;s=86bd6c42155c90f84dbeb46611c0f50e04692c10",
+          "width": 1200,
+          "height": 1680
+        },
+        "resolutions": [
+          {
+            "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=f6f9bb38a5f840cef5947c60d792d10a84f741f0",
+            "width": 108,
+            "height": 151
+          },
+          {
+            "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=98a873293b304397579518bd0b635052848ad152",
+            "width": 216,
+            "height": 302
+          },
+          {
+            "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=dac11920c5b3e4f861188da6472580a589dd05dd",
+            "width": 320,
+            "height": 448
+          },
+          {
+            "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=104b37f9996c7f7143b8ed3d21d9efe4bd6d62a4",
+            "width": 640,
+            "height": 896
+          },
+          {
+            "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=15b385e130e18cac3d16dad9624ee411bb3bd634",
+            "width": 960,
+            "height": 1344
+          },
+          {
+            "url": "https://external-preview.redd.it/TfeuIHfYGA6G218AErHxs5lt-350q1bBRfZQuCACFBQ.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=5c44fc1330464b88018e2df575eb8e2c19ea01ea",
+            "width": 1080,
+            "height": 1512
+          }
+        ],
+        "variants": {},
+        "id": "c9TgjTIZl87hVlDPSXgrKhera01sW2cJP7W3QeAhP4Y"
+      }
+    ],
+    "enabled": false
+  },
+  "all_awardings": [],
+  "awarders": [],
+  "media_only": false,
+  "can_gild": false,
+  "spoiler": false,
+  "locked": false,
+  "author_flair_text": ":snoo_facepalm:",
+  "treatment_tags": [],
+  "visited": false,
+  "removed_by": null,
+  "num_reports": null,
+  "distinguished": null,
+  "subreddit_id": "t5_6as6rv",
+  "author_is_blocked": false,
+  "mod_reason_by": null,
+  "removal_reason": null,
+  "link_flair_background_color": "",
+  "id": "15yxbwf",
+  "is_robot_indexable": true,
+  "report_reasons": null,
+  "author": "ripred3",
+  "discussion_type": null,
+  "num_comments": 0,
+  "send_replies": true,
+  "contest_mode": false,
+  "mod_reports": [],
+  "author_patreon_flair": false,
+  "crosspost_parent": "t3_15ywzk8",
+  "author_flair_text_color": "dark",
+  "permalink": "/r/ripred/comments/15yxbwf/great_resources_for_learning_and_teaching/",
+  "stickied": false,
+  "url": "/r/arduino/comments/15ywzk8/great_resources_for_learning_and_teaching/",
+  "subreddit_subscribers": 43,
+  "created_utc": 1692778311.0,
+  "num_crossposts": 0,
+  "media": null,
+  "is_video": false
+}

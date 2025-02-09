@@ -1,0 +1,358 @@
+{
+  "approved_at_utc": null,
+  "subreddit": "ripred",
+  "selftext": "",
+  "user_reports": [],
+  "saved": false,
+  "mod_reason_title": null,
+  "gilded": 0,
+  "clicked": false,
+  "title": "ArduinoCLI Project Update",
+  "link_flair_richtext": [
+    {
+      "e": "text",
+      "t": "Project Update:"
+    }
+  ],
+  "subreddit_name_prefixed": "r/ripred",
+  "hidden": false,
+  "pwls": null,
+  "link_flair_css_class": "",
+  "downs": 0,
+  "thumbnail_height": null,
+  "top_awarded_type": null,
+  "hide_score": false,
+  "name": "t3_18nwdby",
+  "quarantine": false,
+  "link_flair_text_color": "light",
+  "upvote_ratio": 1.0,
+  "author_flair_background_color": "transparent",
+  "subreddit_type": "public",
+  "ups": 1,
+  "total_awards_received": 0,
+  "media_embed": {},
+  "thumbnail_width": null,
+  "author_flair_template_id": "9fa2ceaa-053c-11ed-bb97-124dff5ea4b4",
+  "is_original_content": false,
+  "author_fullname": "t2_adfkq",
+  "secure_media": null,
+  "is_reddit_media_domain": false,
+  "is_meta": false,
+  "category": null,
+  "secure_media_embed": {},
+  "link_flair_text": "Project Update:",
+  "can_mod_post": false,
+  "score": 1,
+  "approved_by": null,
+  "is_created_from_ads_ui": false,
+  "author_premium": false,
+  "thumbnail": "default",
+  "edited": false,
+  "author_flair_css_class": null,
+  "author_flair_richtext": [
+    {
+      "a": ":snoo_facepalm:",
+      "e": "emoji",
+      "u": "https://emoji.redditmedia.com/wzxf63qpaezz_t5_3nqvj/snoo_facepalm"
+    }
+  ],
+  "gildings": {},
+  "post_hint": "link",
+  "content_categories": null,
+  "is_self": false,
+  "mod_note": null,
+  "crosspost_parent_list": [
+    {
+      "approved_at_utc": null,
+      "subreddit": "arduino",
+      "selftext": "A week or so ago [I made a post about a new project I was working on](https://www.reddit.com/r/arduino/comments/18d8o70/add_support_to_any_arduino_for_free_internet_a/?utm_source=share&amp;utm_medium=web2x&amp;context=3).\n\nSo far I have written and added the following sketches to [the PublicGallery folder](https://github.com/ripred/ArduinoCLI/tree/main/PublicGallery):\n\n* [ArduinoCLI.ino](https://github.com/ripred/ArduinoCLI/tree/main/PublicGallery/arduinoCLI) example sketch - allows you to execute any command on your host machine that you enter into the serial monitor window.\n* [macFreeDiskSpace.ino](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/macFreeDiskSpace/macFreeDiskSpace.ino) sketch to monitor and blink an LED if your PC/Mac/Linux disk drive falls below a a certain amount of free space.\n* [macPlayMusic.ino](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/macPlayMusic/macPlayMusic.ino) sketch to play any song in your music library when your Arduino sketch tells it to play it.\n* [macSpeechSynthesizer.ino](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/macSpeechSynthesizer/macSpeechSynthesizer.ino) sketch to make your Mac speak anything your Arduino tells it to.\n* [openWeatherMap.ino](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/openWeatherMap/openWeatherMap.ino) sketch to retrieve the city name, latitude, longitude, current conditions, temperature, feels like temperature, humidity, wind speed, and wind direction for any zip code.\n* [datetime.ino](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/datetime/datetime.ino) sketch to retrieve the current date and time from Windows, Mac, and Linux hosts in realtime!\n* [isMacAsleep.ino](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/isMacAsleep/isMacAsleep.ino) sketch to retrieve whether the host machine is asleep or not! \n* [power.ino](https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/power/power.ino) sketch for Windows, Mac, and Linux to tell the host machine to go to sleep, reboot, or shutdown.\n\nI just finished writing that last one: `power.ino` tonight and I'm seeing the patterns that hold true across all of the sketches as I write more of them. I'm getting better at writing single sketches that work the same cross all Windows, Mac, and Linux too so more of the existing machine-specific sketches will probably start to be rewritten to work on all OS's.\n\nEventually this will probably be turned into a very granular library so that you only incur the cost in program space for the parts you actually use, much like the Arduino Core. I'm also planning on re-factoring it so that they aren't a bunch of individual sketches,each with their own setup() and a loop() functions so that using more than one of the the \"PC as a service\" features can be used in one sketch without having to do that yourself.\n\nI'm also planning on moving more and more of it into the Python Agent side so that the sketches that use the features will get to be more and more lightweight over time. As you can see it's a live project and things are moving quickly. \n\nI'm also planning on writing another module here soon that gives you the functionality of the SD card library but uses the larger and faster host machine's hard drive. And live sports scores that you can use to make something happen when you team(2) score or win\n\nPull requests to the public gallery are welcome! Or you can just tell me what missing functionality you'd like to see and I will probably update it and add it to the core features it already has.\n\nI'd love it if you checked it out and gave me any feedback you might have and give the repository a star if you like the idea and find it useful. \ud83d\ude04\n\nAll the Best!\n\n`ripred`",
+      "author_fullname": "t2_adfkq",
+      "saved": false,
+      "mod_reason_title": null,
+      "gilded": 0,
+      "clicked": false,
+      "title": "ArduinoCLI Project Update",
+      "link_flair_richtext": [
+        {
+          "a": ":Ardsnuino:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/67vq5lvhqn7b1_t5_2qknj/Ardsnuino"
+        },
+        {
+          "e": "text",
+          "t": " Project Update! "
+        }
+      ],
+      "subreddit_name_prefixed": "r/arduino",
+      "hidden": false,
+      "pwls": 6,
+      "link_flair_css_class": "",
+      "downs": 0,
+      "thumbnail_height": null,
+      "top_awarded_type": null,
+      "hide_score": false,
+      "name": "t3_18i64y7",
+      "quarantine": false,
+      "link_flair_text_color": "light",
+      "upvote_ratio": 1.0,
+      "author_flair_background_color": "#00a6a5",
+      "subreddit_type": "public",
+      "ups": 3,
+      "total_awards_received": 0,
+      "media_embed": {},
+      "thumbnail_width": null,
+      "author_flair_template_id": "5cb3c302-0ef5-11ed-b9fd-aab9a872a9c2",
+      "is_original_content": false,
+      "user_reports": [],
+      "secure_media": null,
+      "is_reddit_media_domain": false,
+      "is_meta": false,
+      "category": null,
+      "secure_media_embed": {},
+      "link_flair_text": ":Ardsnuino: Project Update! ",
+      "can_mod_post": false,
+      "score": 3,
+      "approved_by": null,
+      "is_created_from_ads_ui": false,
+      "author_premium": false,
+      "thumbnail": "self",
+      "edited": false,
+      "author_flair_css_class": null,
+      "author_flair_richtext": [
+        {
+          "a": ":400K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/apsbyvbwmfe91_t5_2qknj/400K"
+        },
+        {
+          "a": ":Arduino_500k:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/o5qzzwwkvk5a1_t5_2qknj/Arduino_500k"
+        },
+        {
+          "a": ":600K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/z23hxjk4hpeb1_t5_2qknj/600K"
+        },
+        {
+          "a": ":640K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/g9r24xjaydqc1_t5_2qknj/640K"
+        },
+        {
+          "e": "text",
+          "t": " My other dev board is a Porsche"
+        }
+      ],
+      "gildings": {},
+      "post_hint": "self",
+      "content_categories": null,
+      "is_self": true,
+      "mod_note": null,
+      "created": 1702551372.0,
+      "link_flair_type": "richtext",
+      "wls": 6,
+      "removed_by_category": null,
+      "banned_by": null,
+      "author_flair_type": "richtext",
+      "domain": "self.arduino",
+      "allow_live_comments": false,
+      "selftext_html": "&lt;!-- SC_OFF --&gt;&lt;div class=\"md\"&gt;&lt;p&gt;A week or so ago &lt;a href=\"https://www.reddit.com/r/arduino/comments/18d8o70/add_support_to_any_arduino_for_free_internet_a/?utm_source=share&amp;amp;utm_medium=web2x&amp;amp;context=3\"&gt;I made a post about a new project I was working on&lt;/a&gt;.&lt;/p&gt;\n\n&lt;p&gt;So far I have written and added the following sketches to &lt;a href=\"https://github.com/ripred/ArduinoCLI/tree/main/PublicGallery\"&gt;the PublicGallery folder&lt;/a&gt;:&lt;/p&gt;\n\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/tree/main/PublicGallery/arduinoCLI\"&gt;ArduinoCLI.ino&lt;/a&gt; example sketch - allows you to execute any command on your host machine that you enter into the serial monitor window.&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/macFreeDiskSpace/macFreeDiskSpace.ino\"&gt;macFreeDiskSpace.ino&lt;/a&gt; sketch to monitor and blink an LED if your PC/Mac/Linux disk drive falls below a a certain amount of free space.&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/macPlayMusic/macPlayMusic.ino\"&gt;macPlayMusic.ino&lt;/a&gt; sketch to play any song in your music library when your Arduino sketch tells it to play it.&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/macSpeechSynthesizer/macSpeechSynthesizer.ino\"&gt;macSpeechSynthesizer.ino&lt;/a&gt; sketch to make your Mac speak anything your Arduino tells it to.&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/openWeatherMap/openWeatherMap.ino\"&gt;openWeatherMap.ino&lt;/a&gt; sketch to retrieve the city name, latitude, longitude, current conditions, temperature, feels like temperature, humidity, wind speed, and wind direction for any zip code.&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/datetime/datetime.ino\"&gt;datetime.ino&lt;/a&gt; sketch to retrieve the current date and time from Windows, Mac, and Linux hosts in realtime!&lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/isMacAsleep/isMacAsleep.ino\"&gt;isMacAsleep.ino&lt;/a&gt; sketch to retrieve whether the host machine is asleep or not! &lt;/li&gt;\n&lt;li&gt;&lt;a href=\"https://github.com/ripred/ArduinoCLI/blob/main/PublicGallery/power/power.ino\"&gt;power.ino&lt;/a&gt; sketch for Windows, Mac, and Linux to tell the host machine to go to sleep, reboot, or shutdown.&lt;/li&gt;\n&lt;/ul&gt;\n\n&lt;p&gt;I just finished writing that last one: &lt;code&gt;power.ino&lt;/code&gt; tonight and I&amp;#39;m seeing the patterns that hold true across all of the sketches as I write more of them. I&amp;#39;m getting better at writing single sketches that work the same cross all Windows, Mac, and Linux too so more of the existing machine-specific sketches will probably start to be rewritten to work on all OS&amp;#39;s.&lt;/p&gt;\n\n&lt;p&gt;Eventually this will probably be turned into a very granular library so that you only incur the cost in program space for the parts you actually use, much like the Arduino Core. I&amp;#39;m also planning on re-factoring it so that they aren&amp;#39;t a bunch of individual sketches,each with their own setup() and a loop() functions so that using more than one of the the &amp;quot;PC as a service&amp;quot; features can be used in one sketch without having to do that yourself.&lt;/p&gt;\n\n&lt;p&gt;I&amp;#39;m also planning on moving more and more of it into the Python Agent side so that the sketches that use the features will get to be more and more lightweight over time. As you can see it&amp;#39;s a live project and things are moving quickly. &lt;/p&gt;\n\n&lt;p&gt;I&amp;#39;m also planning on writing another module here soon that gives you the functionality of the SD card library but uses the larger and faster host machine&amp;#39;s hard drive. And live sports scores that you can use to make something happen when you team(2) score or win&lt;/p&gt;\n\n&lt;p&gt;Pull requests to the public gallery are welcome! Or you can just tell me what missing functionality you&amp;#39;d like to see and I will probably update it and add it to the core features it already has.&lt;/p&gt;\n\n&lt;p&gt;I&amp;#39;d love it if you checked it out and gave me any feedback you might have and give the repository a star if you like the idea and find it useful. \ud83d\ude04&lt;/p&gt;\n\n&lt;p&gt;All the Best!&lt;/p&gt;\n\n&lt;p&gt;&lt;code&gt;ripred&lt;/code&gt;&lt;/p&gt;\n&lt;/div&gt;&lt;!-- SC_ON --&gt;",
+      "likes": null,
+      "suggested_sort": "confidence",
+      "banned_at_utc": null,
+      "view_count": null,
+      "archived": false,
+      "no_follow": false,
+      "is_crosspostable": false,
+      "pinned": false,
+      "over_18": false,
+      "preview": {
+        "images": [
+          {
+            "source": {
+              "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?auto=webp&amp;s=c653712925a6d8c589ee24adb17895031d05a69d",
+              "width": 1200,
+              "height": 600
+            },
+            "resolutions": [
+              {
+                "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=1e1dc9b7b0793ec3b6181ed91e67414f0632b5b6",
+                "width": 108,
+                "height": 54
+              },
+              {
+                "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=7caf47033c231ffb800b60fbe68739ae3e044600",
+                "width": 216,
+                "height": 108
+              },
+              {
+                "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=d731b09de0a066010664f12cc98099c61bd938b8",
+                "width": 320,
+                "height": 160
+              },
+              {
+                "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=004550efa53f0b3aab9f0e59b40f7e2b399a8cb5",
+                "width": 640,
+                "height": 320
+              },
+              {
+                "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=47d7c6cd1cbea7a75850948b3ac050ba5157b52f",
+                "width": 960,
+                "height": 480
+              },
+              {
+                "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=9ed6476b5be1648f1eac2a7e58a5797b603f9c03",
+                "width": 1080,
+                "height": 540
+              }
+            ],
+            "variants": {},
+            "id": "FJbKdyoqU5GkEGQlfATi9uJv4oqGdesYNhWU3nWTf3U"
+          }
+        ],
+        "enabled": false
+      },
+      "all_awardings": [],
+      "awarders": [],
+      "media_only": false,
+      "link_flair_template_id": "f0b64ab0-928a-11ee-9f5a-0a943bc90635",
+      "can_gild": false,
+      "spoiler": false,
+      "locked": false,
+      "author_flair_text": ":400K::Arduino_500k::600K::640K: My other dev board is a Porsche",
+      "treatment_tags": [],
+      "visited": false,
+      "removed_by": null,
+      "num_reports": null,
+      "distinguished": null,
+      "subreddit_id": "t5_2qknj",
+      "author_is_blocked": false,
+      "mod_reason_by": null,
+      "removal_reason": null,
+      "link_flair_background_color": "#334d5c",
+      "id": "18i64y7",
+      "is_robot_indexable": true,
+      "report_reasons": null,
+      "author": "ripred3",
+      "discussion_type": null,
+      "num_comments": 0,
+      "send_replies": true,
+      "contest_mode": false,
+      "mod_reports": [],
+      "author_patreon_flair": false,
+      "author_flair_text_color": "light",
+      "permalink": "/r/arduino/comments/18i64y7/arduinocli_project_update/",
+      "stickied": false,
+      "url": "https://www.reddit.com/r/arduino/comments/18i64y7/arduinocli_project_update/",
+      "subreddit_subscribers": 691390,
+      "created_utc": 1702551372.0,
+      "num_crossposts": 1,
+      "media": null,
+      "is_video": false
+    }
+  ],
+  "created": 1703190255.0,
+  "link_flair_type": "richtext",
+  "wls": null,
+  "removed_by_category": null,
+  "banned_by": null,
+  "author_flair_type": "richtext",
+  "domain": "self.arduino",
+  "allow_live_comments": false,
+  "selftext_html": null,
+  "likes": null,
+  "suggested_sort": null,
+  "banned_at_utc": null,
+  "url_overridden_by_dest": "/r/arduino/comments/18i64y7/arduinocli_project_update/",
+  "view_count": null,
+  "archived": false,
+  "no_follow": true,
+  "is_crosspostable": false,
+  "pinned": false,
+  "over_18": false,
+  "preview": {
+    "images": [
+      {
+        "source": {
+          "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?auto=webp&amp;s=c653712925a6d8c589ee24adb17895031d05a69d",
+          "width": 1200,
+          "height": 600
+        },
+        "resolutions": [
+          {
+            "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=1e1dc9b7b0793ec3b6181ed91e67414f0632b5b6",
+            "width": 108,
+            "height": 54
+          },
+          {
+            "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=7caf47033c231ffb800b60fbe68739ae3e044600",
+            "width": 216,
+            "height": 108
+          },
+          {
+            "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=d731b09de0a066010664f12cc98099c61bd938b8",
+            "width": 320,
+            "height": 160
+          },
+          {
+            "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=004550efa53f0b3aab9f0e59b40f7e2b399a8cb5",
+            "width": 640,
+            "height": 320
+          },
+          {
+            "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=47d7c6cd1cbea7a75850948b3ac050ba5157b52f",
+            "width": 960,
+            "height": 480
+          },
+          {
+            "url": "https://external-preview.redd.it/_GO5tFs2x1hW5NRnVOFEzcr_KsvWlzMAnjmNYKZXHkc.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=9ed6476b5be1648f1eac2a7e58a5797b603f9c03",
+            "width": 1080,
+            "height": 540
+          }
+        ],
+        "variants": {},
+        "id": "FJbKdyoqU5GkEGQlfATi9uJv4oqGdesYNhWU3nWTf3U"
+      }
+    ],
+    "enabled": false
+  },
+  "all_awardings": [],
+  "awarders": [],
+  "media_only": false,
+  "link_flair_template_id": "5bfb5318-a03e-11ee-adc5-42b05cf4a7d6",
+  "can_gild": false,
+  "spoiler": false,
+  "locked": false,
+  "author_flair_text": ":snoo_facepalm:",
+  "treatment_tags": [],
+  "visited": false,
+  "removed_by": null,
+  "num_reports": null,
+  "distinguished": null,
+  "subreddit_id": "t5_6as6rv",
+  "author_is_blocked": false,
+  "mod_reason_by": null,
+  "removal_reason": null,
+  "link_flair_background_color": "#8242ff",
+  "id": "18nwdby",
+  "is_robot_indexable": true,
+  "report_reasons": null,
+  "author": "ripred3",
+  "discussion_type": null,
+  "num_comments": 0,
+  "send_replies": true,
+  "contest_mode": false,
+  "mod_reports": [],
+  "author_patreon_flair": false,
+  "crosspost_parent": "t3_18i64y7",
+  "author_flair_text_color": "dark",
+  "permalink": "/r/ripred/comments/18nwdby/arduinocli_project_update/",
+  "stickied": false,
+  "url": "/r/arduino/comments/18i64y7/arduinocli_project_update/",
+  "subreddit_subscribers": 43,
+  "created_utc": 1703190255.0,
+  "num_crossposts": 0,
+  "media": null,
+  "is_video": false
+}

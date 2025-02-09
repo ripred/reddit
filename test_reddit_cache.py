@@ -78,7 +78,7 @@ class TestRedditCache(unittest.TestCase):
         self.assertFalse(has_unformatted_code(text))
 
     def test_has_unformatted_code_flags_unformatted_code(self):
-        # Block of unformatted code (no indentation or fences)
+        # Block of unformatted code (no indentation or fences) should trigger a violation.
         text = (
             "#include <stdio.h>\n"
             "void main() {\n"
@@ -86,7 +86,6 @@ class TestRedditCache(unittest.TestCase):
             "}\n"
             "Extra text here."
         )
-        # Expect 3 consecutive code lines to trigger a violation.
         self.assertTrue(has_unformatted_code(text))
 
     def test_get_cache_folder_creates_directory(self):

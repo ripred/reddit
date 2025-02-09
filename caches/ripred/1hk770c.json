@@ -1,0 +1,352 @@
+{
+  "approved_at_utc": null,
+  "subreddit": "ripred",
+  "selftext": "",
+  "user_reports": [],
+  "saved": false,
+  "mod_reason_title": null,
+  "gilded": 0,
+  "clicked": false,
+  "title": "Major bug Fix and Bang library update Available",
+  "link_flair_richtext": [],
+  "subreddit_name_prefixed": "r/ripred",
+  "hidden": false,
+  "pwls": null,
+  "link_flair_css_class": null,
+  "downs": 0,
+  "thumbnail_height": null,
+  "top_awarded_type": null,
+  "hide_score": false,
+  "name": "t3_1hk770c",
+  "quarantine": false,
+  "link_flair_text_color": "dark",
+  "upvote_ratio": 1.0,
+  "author_flair_background_color": "transparent",
+  "subreddit_type": "public",
+  "ups": 1,
+  "total_awards_received": 0,
+  "media_embed": {},
+  "thumbnail_width": null,
+  "author_flair_template_id": "9fa2ceaa-053c-11ed-bb97-124dff5ea4b4",
+  "is_original_content": false,
+  "author_fullname": "t2_adfkq",
+  "secure_media": null,
+  "is_reddit_media_domain": false,
+  "is_meta": false,
+  "category": null,
+  "secure_media_embed": {},
+  "link_flair_text": null,
+  "can_mod_post": false,
+  "score": 1,
+  "approved_by": null,
+  "is_created_from_ads_ui": false,
+  "author_premium": false,
+  "thumbnail": "default",
+  "edited": false,
+  "author_flair_css_class": null,
+  "author_flair_richtext": [
+    {
+      "a": ":snoo_facepalm:",
+      "e": "emoji",
+      "u": "https://emoji.redditmedia.com/wzxf63qpaezz_t5_3nqvj/snoo_facepalm"
+    }
+  ],
+  "gildings": {},
+  "post_hint": "link",
+  "content_categories": null,
+  "is_self": false,
+  "mod_note": null,
+  "crosspost_parent_list": [
+    {
+      "approved_at_utc": null,
+      "subreddit": "arduino",
+      "selftext": "[Okay today I have a major bug fix announcement for the Arduino Bang library](https://github.com/ripred/Bang)!\n\n**What the library already did:**\n\nThe Bang library allows you to use the Serial port of any Arduino to talk to a simple Python agent script running on the PC/Mac/Linux host machine and have the Arduino issue any command line you might type into the host machine at a terminal prompt, have it executed on the host side, and return any output that might have resulted from the command that was executed. This opens up a huge world: Not only can you start and stop programs on the host, you can make use of anything the host machine can do that the Arduino cannot! This includes talking over the internet on behalf of the Arduino and returning the results from an HTTP post or request! Without using any additional ethernet or wifi shields, your arduino can retrieve the current weather, get sports live scores, make REST requests on a web api to get JSON data back, simply by having the host issue a \\`curl ...\\` command on behalf of the Arduino! Or Issue a \\`curl ..\\` command to talk to and control your local Hue Bridge and lights! Or use the bigger hard drive on your host machine to store and update log messages from your Arduino instead of EEPROM or an external SD card module! Tons of other examples come with the library.\n\n**What's is Fixed Now:**\n\nThe library has always had a feature that was really ambitious but I could never get it to work: The crazy idea of having the Arduino tell the host computer to compile a totally different sketch than the one currently running and upload it to the Arduino, replacing the current sketch with a new sketch (of the original sketch's choosing), all dynamically and on demand! If the second sketch that was dynamically loaded (taking the place of our current sketch) \\*also\\* included the Bang library, ***then it could itself then compile and load the original sketch back up again***!\n\nThis can go on as far as your imagination can take it. With this mechanism you can now literally have a dynamic, larger than 32K of compiled sketch size (in total) application that can dynamically load and replace itself with another sketch! \n\nYou could have multiple games, all of which took up most of the flash memory, and add the use of the Bang library to them along with a simple selection mechanism (serial port input, dedicated button to load other game, whatever) that would allow you to dynamically load one of the games, play it, and then use the added menu and Bang library to have a totally different game compiled and uploaded to us.\n\nThe library is already a part of the Arduino library distribution so you can install it using the IDE's library manager or by visiting the repository and downloading the zip file and installing it through the menus of the Arduino IDE (or clone the library at a command line using git clone, into your Arduino/libraries folder).\n\nThe following shows two example sketches which take turns telling the host computer to compile and upload each other, back and forth, to demonstrate the new fixed and working feature in the library:\n\n**Example Sketch\\_1.ino**: (Sketch\\_2.ino is identical except for the obvious name changes in the code and file and folder names)\n\n    /*\n      Sketch_1.ino\n    \n      Demonstrates using Bang to request that the host compile and upload\n      a different sketch (\"Sketch_2\"), replacing the current firmware.\n    \n      Once \"Sketch_1\" is running, you can send it a command (e.g. over Serial)\n      or just let it auto-trigger the upload to \"Sketch_2\" after a short delay.\n    \n      Make sure the Bang library is properly installed or in the include path.\n    */\n    \n    #include &lt;Arduino.h&gt;\n    #include \"Bang.h\"\n    \n    // Forward declarations\n    void bang_host_out_callback(Bang* inst, uint8_t cmd, const char* data, uint16_t len);\n    void handle_upload_sketch_2(void);\n    \n    // A simple struct to hold our Bang instance\n    struct bang_state_t {\n      Bang bang;\n    };\n    \n    bang_state_t g_bang;\n    \n    void setup() {\n      Serial.begin(38400);\n      // Wait for USB serial if needed (on some boards); optional on a Nano.\n      while (!Serial) {\n        ; // do nothing\n      }\n    \n      // Initialize Bang: \n      //  - reference to the underlying hardware Serial\n      //  - optional callback for messages from host (we only use host_printf in this example)\n      bang_init(&amp;g_bang.bang, &amp;Serial, bang_host_out_callback, NULL);\n    \n      // Optionally greet via the host\n      bang_host_printf(\"#Sketch_1 is now running.\\n\");\n    \n      // Let the user know how to trigger an upload of Sketch_2\n      bang_host_printf(\"#Send 'U' over serial to upload Sketch_2 (or wait 5 seconds)...\\n\");\n    }\n    \n    void loop() {\n      // Continuously process incoming Bang commands or data from the host\n      bang_update(&amp;g_bang.bang);\n    \n      // If you want to do an automatic upload to \"Sketch_2\" after a short delay, \n      // you could do it here once, say after 5 seconds:\n      static unsigned long start_ms = millis();\n      if (millis() - start_ms &gt; 5000) {\n        // Let's trigger the upload of Sketch_2 automatically\n        handle_upload_sketch_2();\n        // reset the timer so we only do this once\n        start_ms = millis() + 999999UL;\n      }\n    \n      // Alternatively, if you want a user input approach:\n      // Press 'U' in the Serial Monitor to upload Sketch_2\n      if (Serial.available()) {\n        char c = Serial.read();\n        if (c == 'U') {\n          handle_upload_sketch_2();\n        }\n      }\n    }\n    \n    void handle_upload_sketch_2(void) {\n      // Use Bang's \"host_printf\" to send a special command to the Python agent.\n      // The '&amp;' character indicates \"compile and upload\" in your Python code.\n      // \"Sketch_2\" is the folder name that must match the .ino name as well.\n      bang_host_printf(\"&amp;Sketch_2\\n\");\n      bang_host_printf(\"#Attempting to upload Sketch_2 (replacing Sketch_1)...\\n\");\n    }\n    \n    // Optional callback if you want to see messages that come back from the host\n    void bang_host_out_callback(Bang* inst, uint8_t cmd, const char* data, uint16_t len) {\n      // In a more advanced scenario, you might parse or respond to messages here.\n      // For now, we just let the default printing happen via bang_host_printf.\n      (void)inst;\n      (void)cmd;\n      (void)data;\n      (void)len;\n    }\n\n**Debug output shown on the \\*host\\* side, on behalf of the running Arduino sketches as they dynamically replace each other on the Arduino, back and forth:**\n\n    $ python3 arduino_exec.py -p /dev/cu.usbserial-31440 -b 38400\n    \n    Successfully opened serial port: '/dev/cu.usbserial-31440'\n    Waiting for commands from Arduino...\n    executed: arduino-cli upload -p /dev/cu.usbserial-31440 --fqbn arduino:avr:nano:cpu=atmega328old Sketch_2\n    result: New upload port: /dev/cu.usbserial-31440 (serial)\n    Reopening Python serial port after upload...\n    Successfully opened serial port: '/dev/cu.usbserial-31440'\n    Compile Result:\n    Sketch uses 3790 bytes (12%) of program storage space. Maximum is 30720 bytes.\n    Global variables use 372 bytes (18%) of dynamic memory, leaving 1676 bytes for local variables. Maximum is 2048 bytes.\n    \n    Used library Version Path\n    Bang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n    \n    Used platform Version Path\n    arduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\n    Upload Result:\n    New upload port: /dev/cu.usbserial-31440 (serial)\n    Sketch_2 is now running.\n    Send 'R' over serial to return (upload Sketch_1), or wait 5 se\n    Closing Python serial port before compile/upload...\n    Toggling DTR on port: /dev/cu.usbserial-31440 to reset the Nano...\n    executed: arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328old Sketch_1\n    result: Sketch uses 3782 bytes (12%) of program storage space. Maximum is 30720 bytes.\n    Global variables use 364 bytes (17%) of dynamic memory, leaving 1684 bytes for local variables. Maximum is 2048 bytes.\n    \n    Used library Version Path\n    Bang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n    \n    Used platform Version Path\n    arduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\n    executed: arduino-cli upload -p /dev/cu.usbserial-31440 --fqbn arduino:avr:nano:cpu=atmega328old Sketch_1\n    result: New upload port: /dev/cu.usbserial-31440 (serial)\n    Reopening Python serial port after upload...\n    Successfully opened serial port: '/dev/cu.usbserial-31440'\n    Compile Result:\n    Sketch uses 3782 bytes (12%) of program storage space. Maximum is 30720 bytes.\n    Global variables use 364 bytes (17%) of dynamic memory, leaving 1684 bytes for local variables. Maximum is 2048 bytes.\n    \n    Used library Version Path\n    Bang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n    \n    Used platform Version Path\n    arduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\n    Upload Result:\n    New upload port: /dev/cu.usbserial-31440 (serial)\n    Sketch_1 is now running.\n    Send 'U' over serial to upload Sketch_2 (or wait 5 seconds)...\n    Closing Python serial port before compile/upload...\n    Toggling DTR on port: /dev/cu.usbserial-31440 to reset the Nano...\n    executed: arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328old Sketch_2\n    result: Sketch uses 3790 bytes (12%) of program storage space. Maximum is 30720 bytes.\n    Global variables use 372 bytes (18%) of dynamic memory, leaving 1676 bytes for local variables. Maximum is 2048 bytes.\n    \n    Used library Version Path\n    Bang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n    \n    Used platform Version Path\n    arduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\n    executed: arduino-cli upload -p /dev/cu.usbserial-31440 --fqbn arduino:avr:nano:cpu=atmega328old Sketch_2\n    result: New upload port: /dev/cu.usbserial-31440 (serial)\n    Reopening Python serial port after upload...\n    Successfully opened serial port: '/dev/cu.usbserial-31440'\n    Compile Result:\n    Sketch uses 3790 bytes (12%) of program storage space. Maximum is 30720 bytes.\n    Global variables use 372 bytes (18%) of dynamic memory, leaving 1676 bytes for local variables. Maximum is 2048 bytes.\n    \n    Used library Version Path\n    Bang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n    \n    Used platform Version Path\n    arduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\n    Upload Result:\n    New upload port: /dev/cu.usbserial-31440 (serial)\n    Sketch_2 is now running.\n    Send 'R' over serial to return (upload Sketch_1), or wait 5 se\n    Closing Python serial port before compile/upload...\n    Toggling DTR on port: /dev/cu.usbserial-31440 to reset the Nano...\n    executed: arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328old Sketch_1\n    result: Sketch uses 3782 bytes (12%) of program storage space. Maximum is 30720 bytes.\n    Global variables use 364 bytes (17%) of dynamic memory, leaving 1684 bytes for local variables. Maximum is 2048 bytes.\n    \n    Used library Version Path\n    Bang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n    \n    Used platform Version Path\n    arduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\n    executed: arduino-cli upload -p /dev/cu.usbserial-31440 --fqbn arduino:avr:nano:cpu=atmega328old Sketch_1\n    result: New upload port: /dev/cu.usbserial-31440 (serial)\n    Reopening Python serial port after upload...\n    Successfully opened serial port: '/dev/cu.usbserial-31440'\n    Compile Result:\n    Sketch uses 3782 bytes (12%) of program storage space. Maximum is 30720 bytes.\n    Global variables use 364 bytes (17%) of dynamic memory, leaving 1684 bytes for local variables. Maximum is 2048 bytes.\n    \n    Used library Version Path\n    Bang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n    \n    Used platform Version Path\n    arduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\n    Upload Result:\n    New upload port: /dev/cu.usbserial-31440 (serial)\n    Sketch_1 is now running.\n    Send 'U' over serial to upload Sketch_2 (or wait 5 seconds)...\n    Closing Python serial port before compile/upload...\n    Toggling DTR on port: /dev/cu.usbserial-31440 to reset the Nano...\n    executed: arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328old Sketch_2\n    result: Sketch uses 3790 bytes (12%) of program storage space. Maximum is 30720 bytes.\n    Global variables use 372 bytes (18%) of dynamic memory, leaving 1676 bytes for local variables. Maximum is 2048 bytes.\n    \n    Used library Version Path\n    Bang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n    \n    Used platform Version Path\n    arduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\n    executed: arduino-cli upload -p /dev/cu.usbserial-31440 --fqbn arduino:avr:nano:cpu=atmega328old Sketch_2\n    result: New upload port: /dev/cu.usbserial-31440 (serial)\n    Reopening Python serial port after upload...\n    Successfully opened serial port: '/dev/cu.usbserial-31440'\n    Compile Result:\n    Sketch uses 3790 bytes (12%) of program storage space. Maximum is 30720 bytes.\n    Global variables use 372 bytes (18%) of dynamic memory, leaving 1676 bytes for local variables. Maximum is 2048 bytes.\n    \n    Used library Version Path\n    Bang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n    \n    Used platform Version Path\n    arduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\n    Upload Result:\n    New upload port: /dev/cu.usbserial-31440 (serial)\n    Sketch_2 is now running.\n    ...\n\nNote the alternating output of **\"Sketch\\_1 is now running\"** and **\"Sketch\\_2 is now running\"**. This is the output of two completely independent .ino sketch files that load each other on demand and allow the host machine to replace the current running sketch dynamically under the sketch's control! \ud83d\ude01\n\nOkay I've ranted enough about this already. I can't believe it works now. Star the library if you use it and like what it allows you to do. If you use it and run into issues, of course let me know either here or create a github issue. \n\nCheers and happy holidays!\n\n`ripred`",
+      "author_fullname": "t2_adfkq",
+      "saved": false,
+      "mod_reason_title": null,
+      "gilded": 0,
+      "clicked": false,
+      "title": "Major bug Fix and Bang library update Available",
+      "link_flair_richtext": [
+        {
+          "a": ":Libraries:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/s7x3w35qfkna1_t5_2qknj/Libraries"
+        },
+        {
+          "e": "text",
+          "t": " Libraries"
+        }
+      ],
+      "subreddit_name_prefixed": "r/arduino",
+      "hidden": false,
+      "pwls": 6,
+      "link_flair_css_class": "",
+      "downs": 0,
+      "thumbnail_height": null,
+      "top_awarded_type": null,
+      "hide_score": false,
+      "name": "t3_1hk760z",
+      "quarantine": false,
+      "link_flair_text_color": "light",
+      "upvote_ratio": 1.0,
+      "author_flair_background_color": "#00a6a5",
+      "subreddit_type": "public",
+      "ups": 3,
+      "total_awards_received": 0,
+      "media_embed": {},
+      "thumbnail_width": null,
+      "author_flair_template_id": "5cb3c302-0ef5-11ed-b9fd-aab9a872a9c2",
+      "is_original_content": false,
+      "user_reports": [],
+      "secure_media": null,
+      "is_reddit_media_domain": false,
+      "is_meta": false,
+      "category": null,
+      "secure_media_embed": {},
+      "link_flair_text": ":Libraries: Libraries",
+      "can_mod_post": false,
+      "score": 3,
+      "approved_by": null,
+      "is_created_from_ads_ui": false,
+      "author_premium": false,
+      "thumbnail": "self",
+      "edited": false,
+      "author_flair_css_class": null,
+      "author_flair_richtext": [
+        {
+          "a": ":400K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/apsbyvbwmfe91_t5_2qknj/400K"
+        },
+        {
+          "a": ":Arduino_500k:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/o5qzzwwkvk5a1_t5_2qknj/Arduino_500k"
+        },
+        {
+          "a": ":600K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/z23hxjk4hpeb1_t5_2qknj/600K"
+        },
+        {
+          "a": ":640K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/g9r24xjaydqc1_t5_2qknj/640K"
+        },
+        {
+          "e": "text",
+          "t": " My other dev board is a Porsche"
+        }
+      ],
+      "gildings": {},
+      "post_hint": "self",
+      "content_categories": null,
+      "is_self": true,
+      "mod_note": null,
+      "created": 1734899949.0,
+      "link_flair_type": "richtext",
+      "wls": 6,
+      "removed_by_category": null,
+      "banned_by": null,
+      "author_flair_type": "richtext",
+      "domain": "self.arduino",
+      "allow_live_comments": false,
+      "selftext_html": "&lt;!-- SC_OFF --&gt;&lt;div class=\"md\"&gt;&lt;p&gt;&lt;a href=\"https://github.com/ripred/Bang\"&gt;Okay today I have a major bug fix announcement for the Arduino Bang library&lt;/a&gt;!&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;What the library already did:&lt;/strong&gt;&lt;/p&gt;\n\n&lt;p&gt;The Bang library allows you to use the Serial port of any Arduino to talk to a simple Python agent script running on the PC/Mac/Linux host machine and have the Arduino issue any command line you might type into the host machine at a terminal prompt, have it executed on the host side, and return any output that might have resulted from the command that was executed. This opens up a huge world: Not only can you start and stop programs on the host, you can make use of anything the host machine can do that the Arduino cannot! This includes talking over the internet on behalf of the Arduino and returning the results from an HTTP post or request! Without using any additional ethernet or wifi shields, your arduino can retrieve the current weather, get sports live scores, make REST requests on a web api to get JSON data back, simply by having the host issue a `curl ...` command on behalf of the Arduino! Or Issue a `curl ..` command to talk to and control your local Hue Bridge and lights! Or use the bigger hard drive on your host machine to store and update log messages from your Arduino instead of EEPROM or an external SD card module! Tons of other examples come with the library.&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;What&amp;#39;s is Fixed Now:&lt;/strong&gt;&lt;/p&gt;\n\n&lt;p&gt;The library has always had a feature that was really ambitious but I could never get it to work: The crazy idea of having the Arduino tell the host computer to compile a totally different sketch than the one currently running and upload it to the Arduino, replacing the current sketch with a new sketch (of the original sketch&amp;#39;s choosing), all dynamically and on demand! If the second sketch that was dynamically loaded (taking the place of our current sketch) *also* included the Bang library, &lt;strong&gt;&lt;em&gt;then it could itself then compile and load the original sketch back up again&lt;/em&gt;&lt;/strong&gt;!&lt;/p&gt;\n\n&lt;p&gt;This can go on as far as your imagination can take it. With this mechanism you can now literally have a dynamic, larger than 32K of compiled sketch size (in total) application that can dynamically load and replace itself with another sketch! &lt;/p&gt;\n\n&lt;p&gt;You could have multiple games, all of which took up most of the flash memory, and add the use of the Bang library to them along with a simple selection mechanism (serial port input, dedicated button to load other game, whatever) that would allow you to dynamically load one of the games, play it, and then use the added menu and Bang library to have a totally different game compiled and uploaded to us.&lt;/p&gt;\n\n&lt;p&gt;The library is already a part of the Arduino library distribution so you can install it using the IDE&amp;#39;s library manager or by visiting the repository and downloading the zip file and installing it through the menus of the Arduino IDE (or clone the library at a command line using git clone, into your Arduino/libraries folder).&lt;/p&gt;\n\n&lt;p&gt;The following shows two example sketches which take turns telling the host computer to compile and upload each other, back and forth, to demonstrate the new fixed and working feature in the library:&lt;/p&gt;\n\n&lt;p&gt;&lt;strong&gt;Example Sketch_1.ino&lt;/strong&gt;: (Sketch_2.ino is identical except for the obvious name changes in the code and file and folder names)&lt;/p&gt;\n\n&lt;pre&gt;&lt;code&gt;/*\n  Sketch_1.ino\n\n  Demonstrates using Bang to request that the host compile and upload\n  a different sketch (&amp;quot;Sketch_2&amp;quot;), replacing the current firmware.\n\n  Once &amp;quot;Sketch_1&amp;quot; is running, you can send it a command (e.g. over Serial)\n  or just let it auto-trigger the upload to &amp;quot;Sketch_2&amp;quot; after a short delay.\n\n  Make sure the Bang library is properly installed or in the include path.\n*/\n\n#include &amp;lt;Arduino.h&amp;gt;\n#include &amp;quot;Bang.h&amp;quot;\n\n// Forward declarations\nvoid bang_host_out_callback(Bang* inst, uint8_t cmd, const char* data, uint16_t len);\nvoid handle_upload_sketch_2(void);\n\n// A simple struct to hold our Bang instance\nstruct bang_state_t {\n  Bang bang;\n};\n\nbang_state_t g_bang;\n\nvoid setup() {\n  Serial.begin(38400);\n  // Wait for USB serial if needed (on some boards); optional on a Nano.\n  while (!Serial) {\n    ; // do nothing\n  }\n\n  // Initialize Bang: \n  //  - reference to the underlying hardware Serial\n  //  - optional callback for messages from host (we only use host_printf in this example)\n  bang_init(&amp;amp;g_bang.bang, &amp;amp;Serial, bang_host_out_callback, NULL);\n\n  // Optionally greet via the host\n  bang_host_printf(&amp;quot;#Sketch_1 is now running.\\n&amp;quot;);\n\n  // Let the user know how to trigger an upload of Sketch_2\n  bang_host_printf(&amp;quot;#Send &amp;#39;U&amp;#39; over serial to upload Sketch_2 (or wait 5 seconds)...\\n&amp;quot;);\n}\n\nvoid loop() {\n  // Continuously process incoming Bang commands or data from the host\n  bang_update(&amp;amp;g_bang.bang);\n\n  // If you want to do an automatic upload to &amp;quot;Sketch_2&amp;quot; after a short delay, \n  // you could do it here once, say after 5 seconds:\n  static unsigned long start_ms = millis();\n  if (millis() - start_ms &amp;gt; 5000) {\n    // Let&amp;#39;s trigger the upload of Sketch_2 automatically\n    handle_upload_sketch_2();\n    // reset the timer so we only do this once\n    start_ms = millis() + 999999UL;\n  }\n\n  // Alternatively, if you want a user input approach:\n  // Press &amp;#39;U&amp;#39; in the Serial Monitor to upload Sketch_2\n  if (Serial.available()) {\n    char c = Serial.read();\n    if (c == &amp;#39;U&amp;#39;) {\n      handle_upload_sketch_2();\n    }\n  }\n}\n\nvoid handle_upload_sketch_2(void) {\n  // Use Bang&amp;#39;s &amp;quot;host_printf&amp;quot; to send a special command to the Python agent.\n  // The &amp;#39;&amp;amp;&amp;#39; character indicates &amp;quot;compile and upload&amp;quot; in your Python code.\n  // &amp;quot;Sketch_2&amp;quot; is the folder name that must match the .ino name as well.\n  bang_host_printf(&amp;quot;&amp;amp;Sketch_2\\n&amp;quot;);\n  bang_host_printf(&amp;quot;#Attempting to upload Sketch_2 (replacing Sketch_1)...\\n&amp;quot;);\n}\n\n// Optional callback if you want to see messages that come back from the host\nvoid bang_host_out_callback(Bang* inst, uint8_t cmd, const char* data, uint16_t len) {\n  // In a more advanced scenario, you might parse or respond to messages here.\n  // For now, we just let the default printing happen via bang_host_printf.\n  (void)inst;\n  (void)cmd;\n  (void)data;\n  (void)len;\n}\n&lt;/code&gt;&lt;/pre&gt;\n\n&lt;p&gt;&lt;strong&gt;Debug output shown on the *host* side, on behalf of the running Arduino sketches as they dynamically replace each other on the Arduino, back and forth:&lt;/strong&gt;&lt;/p&gt;\n\n&lt;pre&gt;&lt;code&gt;$ python3 arduino_exec.py -p /dev/cu.usbserial-31440 -b 38400\n\nSuccessfully opened serial port: &amp;#39;/dev/cu.usbserial-31440&amp;#39;\nWaiting for commands from Arduino...\nexecuted: arduino-cli upload -p /dev/cu.usbserial-31440 --fqbn arduino:avr:nano:cpu=atmega328old Sketch_2\nresult: New upload port: /dev/cu.usbserial-31440 (serial)\nReopening Python serial port after upload...\nSuccessfully opened serial port: &amp;#39;/dev/cu.usbserial-31440&amp;#39;\nCompile Result:\nSketch uses 3790 bytes (12%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 372 bytes (18%) of dynamic memory, leaving 1676 bytes for local variables. Maximum is 2048 bytes.\n\nUsed library Version Path\nBang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n\nUsed platform Version Path\narduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\nUpload Result:\nNew upload port: /dev/cu.usbserial-31440 (serial)\nSketch_2 is now running.\nSend &amp;#39;R&amp;#39; over serial to return (upload Sketch_1), or wait 5 se\nClosing Python serial port before compile/upload...\nToggling DTR on port: /dev/cu.usbserial-31440 to reset the Nano...\nexecuted: arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328old Sketch_1\nresult: Sketch uses 3782 bytes (12%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 364 bytes (17%) of dynamic memory, leaving 1684 bytes for local variables. Maximum is 2048 bytes.\n\nUsed library Version Path\nBang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n\nUsed platform Version Path\narduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\nexecuted: arduino-cli upload -p /dev/cu.usbserial-31440 --fqbn arduino:avr:nano:cpu=atmega328old Sketch_1\nresult: New upload port: /dev/cu.usbserial-31440 (serial)\nReopening Python serial port after upload...\nSuccessfully opened serial port: &amp;#39;/dev/cu.usbserial-31440&amp;#39;\nCompile Result:\nSketch uses 3782 bytes (12%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 364 bytes (17%) of dynamic memory, leaving 1684 bytes for local variables. Maximum is 2048 bytes.\n\nUsed library Version Path\nBang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n\nUsed platform Version Path\narduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\nUpload Result:\nNew upload port: /dev/cu.usbserial-31440 (serial)\nSketch_1 is now running.\nSend &amp;#39;U&amp;#39; over serial to upload Sketch_2 (or wait 5 seconds)...\nClosing Python serial port before compile/upload...\nToggling DTR on port: /dev/cu.usbserial-31440 to reset the Nano...\nexecuted: arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328old Sketch_2\nresult: Sketch uses 3790 bytes (12%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 372 bytes (18%) of dynamic memory, leaving 1676 bytes for local variables. Maximum is 2048 bytes.\n\nUsed library Version Path\nBang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n\nUsed platform Version Path\narduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\nexecuted: arduino-cli upload -p /dev/cu.usbserial-31440 --fqbn arduino:avr:nano:cpu=atmega328old Sketch_2\nresult: New upload port: /dev/cu.usbserial-31440 (serial)\nReopening Python serial port after upload...\nSuccessfully opened serial port: &amp;#39;/dev/cu.usbserial-31440&amp;#39;\nCompile Result:\nSketch uses 3790 bytes (12%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 372 bytes (18%) of dynamic memory, leaving 1676 bytes for local variables. Maximum is 2048 bytes.\n\nUsed library Version Path\nBang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n\nUsed platform Version Path\narduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\nUpload Result:\nNew upload port: /dev/cu.usbserial-31440 (serial)\nSketch_2 is now running.\nSend &amp;#39;R&amp;#39; over serial to return (upload Sketch_1), or wait 5 se\nClosing Python serial port before compile/upload...\nToggling DTR on port: /dev/cu.usbserial-31440 to reset the Nano...\nexecuted: arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328old Sketch_1\nresult: Sketch uses 3782 bytes (12%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 364 bytes (17%) of dynamic memory, leaving 1684 bytes for local variables. Maximum is 2048 bytes.\n\nUsed library Version Path\nBang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n\nUsed platform Version Path\narduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\nexecuted: arduino-cli upload -p /dev/cu.usbserial-31440 --fqbn arduino:avr:nano:cpu=atmega328old Sketch_1\nresult: New upload port: /dev/cu.usbserial-31440 (serial)\nReopening Python serial port after upload...\nSuccessfully opened serial port: &amp;#39;/dev/cu.usbserial-31440&amp;#39;\nCompile Result:\nSketch uses 3782 bytes (12%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 364 bytes (17%) of dynamic memory, leaving 1684 bytes for local variables. Maximum is 2048 bytes.\n\nUsed library Version Path\nBang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n\nUsed platform Version Path\narduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\nUpload Result:\nNew upload port: /dev/cu.usbserial-31440 (serial)\nSketch_1 is now running.\nSend &amp;#39;U&amp;#39; over serial to upload Sketch_2 (or wait 5 seconds)...\nClosing Python serial port before compile/upload...\nToggling DTR on port: /dev/cu.usbserial-31440 to reset the Nano...\nexecuted: arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328old Sketch_2\nresult: Sketch uses 3790 bytes (12%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 372 bytes (18%) of dynamic memory, leaving 1676 bytes for local variables. Maximum is 2048 bytes.\n\nUsed library Version Path\nBang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n\nUsed platform Version Path\narduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\nexecuted: arduino-cli upload -p /dev/cu.usbserial-31440 --fqbn arduino:avr:nano:cpu=atmega328old Sketch_2\nresult: New upload port: /dev/cu.usbserial-31440 (serial)\nReopening Python serial port after upload...\nSuccessfully opened serial port: &amp;#39;/dev/cu.usbserial-31440&amp;#39;\nCompile Result:\nSketch uses 3790 bytes (12%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 372 bytes (18%) of dynamic memory, leaving 1676 bytes for local variables. Maximum is 2048 bytes.\n\nUsed library Version Path\nBang         1.0.0   /Users/trent/Documents/Arduino/libraries/Bang\n\nUsed platform Version Path\narduino:avr   1.8.6   /Users/trent/Library/Arduino15/packages/arduino/hardware/avr/1.8.6\nUpload Result:\nNew upload port: /dev/cu.usbserial-31440 (serial)\nSketch_2 is now running.\n...\n&lt;/code&gt;&lt;/pre&gt;\n\n&lt;p&gt;Note the alternating output of &lt;strong&gt;&amp;quot;Sketch_1 is now running&amp;quot;&lt;/strong&gt; and &lt;strong&gt;&amp;quot;Sketch_2 is now running&amp;quot;&lt;/strong&gt;. This is the output of two completely independent .ino sketch files that load each other on demand and allow the host machine to replace the current running sketch dynamically under the sketch&amp;#39;s control! \ud83d\ude01&lt;/p&gt;\n\n&lt;p&gt;Okay I&amp;#39;ve ranted enough about this already. I can&amp;#39;t believe it works now. Star the library if you use it and like what it allows you to do. If you use it and run into issues, of course let me know either here or create a github issue. &lt;/p&gt;\n\n&lt;p&gt;Cheers and happy holidays!&lt;/p&gt;\n\n&lt;p&gt;&lt;code&gt;ripred&lt;/code&gt;&lt;/p&gt;\n&lt;/div&gt;&lt;!-- SC_ON --&gt;",
+      "likes": null,
+      "suggested_sort": "confidence",
+      "banned_at_utc": null,
+      "view_count": null,
+      "archived": false,
+      "no_follow": false,
+      "is_crosspostable": false,
+      "pinned": false,
+      "over_18": false,
+      "preview": {
+        "images": [
+          {
+            "source": {
+              "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?auto=webp&amp;s=0b3fc9c3ae60613b434904603475e9ee8fdf50de",
+              "width": 1200,
+              "height": 600
+            },
+            "resolutions": [
+              {
+                "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=908b88a3ba3479ce17765b09dc6c4c0736c705f1",
+                "width": 108,
+                "height": 54
+              },
+              {
+                "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=df4036c6e3b1ee19491c4546e08e1e791ff07c13",
+                "width": 216,
+                "height": 108
+              },
+              {
+                "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=57dccb9452a600281b085cbb0c172e569029679a",
+                "width": 320,
+                "height": 160
+              },
+              {
+                "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=e008ca321ed5c3d901bfdb9b45ac4c0a84cd01f5",
+                "width": 640,
+                "height": 320
+              },
+              {
+                "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=27884d4c5641cfbeaa11d5d415ba9da957924728",
+                "width": 960,
+                "height": 480
+              },
+              {
+                "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=0c999cc782a8136c252180da7cafaf10f48b23a5",
+                "width": 1080,
+                "height": 540
+              }
+            ],
+            "variants": {},
+            "id": "Nrwy9bk-2cYNx-9yjRAq57UsC-tWOeZzRRluLS8Bmz0"
+          }
+        ],
+        "enabled": false
+      },
+      "all_awardings": [],
+      "awarders": [],
+      "media_only": false,
+      "link_flair_template_id": "5157e812-c1d8-11ed-aa85-8a0e0e8df8e0",
+      "can_gild": false,
+      "spoiler": false,
+      "locked": false,
+      "author_flair_text": ":400K::Arduino_500k::600K::640K: My other dev board is a Porsche",
+      "treatment_tags": [],
+      "visited": false,
+      "removed_by": null,
+      "num_reports": null,
+      "distinguished": null,
+      "subreddit_id": "t5_2qknj",
+      "author_is_blocked": false,
+      "mod_reason_by": null,
+      "removal_reason": null,
+      "link_flair_background_color": "#3300ee",
+      "id": "1hk760z",
+      "is_robot_indexable": true,
+      "report_reasons": null,
+      "author": "ripred3",
+      "discussion_type": null,
+      "num_comments": 0,
+      "send_replies": true,
+      "contest_mode": false,
+      "mod_reports": [],
+      "author_patreon_flair": false,
+      "author_flair_text_color": "light",
+      "permalink": "/r/arduino/comments/1hk760z/major_bug_fix_and_bang_library_update_available/",
+      "stickied": false,
+      "url": "https://www.reddit.com/r/arduino/comments/1hk760z/major_bug_fix_and_bang_library_update_available/",
+      "subreddit_subscribers": 691390,
+      "created_utc": 1734899949.0,
+      "num_crossposts": 3,
+      "media": null,
+      "is_video": false
+    }
+  ],
+  "created": 1734900030.0,
+  "link_flair_type": "text",
+  "wls": null,
+  "removed_by_category": null,
+  "banned_by": null,
+  "author_flair_type": "richtext",
+  "domain": "",
+  "allow_live_comments": false,
+  "selftext_html": null,
+  "likes": null,
+  "suggested_sort": null,
+  "banned_at_utc": null,
+  "url_overridden_by_dest": "/r/arduino/comments/1hk760z/major_bug_fix_and_bang_library_update_available/",
+  "view_count": null,
+  "archived": false,
+  "no_follow": true,
+  "is_crosspostable": false,
+  "pinned": false,
+  "over_18": false,
+  "preview": {
+    "images": [
+      {
+        "source": {
+          "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?auto=webp&amp;s=0b3fc9c3ae60613b434904603475e9ee8fdf50de",
+          "width": 1200,
+          "height": 600
+        },
+        "resolutions": [
+          {
+            "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=908b88a3ba3479ce17765b09dc6c4c0736c705f1",
+            "width": 108,
+            "height": 54
+          },
+          {
+            "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=df4036c6e3b1ee19491c4546e08e1e791ff07c13",
+            "width": 216,
+            "height": 108
+          },
+          {
+            "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=57dccb9452a600281b085cbb0c172e569029679a",
+            "width": 320,
+            "height": 160
+          },
+          {
+            "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=e008ca321ed5c3d901bfdb9b45ac4c0a84cd01f5",
+            "width": 640,
+            "height": 320
+          },
+          {
+            "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=27884d4c5641cfbeaa11d5d415ba9da957924728",
+            "width": 960,
+            "height": 480
+          },
+          {
+            "url": "https://external-preview.redd.it/yF4mlUM7ByXdF-l5bS2PePQz3W5qQyksYRI4kwHJ5-A.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=0c999cc782a8136c252180da7cafaf10f48b23a5",
+            "width": 1080,
+            "height": 540
+          }
+        ],
+        "variants": {},
+        "id": "Nrwy9bk-2cYNx-9yjRAq57UsC-tWOeZzRRluLS8Bmz0"
+      }
+    ],
+    "enabled": false
+  },
+  "all_awardings": [],
+  "awarders": [],
+  "media_only": false,
+  "can_gild": false,
+  "spoiler": false,
+  "locked": false,
+  "author_flair_text": ":snoo_facepalm:",
+  "treatment_tags": [],
+  "visited": false,
+  "removed_by": null,
+  "num_reports": null,
+  "distinguished": null,
+  "subreddit_id": "t5_6as6rv",
+  "author_is_blocked": false,
+  "mod_reason_by": null,
+  "removal_reason": null,
+  "link_flair_background_color": "",
+  "id": "1hk770c",
+  "is_robot_indexable": true,
+  "report_reasons": null,
+  "author": "ripred3",
+  "discussion_type": null,
+  "num_comments": 0,
+  "send_replies": true,
+  "contest_mode": false,
+  "mod_reports": [],
+  "author_patreon_flair": false,
+  "crosspost_parent": "t3_1hk760z",
+  "author_flair_text_color": "dark",
+  "permalink": "/r/ripred/comments/1hk770c/major_bug_fix_and_bang_library_update_available/",
+  "stickied": false,
+  "url": "/r/arduino/comments/1hk760z/major_bug_fix_and_bang_library_update_available/",
+  "subreddit_subscribers": 43,
+  "created_utc": 1734900030.0,
+  "num_crossposts": 0,
+  "media": null,
+  "is_video": false
+}

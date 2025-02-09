@@ -1,0 +1,1043 @@
+{
+  "approved_at_utc": null,
+  "subreddit": "ripred",
+  "selftext": "",
+  "user_reports": [],
+  "saved": false,
+  "mod_reason_title": null,
+  "gilded": 0,
+  "clicked": false,
+  "title": "Building a TARDIS from scratch",
+  "link_flair_richtext": [
+    {
+      "e": "text",
+      "t": "Project"
+    }
+  ],
+  "subreddit_name_prefixed": "r/ripred",
+  "hidden": false,
+  "pwls": null,
+  "link_flair_css_class": "",
+  "downs": 0,
+  "thumbnail_height": 105,
+  "top_awarded_type": null,
+  "hide_score": false,
+  "name": "t3_1e7dwcp",
+  "quarantine": false,
+  "link_flair_text_color": "light",
+  "upvote_ratio": 1.0,
+  "author_flair_background_color": "transparent",
+  "subreddit_type": "public",
+  "ups": 1,
+  "total_awards_received": 0,
+  "media_embed": {},
+  "thumbnail_width": 140,
+  "author_flair_template_id": "9fa2ceaa-053c-11ed-bb97-124dff5ea4b4",
+  "is_original_content": false,
+  "author_fullname": "t2_adfkq",
+  "secure_media": null,
+  "is_reddit_media_domain": false,
+  "is_meta": false,
+  "category": null,
+  "secure_media_embed": {},
+  "link_flair_text": "Project",
+  "can_mod_post": false,
+  "score": 1,
+  "approved_by": null,
+  "is_created_from_ads_ui": false,
+  "author_premium": false,
+  "thumbnail": "https://b.thumbs.redditmedia.com/fSgVNEAKvQsDYdz3ZtGFYYNmMhaElsTNiaYKx85_s4g.jpg",
+  "edited": false,
+  "author_flair_css_class": null,
+  "author_flair_richtext": [
+    {
+      "a": ":snoo_facepalm:",
+      "e": "emoji",
+      "u": "https://emoji.redditmedia.com/wzxf63qpaezz_t5_3nqvj/snoo_facepalm"
+    }
+  ],
+  "gildings": {},
+  "post_hint": "link",
+  "content_categories": null,
+  "is_self": false,
+  "mod_note": null,
+  "crosspost_parent_list": [
+    {
+      "approved_at_utc": null,
+      "subreddit": "arduino",
+      "selftext": "So this was a project I did about 10 years ago as a graduation gift for my kid. Everything was built up from scratch using balsa wood, and airbrushed using model railroad paint. It has an ATtiny85 and a cheap digital record/playback board inside. When turned on the top LED fades in and out multiple times as it plays \"the TARDIS sound\". The interior lights (LEDs)  for the top 4 signs stay on constant. Yes; there is Gallifreyan writing on the inside and all kinds of Easter eggs hidden away in it. Eventually all of the electronics were stored up inside the TARDIS and some of it is in the base pedestal.\n\nIt was a labor of love and I spent over a year making it (and remaking parts of it) until it was as close to \"perfect\" as I could get it. The dimensions are totally accurate and scaled down. Sadly the source code is either lost or on another older machine (I looked for it). The ATtiny85 controlled the top light to fade in and out and the 4 signage lights individually, and also triggered the playback module. The playback module was one of those cheap \"press a button to record 20 seconds of digital audio, press another to play it back\" swag devices given away at some convention I had attended. After 10 years of being moved around from apartment to apartment the wires have now come loose so I'm in the process of repairing it and re-implementing the sound playback using a DF Mini sound module.\n\nI showed the images to some friends and they suggested it might make a good \"Look what I made!\" post since I've never really posted much about it, even though I took pictures all along the building stages.  [The full build gallery (107 images!) is here on imgur.](https://imgur.com/gallery/how-to-build-tardis-from-scratch-n6KrkfQ) The following images are just a sampling of the build that included some of the Arduino/electronics images.\n\n[the final \\(almost completed\\) results](https://preview.redd.it/34fwmnilajdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=41cc2420cf06375608953f1fd540005072a5c82d)\n\n[all hand made using balsa wood](https://preview.redd.it/a101upmw1jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=6c859d4458385d1c087f9aab7abb9899b53d4ec0)\n\nhttps://preview.redd.it/zcicj2902jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=8d2ef673c78e69b89b3e0a6c7fcceb1eb3bb4581\n\nhttps://preview.redd.it/xoyjf7y22jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=1db83bfab82c9841c6d5a4af41a3ae5d7d77de7e\n\nhttps://preview.redd.it/igzf0ru62jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=0bb2b379278afe0a75d174c6cd841bc7fc6f87b8\n\n[building out the top](https://preview.redd.it/jihzaxia2jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=c75829511e7581cc8d57872c95c82e0b69e95c36)\n\n[the top light is a 0.5 cm section of a clear plastic Bic pen, with lines drawn on it](https://preview.redd.it/gicv859n2jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=5262cba581c05ddb01f92767f56e3ba0ae9a024d)\n\nhttps://preview.redd.it/qow9v5xp2jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=20facc1e4f882fff9aa891f90e286f2c0ab282ac\n\n[complete with Gallifreyan writing on the inside](https://preview.redd.it/9fgpbsfw2jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=85bef575900a2aae66ab0f2944c47f6c318d0579)\n\n[hand for scale ](https://preview.redd.it/45j040bi2jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=58b5e2382f4626409c25dbb0899fe6e9ef59ee60)\n\n[programming and testing the top light as it slowly fades in and out](https://preview.redd.it/5me27xn13jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=29242bee608f46f41d445b121f34cd84ec7559b6)\n\n[to get an idea of scale, that doorknob is a pin head](https://preview.redd.it/eq1yila63jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=0d9ec7323a3bad519c366cf0fbf84607fac93bab)\n\n[testing the top light and the 4 LED's for the signage at the top for all four sides](https://preview.redd.it/d0fmnwr93jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=cfb16dff6822a480e80e106ee73037713303c7b7)\n\n[the guts just before assembly. Used a tiny 3.3V LDO voltage regulator to power it all](https://preview.redd.it/oxemc83d3jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=e1e6a0c4c03bc88dcfd9cd651ea9b5741edd97d5)\n\nhttps://preview.redd.it/g7a3n5rh3jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=b11042819135671e46c06a6a4f365d487f8b6df6\n\nhttps://preview.redd.it/t9y89upk3jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=6ec16619485ed5b423be3f17d1c0bbf9b48b9ae8\n\n&amp;#x200B;",
+      "author_fullname": "t2_adfkq",
+      "saved": false,
+      "mod_reason_title": null,
+      "gilded": 0,
+      "clicked": false,
+      "title": "Building a TARDIS from scratch",
+      "link_flair_richtext": [
+        {
+          "e": "text",
+          "t": "Look what I made!"
+        }
+      ],
+      "subreddit_name_prefixed": "r/arduino",
+      "hidden": false,
+      "pwls": 6,
+      "link_flair_css_class": "",
+      "downs": 0,
+      "thumbnail_height": 105,
+      "top_awarded_type": null,
+      "hide_score": false,
+      "media_metadata": {
+        "t9y89upk3jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/t9y89upk3jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=68a71a88d7749f865d5b359c2aab76a49df8be19"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/t9y89upk3jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=6ca686e93159c37b42534c7ead1f145f7e97648a"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/t9y89upk3jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=763d9b35437c90854f01cf0c666a645de76ea2de"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/t9y89upk3jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=4d342e3b7f3088332d3aa57cfd3ecdcab1678b87"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/t9y89upk3jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=551d603c7ab4232b005bc8a8553421656c045ae5"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/t9y89upk3jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=f595fd7107904b5f650e952beb380fe2f3dc9a03"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/t9y89upk3jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=6ec16619485ed5b423be3f17d1c0bbf9b48b9ae8"
+          },
+          "id": "t9y89upk3jdd1"
+        },
+        "qow9v5xp2jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/qow9v5xp2jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=b452daf050f7040e3485329c62751d131ff27c6b"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/qow9v5xp2jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=3554febc009ed950b4feebb442aa6c0a9ed94c17"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/qow9v5xp2jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=79822070bca0fc151d5f1332914c82993afcc055"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/qow9v5xp2jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=5e7d0e6ecc0e138e4be079c4ac2001681ac750a4"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/qow9v5xp2jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=190fab4b39b63c195c24a80f9a0f175776fba5f9"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/qow9v5xp2jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=99d0f1e0a61a5ec001b61dbfc6f266689fa94792"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/qow9v5xp2jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=20facc1e4f882fff9aa891f90e286f2c0ab282ac"
+          },
+          "id": "qow9v5xp2jdd1"
+        },
+        "5me27xn13jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/5me27xn13jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=7ee28d6e5328aef6823c426a2dfcad58b191aa1f"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/5me27xn13jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=aab23f8f9e742f8024ddac0c568492d0ac9b95e0"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/5me27xn13jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=53b5934acd9ac6ba839b1dc8d3268d87e8600c4e"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/5me27xn13jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=5c4257e898854b7ae2406c4730fd7cfa6bc1a1f2"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/5me27xn13jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=5ce04ed76f523b64d35e93d231d0aab7f97a861f"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/5me27xn13jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=5f42877b199e7d139e519fd8ae89feda99601649"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/5me27xn13jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=29242bee608f46f41d445b121f34cd84ec7559b6"
+          },
+          "id": "5me27xn13jdd1"
+        },
+        "jihzaxia2jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/jihzaxia2jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=85dfe8742adbdff5509b2a5432cbda16d11b705b"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/jihzaxia2jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=a4f07a7860897e46492d368c665332fa3f73ac60"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/jihzaxia2jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=e9667c3bbdfe803f968a826329a1eb998de661b4"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/jihzaxia2jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=0af3906add0eb8a09bae0820f1795e33d9b5a72d"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/jihzaxia2jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=aacdbc3bc83fa17d2834220852910f9d62cf9690"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/jihzaxia2jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=e92c7e65bf6d0ad985e86ac6eb648b3f0eb6d115"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/jihzaxia2jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=c75829511e7581cc8d57872c95c82e0b69e95c36"
+          },
+          "id": "jihzaxia2jdd1"
+        },
+        "igzf0ru62jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/igzf0ru62jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=3baa4693d97607c4bfe3b4772d839c9443402c1e"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/igzf0ru62jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=e43f5d8dde55e91a8d40d2e743430090ddbd89f3"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/igzf0ru62jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=993e64f711ec4af109c086f352e6a19d4b29f32c"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/igzf0ru62jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=0283341e27ccf58cae97e7513d3d904557f65d20"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/igzf0ru62jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=9f629df406c26e4133aef82309d6391f42723088"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/igzf0ru62jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=cd7c8974f7b8fcc15725ceed5f5e0ec2b8754ecf"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/igzf0ru62jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=0bb2b379278afe0a75d174c6cd841bc7fc6f87b8"
+          },
+          "id": "igzf0ru62jdd1"
+        },
+        "9fgpbsfw2jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/9fgpbsfw2jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=3db4e8fbf4e50ef2df90aaee711f75b7918e8b60"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/9fgpbsfw2jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=410ca05a37bd2bdbb88a7207aa3e4fc66d909c41"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/9fgpbsfw2jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=0079d1e760b15bc9b39927f6836125f65c6a8be0"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/9fgpbsfw2jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=ed068567cd60f9549e21bf170afd5330e6eb5d59"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/9fgpbsfw2jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=df8805e9472147276fecf88000ce4ab4ef1252f2"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/9fgpbsfw2jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=6ae07a042d5dde55769426689e1050362cb65104"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/9fgpbsfw2jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=85bef575900a2aae66ab0f2944c47f6c318d0579"
+          },
+          "id": "9fgpbsfw2jdd1"
+        },
+        "zcicj2902jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/zcicj2902jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=e8ecf5054ccb8d0129d204ab98fbf13353fc8912"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/zcicj2902jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=1848eed26780607d3b96938148d4f304abec0821"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/zcicj2902jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=9d83549d54a8ed2fa8a0d7e21f687f3ceb919c23"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/zcicj2902jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=3a220d59c7072739f0446898424ea2170cd33f65"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/zcicj2902jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=ac02ad139b07673fe7c97d7edeb5176aa9ddf63a"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/zcicj2902jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=81c06c2f470812984a1d3bf04b9b287fe1628a49"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/zcicj2902jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=8d2ef673c78e69b89b3e0a6c7fcceb1eb3bb4581"
+          },
+          "id": "zcicj2902jdd1"
+        },
+        "45j040bi2jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/45j040bi2jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=3d3295282d8be6796f79e72e8691b78f6f6bdf94"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/45j040bi2jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=f2b304cc281037fec9011a9c4e059c2c7ee8b3c2"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/45j040bi2jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=6caf892f75acfc71a5d451bcbc4b180d69f8589b"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/45j040bi2jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=0b58801b6bc714d4dad9cc7a89afe933316dea8d"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/45j040bi2jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=f3a6fe77a10d2682b95839384e84c7462c9ed4b6"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/45j040bi2jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=a7e9d7804439fe05d1950edfeb4fd60dfa23a76c"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/45j040bi2jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=58b5e2382f4626409c25dbb0899fe6e9ef59ee60"
+          },
+          "id": "45j040bi2jdd1"
+        },
+        "xoyjf7y22jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/xoyjf7y22jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=bb0e37515ed70f4d89f8f55f5aa4f2ae83220f81"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/xoyjf7y22jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=5402ed662d1c3eb1dff5259ce1ed55e9382fbd45"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/xoyjf7y22jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=fa235c91bb813f528b95667356bde4535cf61ea2"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/xoyjf7y22jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=c4fdfadead84224764e60a38fd604d6611243567"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/xoyjf7y22jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=838cd2570d79a9d2ab8a212677f3a2fdd4fc7757"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/xoyjf7y22jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=5c496faf1f532befa1f3a969e94b7811c5fae57f"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/xoyjf7y22jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=1db83bfab82c9841c6d5a4af41a3ae5d7d77de7e"
+          },
+          "id": "xoyjf7y22jdd1"
+        },
+        "g7a3n5rh3jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/g7a3n5rh3jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=648b89a0cb8a187f1ef8738e8d7004cc3db914a7"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/g7a3n5rh3jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=c109ab9ecf52e94b7161a0286ffddcbe54aab088"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/g7a3n5rh3jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=0c980edf2df16976d58f53117596f3ab2ee57458"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/g7a3n5rh3jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=85c24bcbb704139d65a65de9c1523e6b74b56d7c"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/g7a3n5rh3jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=05615f478664a914f484aadcbb5dd1b13abf067f"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/g7a3n5rh3jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=b0042d4f1c46f1d80272a056c706787a24c421c6"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/g7a3n5rh3jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=b11042819135671e46c06a6a4f365d487f8b6df6"
+          },
+          "id": "g7a3n5rh3jdd1"
+        },
+        "eq1yila63jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/eq1yila63jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=a555078c728e3e73c822994634ad1089647034df"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/eq1yila63jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=5277e960036ddae1100183a6ca75293a50778c4c"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/eq1yila63jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=8eefb9aa5c4b6c500ec22a9bba1f73e881086a0d"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/eq1yila63jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=69790264b8bf46476ab5ca3d9364fa6e74198576"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/eq1yila63jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=85ee17d1f95aa4bef3c98f6876979823d792d692"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/eq1yila63jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=6ba3c4d952052e92ec7beda6743ab86df3f56ffb"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/eq1yila63jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=0d9ec7323a3bad519c366cf0fbf84607fac93bab"
+          },
+          "id": "eq1yila63jdd1"
+        },
+        "d0fmnwr93jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/d0fmnwr93jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=becf7a3a2ef66d8f9006bdd9623ef6dbd7c38fc5"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/d0fmnwr93jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=e22f8ca80ffe841904bc7fddb932fc13b401a3f9"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/d0fmnwr93jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=4d2131d5b8f6db8fba2bd3cdc92cad7796ad02a2"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/d0fmnwr93jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=bad59af844c274a8a35e1fd8eadc515b9d82d536"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/d0fmnwr93jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=3c51ace5f2566feacaba5bf68f3292a4905914a2"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/d0fmnwr93jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=876cc6a08a3ff467ce20aaec7a457e91c129e0e6"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/d0fmnwr93jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=cfb16dff6822a480e80e106ee73037713303c7b7"
+          },
+          "id": "d0fmnwr93jdd1"
+        },
+        "gicv859n2jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/gicv859n2jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=d9deab3f6b270c7a36643ea408939fa5b87e04b6"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/gicv859n2jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=0f4f948fed26b2ad8ff601a757f680018ccef941"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/gicv859n2jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=4a79688b5c4d6271460add5222be033097af8abf"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/gicv859n2jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=3fc9512eecbb613f24049473d272f8e3b823d168"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/gicv859n2jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=9b1413d1c3f01872d8a1283634cd74325246a8ef"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/gicv859n2jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=7d88750f55a012ea33ae225cb4551458749e157b"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/gicv859n2jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=5262cba581c05ddb01f92767f56e3ba0ae9a024d"
+          },
+          "id": "gicv859n2jdd1"
+        },
+        "a101upmw1jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/a101upmw1jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=d3a91c75317b1d107ace99c72468b44e87ef08f4"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/a101upmw1jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=f05fa62466f46b3d46ea18b127f874f99dd9f41f"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/a101upmw1jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=377998eef7137b98c90ea8e98570ae121165cfff"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/a101upmw1jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=82dc12cb0d69e2709f49db368e2d3225697857ab"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/a101upmw1jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=9c0802fe8842b5b7ce1edf828036a48806cfe516"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/a101upmw1jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=3e6434b3d4306faf01f5de94d55bcf3ed1ec2350"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/a101upmw1jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=6c859d4458385d1c087f9aab7abb9899b53d4ec0"
+          },
+          "id": "a101upmw1jdd1"
+        },
+        "oxemc83d3jdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/oxemc83d3jdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=899cef97013fbe78ad7f50ea88fc2f6a07084703"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/oxemc83d3jdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=c7f83a09dab82bcb65e79314b4df318f48374588"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/oxemc83d3jdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=8a29bc51adea3e30ed98f7d5cf9da91d64916204"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/oxemc83d3jdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=3b84ef7fd64cc39b6c7200fe3984999ab5dd2c41"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/oxemc83d3jdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=f33d99dc5d557e4913591f4cade704a323547f86"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/oxemc83d3jdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=1f63aa03d3fca4853fdc9295820786792bd4ef04"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/oxemc83d3jdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=e1e6a0c4c03bc88dcfd9cd651ea9b5741edd97d5"
+          },
+          "id": "oxemc83d3jdd1"
+        },
+        "34fwmnilajdd1": {
+          "status": "valid",
+          "e": "Image",
+          "m": "image/png",
+          "p": [
+            {
+              "y": 81,
+              "x": 108,
+              "u": "https://preview.redd.it/34fwmnilajdd1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=6df2f6e522a925d34b37a8bef0cc2d13cc03d3d8"
+            },
+            {
+              "y": 162,
+              "x": 216,
+              "u": "https://preview.redd.it/34fwmnilajdd1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=439dc66c44253ed7ea3891d5d53ecc2a3977107e"
+            },
+            {
+              "y": 240,
+              "x": 320,
+              "u": "https://preview.redd.it/34fwmnilajdd1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=a4d999bb325a6b0de4d8bd4d45f6af3b791a8f9f"
+            },
+            {
+              "y": 480,
+              "x": 640,
+              "u": "https://preview.redd.it/34fwmnilajdd1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=fea1f4f5c75dbde48bc2b2fdc7edd6ccbbe3729b"
+            },
+            {
+              "y": 720,
+              "x": 960,
+              "u": "https://preview.redd.it/34fwmnilajdd1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=e48a6fee6b0824031958f7e5ed3e6bf413452cad"
+            },
+            {
+              "y": 810,
+              "x": 1080,
+              "u": "https://preview.redd.it/34fwmnilajdd1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=52763599dc85d6c3df09113fb52519f5277b741e"
+            }
+          ],
+          "s": {
+            "y": 960,
+            "x": 1280,
+            "u": "https://preview.redd.it/34fwmnilajdd1.png?width=1280&amp;format=png&amp;auto=webp&amp;s=41cc2420cf06375608953f1fd540005072a5c82d"
+          },
+          "id": "34fwmnilajdd1"
+        }
+      },
+      "name": "t3_1e7dgub",
+      "quarantine": false,
+      "link_flair_text_color": null,
+      "upvote_ratio": 0.98,
+      "author_flair_background_color": "#00a6a5",
+      "ups": 33,
+      "total_awards_received": 0,
+      "media_embed": {},
+      "thumbnail_width": 140,
+      "author_flair_template_id": "5cb3c302-0ef5-11ed-b9fd-aab9a872a9c2",
+      "is_original_content": false,
+      "user_reports": [],
+      "secure_media": null,
+      "is_reddit_media_domain": false,
+      "is_meta": false,
+      "category": null,
+      "secure_media_embed": {},
+      "link_flair_text": "Look what I made!",
+      "can_mod_post": false,
+      "score": 33,
+      "approved_by": null,
+      "is_created_from_ads_ui": false,
+      "author_premium": false,
+      "thumbnail": "https://b.thumbs.redditmedia.com/fSgVNEAKvQsDYdz3ZtGFYYNmMhaElsTNiaYKx85_s4g.jpg",
+      "edited": 1721421491.0,
+      "author_flair_css_class": null,
+      "author_flair_richtext": [
+        {
+          "a": ":400K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/apsbyvbwmfe91_t5_2qknj/400K"
+        },
+        {
+          "a": ":Arduino_500k:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/o5qzzwwkvk5a1_t5_2qknj/Arduino_500k"
+        },
+        {
+          "a": ":600K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/z23hxjk4hpeb1_t5_2qknj/600K"
+        },
+        {
+          "a": ":640K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/g9r24xjaydqc1_t5_2qknj/640K"
+        },
+        {
+          "e": "text",
+          "t": " My other dev board is a Porsche"
+        }
+      ],
+      "gildings": {},
+      "post_hint": "self",
+      "content_categories": null,
+      "is_self": true,
+      "subreddit_type": "public",
+      "created": 1721420606.0,
+      "link_flair_type": "richtext",
+      "wls": 6,
+      "removed_by_category": null,
+      "banned_by": null,
+      "author_flair_type": "richtext",
+      "domain": "self.arduino",
+      "allow_live_comments": false,
+      "selftext_html": "&lt;!-- SC_OFF --&gt;&lt;div class=\"md\"&gt;&lt;p&gt;So this was a project I did about 10 years ago as a graduation gift for my kid. Everything was built up from scratch using balsa wood, and airbrushed using model railroad paint. It has an ATtiny85 and a cheap digital record/playback board inside. When turned on the top LED fades in and out multiple times as it plays &amp;quot;the TARDIS sound&amp;quot;. The interior lights (LEDs)  for the top 4 signs stay on constant. Yes; there is Gallifreyan writing on the inside and all kinds of Easter eggs hidden away in it. Eventually all of the electronics were stored up inside the TARDIS and some of it is in the base pedestal.&lt;/p&gt;\n\n&lt;p&gt;It was a labor of love and I spent over a year making it (and remaking parts of it) until it was as close to &amp;quot;perfect&amp;quot; as I could get it. The dimensions are totally accurate and scaled down. Sadly the source code is either lost or on another older machine (I looked for it). The ATtiny85 controlled the top light to fade in and out and the 4 signage lights individually, and also triggered the playback module. The playback module was one of those cheap &amp;quot;press a button to record 20 seconds of digital audio, press another to play it back&amp;quot; swag devices given away at some convention I had attended. After 10 years of being moved around from apartment to apartment the wires have now come loose so I&amp;#39;m in the process of repairing it and re-implementing the sound playback using a DF Mini sound module.&lt;/p&gt;\n\n&lt;p&gt;I showed the images to some friends and they suggested it might make a good &amp;quot;Look what I made!&amp;quot; post since I&amp;#39;ve never really posted much about it, even though I took pictures all along the building stages.  &lt;a href=\"https://imgur.com/gallery/how-to-build-tardis-from-scratch-n6KrkfQ\"&gt;The full build gallery (107 images!) is here on imgur.&lt;/a&gt; The following images are just a sampling of the build that included some of the Arduino/electronics images.&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/34fwmnilajdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=41cc2420cf06375608953f1fd540005072a5c82d\"&gt;the final (almost completed) results&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/a101upmw1jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=6c859d4458385d1c087f9aab7abb9899b53d4ec0\"&gt;all hand made using balsa wood&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/zcicj2902jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=8d2ef673c78e69b89b3e0a6c7fcceb1eb3bb4581\"&gt;https://preview.redd.it/zcicj2902jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=8d2ef673c78e69b89b3e0a6c7fcceb1eb3bb4581&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/xoyjf7y22jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=1db83bfab82c9841c6d5a4af41a3ae5d7d77de7e\"&gt;https://preview.redd.it/xoyjf7y22jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=1db83bfab82c9841c6d5a4af41a3ae5d7d77de7e&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/igzf0ru62jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=0bb2b379278afe0a75d174c6cd841bc7fc6f87b8\"&gt;https://preview.redd.it/igzf0ru62jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=0bb2b379278afe0a75d174c6cd841bc7fc6f87b8&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/jihzaxia2jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=c75829511e7581cc8d57872c95c82e0b69e95c36\"&gt;building out the top&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/gicv859n2jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=5262cba581c05ddb01f92767f56e3ba0ae9a024d\"&gt;the top light is a 0.5 cm section of a clear plastic Bic pen, with lines drawn on it&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/qow9v5xp2jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=20facc1e4f882fff9aa891f90e286f2c0ab282ac\"&gt;https://preview.redd.it/qow9v5xp2jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=20facc1e4f882fff9aa891f90e286f2c0ab282ac&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/9fgpbsfw2jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=85bef575900a2aae66ab0f2944c47f6c318d0579\"&gt;complete with Gallifreyan writing on the inside&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/45j040bi2jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=58b5e2382f4626409c25dbb0899fe6e9ef59ee60\"&gt;hand for scale &lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/5me27xn13jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=29242bee608f46f41d445b121f34cd84ec7559b6\"&gt;programming and testing the top light as it slowly fades in and out&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/eq1yila63jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=0d9ec7323a3bad519c366cf0fbf84607fac93bab\"&gt;to get an idea of scale, that doorknob is a pin head&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/d0fmnwr93jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=cfb16dff6822a480e80e106ee73037713303c7b7\"&gt;testing the top light and the 4 LED&amp;#39;s for the signage at the top for all four sides&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/oxemc83d3jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=e1e6a0c4c03bc88dcfd9cd651ea9b5741edd97d5\"&gt;the guts just before assembly. Used a tiny 3.3V LDO voltage regulator to power it all&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/g7a3n5rh3jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=b11042819135671e46c06a6a4f365d487f8b6df6\"&gt;https://preview.redd.it/g7a3n5rh3jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=b11042819135671e46c06a6a4f365d487f8b6df6&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"https://preview.redd.it/t9y89upk3jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=6ec16619485ed5b423be3f17d1c0bbf9b48b9ae8\"&gt;https://preview.redd.it/t9y89upk3jdd1.png?width=1280&amp;amp;format=png&amp;amp;auto=webp&amp;amp;s=6ec16619485ed5b423be3f17d1c0bbf9b48b9ae8&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;&amp;#x200B;&lt;/p&gt;\n&lt;/div&gt;&lt;!-- SC_ON --&gt;",
+      "likes": null,
+      "suggested_sort": "confidence",
+      "banned_at_utc": null,
+      "view_count": null,
+      "archived": false,
+      "no_follow": false,
+      "is_crosspostable": false,
+      "pinned": false,
+      "over_18": false,
+      "preview": {
+        "images": [
+          {
+            "source": {
+              "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?auto=webp&amp;s=52fb30db253d6cd844987e150ba0199c78cb76d0",
+              "width": 1280,
+              "height": 960
+            },
+            "resolutions": [
+              {
+                "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=e1d950a9dd61bcfcf756d364fae4eeada23dcb74",
+                "width": 108,
+                "height": 81
+              },
+              {
+                "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=4e2452b4191eae115eea9e956d3a64821ec1049b",
+                "width": 216,
+                "height": 162
+              },
+              {
+                "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=24023b75ceb75212a1b76ff0e917972128a1b5b4",
+                "width": 320,
+                "height": 240
+              },
+              {
+                "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=cc0bcd163e808a332db916f6468f869a76c3f160",
+                "width": 640,
+                "height": 480
+              },
+              {
+                "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=90865ef434ec6774cf93169b5343f601b693234d",
+                "width": 960,
+                "height": 720
+              },
+              {
+                "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=30816f174553f76db3da054803e41cc16f721e8c",
+                "width": 1080,
+                "height": 810
+              }
+            ],
+            "variants": {},
+            "id": "VQWohxg47iqgL69c-_ePlgWIRJUouPSxm1COCuU0hNY"
+          }
+        ],
+        "enabled": false
+      },
+      "all_awardings": [],
+      "awarders": [],
+      "media_only": false,
+      "link_flair_template_id": "8a993096-51ce-11e9-84d9-0e29268ab306",
+      "can_gild": false,
+      "spoiler": false,
+      "locked": false,
+      "author_flair_text": ":400K::Arduino_500k::600K::640K: My other dev board is a Porsche",
+      "treatment_tags": [],
+      "visited": false,
+      "removed_by": null,
+      "mod_note": null,
+      "distinguished": null,
+      "subreddit_id": "t5_2qknj",
+      "author_is_blocked": false,
+      "mod_reason_by": null,
+      "num_reports": null,
+      "removal_reason": null,
+      "link_flair_background_color": "#94e044",
+      "id": "1e7dgub",
+      "is_robot_indexable": true,
+      "report_reasons": null,
+      "author": "ripred3",
+      "discussion_type": null,
+      "num_comments": 12,
+      "send_replies": true,
+      "contest_mode": false,
+      "mod_reports": [],
+      "author_patreon_flair": false,
+      "author_flair_text_color": "light",
+      "permalink": "/r/arduino/comments/1e7dgub/building_a_tardis_from_scratch/",
+      "stickied": false,
+      "url": "https://www.reddit.com/r/arduino/comments/1e7dgub/building_a_tardis_from_scratch/",
+      "subreddit_subscribers": 691390,
+      "created_utc": 1721420606.0,
+      "num_crossposts": 4,
+      "media": null,
+      "is_video": false
+    }
+  ],
+  "created": 1721421693.0,
+  "link_flair_type": "richtext",
+  "wls": null,
+  "removed_by_category": null,
+  "banned_by": null,
+  "author_flair_type": "richtext",
+  "domain": "self.arduino",
+  "allow_live_comments": false,
+  "selftext_html": null,
+  "likes": null,
+  "suggested_sort": null,
+  "banned_at_utc": null,
+  "url_overridden_by_dest": "/r/arduino/comments/1e7dgub/building_a_tardis_from_scratch/",
+  "view_count": null,
+  "archived": false,
+  "no_follow": true,
+  "is_crosspostable": false,
+  "pinned": false,
+  "over_18": false,
+  "preview": {
+    "images": [
+      {
+        "source": {
+          "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?auto=webp&amp;s=52fb30db253d6cd844987e150ba0199c78cb76d0",
+          "width": 1280,
+          "height": 960
+        },
+        "resolutions": [
+          {
+            "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=e1d950a9dd61bcfcf756d364fae4eeada23dcb74",
+            "width": 108,
+            "height": 81
+          },
+          {
+            "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=4e2452b4191eae115eea9e956d3a64821ec1049b",
+            "width": 216,
+            "height": 162
+          },
+          {
+            "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=24023b75ceb75212a1b76ff0e917972128a1b5b4",
+            "width": 320,
+            "height": 240
+          },
+          {
+            "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=cc0bcd163e808a332db916f6468f869a76c3f160",
+            "width": 640,
+            "height": 480
+          },
+          {
+            "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=90865ef434ec6774cf93169b5343f601b693234d",
+            "width": 960,
+            "height": 720
+          },
+          {
+            "url": "https://external-preview.redd.it/R6NBwAChqK6ATReD8H7ScAvipFknZKdR9StJuqjxZ0s.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=30816f174553f76db3da054803e41cc16f721e8c",
+            "width": 1080,
+            "height": 810
+          }
+        ],
+        "variants": {},
+        "id": "VQWohxg47iqgL69c-_ePlgWIRJUouPSxm1COCuU0hNY"
+      }
+    ],
+    "enabled": false
+  },
+  "all_awardings": [],
+  "awarders": [],
+  "media_only": false,
+  "link_flair_template_id": "10e54cb2-a03e-11ee-82f2-8255c429eabf",
+  "can_gild": false,
+  "spoiler": false,
+  "locked": false,
+  "author_flair_text": ":snoo_facepalm:",
+  "treatment_tags": [],
+  "visited": false,
+  "removed_by": null,
+  "num_reports": null,
+  "distinguished": null,
+  "subreddit_id": "t5_6as6rv",
+  "author_is_blocked": false,
+  "mod_reason_by": null,
+  "removal_reason": null,
+  "link_flair_background_color": "#6767f1",
+  "id": "1e7dwcp",
+  "is_robot_indexable": true,
+  "report_reasons": null,
+  "author": "ripred3",
+  "discussion_type": null,
+  "num_comments": 0,
+  "send_replies": true,
+  "contest_mode": false,
+  "mod_reports": [],
+  "author_patreon_flair": false,
+  "crosspost_parent": "t3_1e7dgub",
+  "author_flair_text_color": "dark",
+  "permalink": "/r/ripred/comments/1e7dwcp/building_a_tardis_from_scratch/",
+  "stickied": false,
+  "url": "/r/arduino/comments/1e7dgub/building_a_tardis_from_scratch/",
+  "subreddit_subscribers": 43,
+  "created_utc": 1721421693.0,
+  "num_crossposts": 0,
+  "media": null,
+  "is_video": false
+}

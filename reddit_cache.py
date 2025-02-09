@@ -305,41 +305,42 @@ def clean_text(text: str) -> str:
 def is_code_line(line: str) -> bool:
     """
     Check if a line likely contains Arduino/C/C++ code using common patterns.
-    
+
     Parameters:
         line (str): A single line of text.
-        
+
     Returns:
-        bool: True if the line appears to be code.
+        bool: True if the line appears to be code, False otherwise.
     """
     code_patterns = [
-        re.compile(r'#include\s*<[^>]+>'),
-        re.compile(r'\bvoid\s+\w+\s*\([^)]*\)\s*{'),
-        re.compile(r'\bfor\s*\([^)]*\)'),
-        re.compile(r'\bwhile\s*\([^)]*\)'),
-        re.compile(r'\bif\s*\([^)]*\)'),
-        re.compile(r'\bSerial\.println\s*\('),
-        re.compile(r'\bpinMode\s*\('),
-        re.compile(r'\bdigitalWrite\s*\('),
-        re.compile(r'\banalogRead\s*\('),
-        re.compile(r'\banalogWrite\s*\('),
-        re.compile(r'printf\s*\(')  # Updated: no \b to capture lines like "printf("Hello");"
+        re.compile(r'(?:#\s*)?include\s*<[^>]+>', re.IGNORECASE),
+        re.compile(r'\bvoid\s+\w+\s*\([^)]*\)\s*{', re.IGNORECASE),
+        re.compile(r'\bfor\s*\([^)]*\)', re.IGNORECASE),
+        re.compile(r'\bwhile\s*\([^)]*\)', re.IGNORECASE),
+        re.compile(r'\bif\s*\([^)]*\)', re.IGNORECASE),
+        re.compile(r'\bSerial\.println\s*\(', re.IGNORECASE),
+        re.compile(r'\bpinMode\s*\(', re.IGNORECASE),
+        re.compile(r'\bdigitalWrite\s*\(', re.IGNORECASE),
+        re.compile(r'\banalogRead\s*\(', re.IGNORECASE),
+        re.compile(r'\banalogWrite\s*\(', re.IGNORECASE),
+        re.compile(r'printf\s*\(', re.IGNORECASE)
     ]
     for pattern in code_patterns:
         if pattern.search(line):
             return True
     return False
 
+
 def has_unformatted_code(text: str) -> bool:
     """
     Determine if text contains a contiguous block of 3 or more consecutive lines
-    that appear to contain Arduino/C/C++ code (ignoring properly formatted code blocks).
-    
+    that appear to contain Arduino/C/C++ source code, ignoring properly formatted code blocks.
+
     Parameters:
         text (str): Raw markdown text.
-        
+
     Returns:
-        bool: True if such a block is detected.
+        bool: True if such a block is detected, False otherwise.
     """
     cleaned = clean_text(text)
     lines = cleaned.splitlines()
@@ -355,6 +356,7 @@ def has_unformatted_code(text: str) -> bool:
         else:
             code_run = 0
     return False
+
 
 def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]) -> None:
     """

@@ -1,0 +1,347 @@
+{
+  "approved_at_utc": null,
+  "subreddit": "ripred",
+  "selftext": "",
+  "user_reports": [],
+  "saved": false,
+  "mod_reason_title": null,
+  "gilded": 0,
+  "clicked": false,
+  "title": "MicroChess Update: En-Passant capture bug fixed and code uncommented!",
+  "link_flair_richtext": [],
+  "subreddit_name_prefixed": "r/ripred",
+  "hidden": false,
+  "pwls": null,
+  "link_flair_css_class": null,
+  "downs": 0,
+  "thumbnail_height": null,
+  "top_awarded_type": null,
+  "hide_score": false,
+  "name": "t3_1ih5put",
+  "quarantine": false,
+  "link_flair_text_color": "dark",
+  "upvote_ratio": 1.0,
+  "author_flair_background_color": "transparent",
+  "subreddit_type": "public",
+  "ups": 1,
+  "total_awards_received": 0,
+  "media_embed": {},
+  "thumbnail_width": null,
+  "author_flair_template_id": "9fa2ceaa-053c-11ed-bb97-124dff5ea4b4",
+  "is_original_content": false,
+  "author_fullname": "t2_adfkq",
+  "secure_media": null,
+  "is_reddit_media_domain": false,
+  "is_meta": false,
+  "category": null,
+  "secure_media_embed": {},
+  "link_flair_text": null,
+  "can_mod_post": false,
+  "score": 1,
+  "approved_by": null,
+  "is_created_from_ads_ui": false,
+  "author_premium": false,
+  "thumbnail": "default",
+  "edited": false,
+  "author_flair_css_class": null,
+  "author_flair_richtext": [
+    {
+      "a": ":snoo_facepalm:",
+      "e": "emoji",
+      "u": "https://emoji.redditmedia.com/wzxf63qpaezz_t5_3nqvj/snoo_facepalm"
+    }
+  ],
+  "gildings": {},
+  "post_hint": "link",
+  "content_categories": null,
+  "is_self": false,
+  "mod_note": null,
+  "crosspost_parent_list": [
+    {
+      "approved_at_utc": null,
+      "subreddit": "arduino",
+      "selftext": "I finally fixed an en-passant bug in the MicroChess project that had taken some time to figure out and the code has had the support commented out. It's fixed now and the code is all checked in at https://github.com/ripred/MicroChess. \ud83d\ude04\n\nFor those that didn't see the 6-post series only available here in our community some time back, MicroChess was an attempt to prove that the actual chess engine, not just the mechanical piece movement, could be done on the low level Arduino Uno or Nano with only 2K of RAM. I succeeded heh.\n\nI'll dig out the link to the 6-part series of posts if anyone is interested in learning how to write game engines, game theory, bitfield packing, hardcore optimization and fairly advanced embedded techniques, and a popular recursive gaming algorithm called Minimax (with alpha-beta pruning \ud83d\ude0e) used to play turn based games like chess or checkers.\n\nThe engine can play up to 7 ply levels deep (moves looked ahead alternating each players side and making their best move and then unrolling and responding). It supports castling, en-passant pawn captures (yay), quiescent move searches, opening book moves, FEN notation for setting up board situations, dozens of runtime options that can be set in the code and have full comments on them, and a lot more. It can examine around 900 moves per second which was as tight as I could get things running on an 8-bit core at 16Mhz. It actually increases to several thousand a seonc towards the end of the games when fewer pieces and moves need to be examined. Oh yeah, optional time limits are are available to force the engine to make it's best move seen so far when the limit is reached. There are a lot of options.\n\nAll in under 2K of RAM and 32K of flash code. Actually comes in just a few bytes shy of the flash limit heh.\n\nAll the Best!\n\n`ripred`",
+      "author_fullname": "t2_adfkq",
+      "saved": false,
+      "mod_reason_title": null,
+      "gilded": 0,
+      "clicked": false,
+      "title": "MicroChess Update: En-Passant capture bug fixed and code uncommented!",
+      "link_flair_richtext": [
+        {
+          "e": "text",
+          "t": "Look what I made!"
+        }
+      ],
+      "subreddit_name_prefixed": "r/arduino",
+      "hidden": false,
+      "pwls": 6,
+      "link_flair_css_class": "",
+      "downs": 0,
+      "thumbnail_height": null,
+      "top_awarded_type": null,
+      "hide_score": false,
+      "name": "t3_1igkv5c",
+      "quarantine": false,
+      "link_flair_text_color": null,
+      "upvote_ratio": 1.0,
+      "author_flair_background_color": "#00a6a5",
+      "subreddit_type": "public",
+      "ups": 5,
+      "total_awards_received": 0,
+      "media_embed": {},
+      "thumbnail_width": null,
+      "author_flair_template_id": "5cb3c302-0ef5-11ed-b9fd-aab9a872a9c2",
+      "is_original_content": false,
+      "user_reports": [],
+      "secure_media": null,
+      "is_reddit_media_domain": false,
+      "is_meta": false,
+      "category": null,
+      "secure_media_embed": {},
+      "link_flair_text": "Look what I made!",
+      "can_mod_post": false,
+      "score": 5,
+      "approved_by": null,
+      "is_created_from_ads_ui": false,
+      "author_premium": false,
+      "thumbnail": "self",
+      "edited": 1738576023.0,
+      "author_flair_css_class": null,
+      "author_flair_richtext": [
+        {
+          "a": ":400K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/apsbyvbwmfe91_t5_2qknj/400K"
+        },
+        {
+          "a": ":Arduino_500k:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/o5qzzwwkvk5a1_t5_2qknj/Arduino_500k"
+        },
+        {
+          "a": ":600K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/z23hxjk4hpeb1_t5_2qknj/600K"
+        },
+        {
+          "a": ":640K:",
+          "e": "emoji",
+          "u": "https://emoji.redditmedia.com/g9r24xjaydqc1_t5_2qknj/640K"
+        },
+        {
+          "e": "text",
+          "t": " My other dev board is a Porsche"
+        }
+      ],
+      "gildings": {},
+      "post_hint": "self",
+      "content_categories": null,
+      "is_self": true,
+      "mod_note": null,
+      "created": 1738572863.0,
+      "link_flair_type": "richtext",
+      "wls": 6,
+      "removed_by_category": null,
+      "banned_by": null,
+      "author_flair_type": "richtext",
+      "domain": "self.arduino",
+      "allow_live_comments": false,
+      "selftext_html": "&lt;!-- SC_OFF --&gt;&lt;div class=\"md\"&gt;&lt;p&gt;I finally fixed an en-passant bug in the MicroChess project that had taken some time to figure out and the code has had the support commented out. It&amp;#39;s fixed now and the code is all checked in at &lt;a href=\"https://github.com/ripred/MicroChess\"&gt;https://github.com/ripred/MicroChess&lt;/a&gt;. \ud83d\ude04&lt;/p&gt;\n\n&lt;p&gt;For those that didn&amp;#39;t see the 6-post series only available here in our community some time back, MicroChess was an attempt to prove that the actual chess engine, not just the mechanical piece movement, could be done on the low level Arduino Uno or Nano with only 2K of RAM. I succeeded heh.&lt;/p&gt;\n\n&lt;p&gt;I&amp;#39;ll dig out the link to the 6-part series of posts if anyone is interested in learning how to write game engines, game theory, bitfield packing, hardcore optimization and fairly advanced embedded techniques, and a popular recursive gaming algorithm called Minimax (with alpha-beta pruning \ud83d\ude0e) used to play turn based games like chess or checkers.&lt;/p&gt;\n\n&lt;p&gt;The engine can play up to 7 ply levels deep (moves looked ahead alternating each players side and making their best move and then unrolling and responding). It supports castling, en-passant pawn captures (yay), quiescent move searches, opening book moves, FEN notation for setting up board situations, dozens of runtime options that can be set in the code and have full comments on them, and a lot more. It can examine around 900 moves per second which was as tight as I could get things running on an 8-bit core at 16Mhz. It actually increases to several thousand a seonc towards the end of the games when fewer pieces and moves need to be examined. Oh yeah, optional time limits are are available to force the engine to make it&amp;#39;s best move seen so far when the limit is reached. There are a lot of options.&lt;/p&gt;\n\n&lt;p&gt;All in under 2K of RAM and 32K of flash code. Actually comes in just a few bytes shy of the flash limit heh.&lt;/p&gt;\n\n&lt;p&gt;All the Best!&lt;/p&gt;\n\n&lt;p&gt;&lt;code&gt;ripred&lt;/code&gt;&lt;/p&gt;\n&lt;/div&gt;&lt;!-- SC_ON --&gt;",
+      "likes": null,
+      "suggested_sort": "confidence",
+      "banned_at_utc": null,
+      "view_count": null,
+      "archived": false,
+      "no_follow": false,
+      "is_crosspostable": false,
+      "pinned": false,
+      "over_18": false,
+      "preview": {
+        "images": [
+          {
+            "source": {
+              "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?auto=webp&amp;s=2229b7b69c8fe1bb61f3dac1156eff85d3efe000",
+              "width": 1698,
+              "height": 1131
+            },
+            "resolutions": [
+              {
+                "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=f040a49f1fc720dab9330f0e8a7462e6bf008439",
+                "width": 108,
+                "height": 71
+              },
+              {
+                "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=bc4ea16de83f887351df9b75e98ab8733f3db6c7",
+                "width": 216,
+                "height": 143
+              },
+              {
+                "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=744497332334dab843f95edccf9f305a41046e45",
+                "width": 320,
+                "height": 213
+              },
+              {
+                "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=852666a4f0c4fa29cd13621bdddabec2ac47880c",
+                "width": 640,
+                "height": 426
+              },
+              {
+                "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=72ac4245b603dec1fff8317783ec9c8ef8acd9a2",
+                "width": 960,
+                "height": 639
+              },
+              {
+                "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=f8ac475c8c33e0a7c3c4e7833bc4e9553e0c70fb",
+                "width": 1080,
+                "height": 719
+              }
+            ],
+            "variants": {},
+            "id": "w80fv7dfZm9ba8XFwr7n8dBjddmZNTlNZWQRhDV1IUs"
+          }
+        ],
+        "enabled": false
+      },
+      "all_awardings": [],
+      "awarders": [],
+      "media_only": false,
+      "link_flair_template_id": "8a993096-51ce-11e9-84d9-0e29268ab306",
+      "can_gild": false,
+      "spoiler": false,
+      "locked": false,
+      "author_flair_text": ":400K::Arduino_500k::600K::640K: My other dev board is a Porsche",
+      "treatment_tags": [],
+      "visited": false,
+      "removed_by": null,
+      "num_reports": null,
+      "distinguished": null,
+      "subreddit_id": "t5_2qknj",
+      "author_is_blocked": false,
+      "mod_reason_by": null,
+      "removal_reason": null,
+      "link_flair_background_color": "#94e044",
+      "id": "1igkv5c",
+      "is_robot_indexable": true,
+      "report_reasons": null,
+      "author": "ripred3",
+      "discussion_type": null,
+      "num_comments": 0,
+      "send_replies": true,
+      "contest_mode": false,
+      "mod_reports": [],
+      "author_patreon_flair": false,
+      "author_flair_text_color": "light",
+      "permalink": "/r/arduino/comments/1igkv5c/microchess_update_enpassant_capture_bug_fixed_and/",
+      "stickied": false,
+      "url": "https://www.reddit.com/r/arduino/comments/1igkv5c/microchess_update_enpassant_capture_bug_fixed_and/",
+      "subreddit_subscribers": 691390,
+      "created_utc": 1738572863.0,
+      "num_crossposts": 3,
+      "media": null,
+      "is_video": false
+    }
+  ],
+  "created": 1738631593.0,
+  "link_flair_type": "text",
+  "wls": null,
+  "removed_by_category": null,
+  "banned_by": null,
+  "author_flair_type": "richtext",
+  "domain": "",
+  "allow_live_comments": false,
+  "selftext_html": null,
+  "likes": null,
+  "suggested_sort": null,
+  "banned_at_utc": null,
+  "url_overridden_by_dest": "/r/arduino/comments/1igkv5c/microchess_update_enpassant_capture_bug_fixed_and/",
+  "view_count": null,
+  "archived": false,
+  "no_follow": true,
+  "is_crosspostable": false,
+  "pinned": false,
+  "over_18": false,
+  "preview": {
+    "images": [
+      {
+        "source": {
+          "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?auto=webp&amp;s=2229b7b69c8fe1bb61f3dac1156eff85d3efe000",
+          "width": 1698,
+          "height": 1131
+        },
+        "resolutions": [
+          {
+            "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?width=108&amp;crop=smart&amp;auto=webp&amp;s=f040a49f1fc720dab9330f0e8a7462e6bf008439",
+            "width": 108,
+            "height": 71
+          },
+          {
+            "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?width=216&amp;crop=smart&amp;auto=webp&amp;s=bc4ea16de83f887351df9b75e98ab8733f3db6c7",
+            "width": 216,
+            "height": 143
+          },
+          {
+            "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?width=320&amp;crop=smart&amp;auto=webp&amp;s=744497332334dab843f95edccf9f305a41046e45",
+            "width": 320,
+            "height": 213
+          },
+          {
+            "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?width=640&amp;crop=smart&amp;auto=webp&amp;s=852666a4f0c4fa29cd13621bdddabec2ac47880c",
+            "width": 640,
+            "height": 426
+          },
+          {
+            "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?width=960&amp;crop=smart&amp;auto=webp&amp;s=72ac4245b603dec1fff8317783ec9c8ef8acd9a2",
+            "width": 960,
+            "height": 639
+          },
+          {
+            "url": "https://external-preview.redd.it/DUEgvrStonIf1dunYyI5bjlr_YYmswI5Ab1efQykDIU.jpg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=f8ac475c8c33e0a7c3c4e7833bc4e9553e0c70fb",
+            "width": 1080,
+            "height": 719
+          }
+        ],
+        "variants": {},
+        "id": "w80fv7dfZm9ba8XFwr7n8dBjddmZNTlNZWQRhDV1IUs"
+      }
+    ],
+    "enabled": false
+  },
+  "all_awardings": [],
+  "awarders": [],
+  "media_only": false,
+  "can_gild": false,
+  "spoiler": false,
+  "locked": false,
+  "author_flair_text": ":snoo_facepalm:",
+  "treatment_tags": [],
+  "visited": false,
+  "removed_by": null,
+  "num_reports": null,
+  "distinguished": null,
+  "subreddit_id": "t5_6as6rv",
+  "author_is_blocked": false,
+  "mod_reason_by": null,
+  "removal_reason": null,
+  "link_flair_background_color": "",
+  "id": "1ih5put",
+  "is_robot_indexable": true,
+  "report_reasons": null,
+  "author": "ripred3",
+  "discussion_type": null,
+  "num_comments": 0,
+  "send_replies": true,
+  "contest_mode": false,
+  "mod_reports": [],
+  "author_patreon_flair": false,
+  "crosspost_parent": "t3_1igkv5c",
+  "author_flair_text_color": "dark",
+  "permalink": "/r/ripred/comments/1ih5put/microchess_update_enpassant_capture_bug_fixed_and/",
+  "stickied": false,
+  "url": "/r/arduino/comments/1igkv5c/microchess_update_enpassant_capture_bug_fixed_and/",
+  "subreddit_subscribers": 43,
+  "created_utc": 1738631593.0,
+  "num_crossposts": 0,
+  "media": null,
+  "is_video": false
+}
