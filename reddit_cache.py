@@ -432,7 +432,7 @@ def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]
         md_lines.append("## Global Summary")
         md_lines.append(f"- **Total network retrievals (over time):** {gs.get('global_network_retrievals', 0)}")
         md_lines.append(f"- **Total cached posts (global):** {gs.get('global_cached_posts', 0)}\n")
-    md_lines.append("## Filters applied")
+    md_lines.append("## Filters and options applied")
     for key, value in filters_applied.items():
         md_lines.append(f"- **{key}:** {value}")
     print("\n".join(md_lines))
@@ -731,7 +731,7 @@ def main() -> None:
         }
 
     print(f"{Fore.GREEN}--- Result ---{Style.RESET_ALL}")
-    print(f"{Fore.WHITE}Filters applied: {filters_applied}{Style.RESET_ALL}")
+    print(f"{Fore.WHITE}Filters and options applied: {filters_applied}{Style.RESET_ALL}")
     if args.output == "json":
         print(json.dumps(final_output, indent=2))
     elif args.output == "markdown":
