@@ -2,6 +2,14 @@
 
 # Reddit Cache Utility for Moderators
 
+## Version Information
+
+**Current Version: reddit_cache_v2.py**  
+The current version of the Reddit Cache Utility uses the [PRAW (Python Reddit API Wrapper)](https://praw.readthedocs.io/) for robust, authenticated interactions with Reddit's API. This version offers improved reliability, reduced network calls (by caching data locally), and additional features such as interactive code format checking and multiple output formats (JSON, ANSI-colored report, Markdown).
+
+**Deprecated Version: reddit_cache.py**  
+The legacy version of this tool (using direct HTTP requests via `requests`) still works but is now deprecated. It is maintained only for backward compatibility. We recommend using the new version for better performance and support.
+
 ## Overview
 
 The **Reddit Cache Utility** is a command-line tool designed to help moderators quickly fetch, cache, and analyze the latest posts from one or more subreddits. The tool minimizes network traffic by caching posts locally and provides various reports and an interactive code formatting check. This helps moderators easily identify posts that may need further review or formatting corrections.
@@ -9,29 +17,29 @@ The **Reddit Cache Utility** is a command-line tool designed to help moderators 
 ## Features
 
 - **Caching:**  
-  Retrieves and caches the latest 100 posts from a subreddit. On subsequent runs, only new posts are fetched to reduce network calls.
+  Retrieves and caches the latest 100 posts from a subreddit. On subsequent runs, only new posts are fetched, reducing network calls.
 
 - **Flair Reports:**  
-  Generate reports that summarize unique flair counts from cached posts.
+  Generate reports summarizing unique flair counts from cached posts.
 
 - **Show Posts:**  
   Display detailed information (title, author, full selftext, and flair) for a specified number of cached posts.
 
 - **Monthly Digest:**  
-  Automatically compile a digest from posts with titles containing "Monthly Digest" that includes a header, narrative summary, and a list of digest posts.
+  Automatically compile a digest from posts with titles containing "Monthly Digest" (including a header, narrative summary, and list of digest posts).
 
 - **Interactive Code Format Check:**  
-  Scans cached posts for unformatted source code (e.g., Arduino/C/C++ code that isn’t properly fenced or indented). If a violation is detected, the complete, untruncated post body is printed, and you are prompted to flag, skip, or cancel further checks.  
+  Scans cached posts for unformatted source code (e.g., Arduino/C/C++ code that isn’t properly fenced or indented). When a violation is detected, the full, untruncated post body is printed, and you are prompted to flag, skip, or cancel further checks.  
   *Tip: For automated testing, set the environment variable `TEST_NONINTERACTIVE=1` to simulate an automatic "y" response.*
 
 - **ANSI Colored Output:**  
-  The utility uses ANSI color codes to make the output more readable. For example:
-  - **Blue:** Subreddit names
-  - **Green:** Summary statistics
-  - **Magenta:** Report headers
+  The utility uses ANSI escape sequences to colorize the output for enhanced readability. For example:
+  - **Blue:** Subreddit names  
+  - **Green:** Summary statistics  
+  - **Magenta:** Report headers  
   - **Yellow:** Warnings and applied filters
 
-*Note: The screenshot below simulates the expected colorized output in a terminal.*
+*Note: The screenshot below simulates the expected colorized output in the terminal.*
 
 ![ANSI Output Screenshot](https://via.placeholder.com/800x200?text=ANSI+Colored+Output+Screenshot)
 
@@ -75,13 +83,13 @@ Example: ./reddit_cache.py arduino arduino_ai --check-code-format --output repor
    The tool checks the local `caches/` folder for stored post data. If found, it only fetches new posts from Reddit to reduce redundant network calls.
 
 2. **Reporting:**  
-   Based on the options provided, the utility generates various reports (flair, show posts, monthly digest) using the local cache. This helps minimize network usage and speeds up data processing.
+   Based on the options provided, the tool generates various reports (flair, show posts, monthly digest) using the local cache.
 
 3. **Interactive Code Check:**  
-   When the `--check-code-format` flag is used, the utility scans each post’s selftext (after unescaping HTML entities) for blocks of 3 or more consecutive non-empty lines that appear to be code (ignoring properly formatted code blocks). If a violation is detected, the complete post body is printed for review, and you are prompted to flag, skip, or cancel the check.
+   When the `--check-code-format` flag is used, the utility scans each post’s selftext (after unescaping HTML entities) for blocks of 3 or more consecutive non-empty lines that look like code (ignoring properly formatted code blocks). If a violation is detected, the complete post body is printed for review, and you are prompted to flag, skip, or cancel the check.
 
-4. **ANSI Colored Output:**  
-   The output is colorized using ANSI escape sequences. For example, subreddit names appear in blue, summary statistics in green, and report headers in magenta. This makes the terminal output easier to read.
+4. **ANSI Colors:**  
+   All output is colorized using ANSI escape sequences for clarity. For example, summary stats appear in green, report headers in magenta, etc.
 
 ## Example Use Cases
 
@@ -104,7 +112,7 @@ Filters applied: {'limit_report': 'None', 'report': 'flair', 'show': 'None', 'di
 $ ./reddit_cache.py programming -l 5
 --- Result ---
 Filters applied: {'limit_report': 'None', 'report': 'None', 'show': 5, 'digest': 'None', 'check_code_format': 'None', 'output': 'json'}
-[ANSI output: Detailed information for 5 posts including title, author, full selftext, and flair]
+[ANSI output: Detailed information for 5 posts, including title, author, full selftext, and flair]
 
 # 4. Generate a Monthly Digest report for r/arduino in Markdown format
 $ ./reddit_cache.py arduino -D --output markdown
@@ -125,7 +133,7 @@ Does this post contain unformatted code? (y/n/s/c):
 [Interactive prompt with ANSI colored text]
 ```
 
-## Quick Commands
+## Quick Command Examples
 
 ```bash
 # Fetch posts from r/arduino (default)
@@ -150,7 +158,10 @@ $ ./reddit_cache.py ripred --check-code-format --output report
   For automated testing, set the environment variable `TEST_NONINTERACTIVE=1` to simulate an automatic "y" response during code format checks.
 
 - **ANSI Color Output:**  
-  The tool's output is colorized using ANSI escape sequences for improved readability in the terminal.
+  The tool’s output is colorized using ANSI escape sequences for improved readability in the terminal.
+
+- **Deprecated Legacy Version:**  
+  The legacy version of the utility (`reddit_cache.py`) still works but is now deprecated. We recommend using the new version (`reddit_cache_v2.py`), which provides a more robust and feature-rich experience by leveraging PRAW for authenticated API calls.
 
 - **Feedback and Contributions:**  
-  Please test the utility with your subreddits and let us know if you encounter any issues or have suggestions for new features. Your feedback is welcome!
+  Please test the utility on your subreddits and let us know if you encounter any issues or have suggestions for additional features. Your feedback is highly appreciated!
