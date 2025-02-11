@@ -166,7 +166,8 @@ def fetch_modmail_count(subreddit: str) -> int:
     """
     try:
         conversations = list(reddit.subreddit(subreddit).modmail.conversations(limit=None))
-        unread_count = sum(1 for conv in conversations if conv.is_unread)
+        # Check conversation state; count if state is "new"
+        unread_count = sum(1 for conv in conversations if conv.state == "new")
         return unread_count
     except Exception as e:
         logger.error(f"Error fetching modmail for r/{subreddit}: {e}")
