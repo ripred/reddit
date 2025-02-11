@@ -41,6 +41,15 @@ init(autoreset=True)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 logger = logging.getLogger(__name__)
 
+# Custom help formatter for colored output
+class ColoredHelpFormatter(argparse.RawTextHelpFormatter):
+    def format_usage(self) -> str:
+        usage = super().format_usage()
+        return f"{Fore.WHITE}{usage}{Style.RESET_ALL}"
+    def format_help(self) -> str:
+        help_text = super().format_help()
+        return help_text
+
 # Initialize PRAW Reddit instance using environment variables or praw.ini
 reddit = praw.Reddit(
     client_id=os.environ.get("REDDIT_CLIENT_ID"),
@@ -50,15 +59,15 @@ reddit = praw.Reddit(
     password=os.environ.get("REDDIT_PASSWORD")
 )
 
+# -- Configuration and File I/O Helpers --
+
 def get_cache_folder(subreddit: str) -> str:
-    """Return the cache folder path for a given subreddit under 'caches'."""
     safe_subreddit = re.sub(r'[^\w-]', '_', subreddit)
     folder = os.path.join("caches", safe_subreddit)
     os.makedirs(folder, exist_ok=True)
     return folder
 
 def get_config() -> Tuple[configparser.ConfigParser, str]:
-    """Load the configuration file (caches/app.ini). Create it if it doesn't exist."""
     config = configparser.ConfigParser()
     config_path = os.path.join("caches", "app.ini")
     if os.path.exists(config_path):
@@ -68,21 +77,27 @@ def get_config() -> Tuple[configparser.ConfigParser, str]:
     return config, config_path
 
 def save_config(config: configparser.ConfigParser, config_path: str) -> None:
-    """Save the configuration to the specified config_path."""
     with open(config_path, "w", encoding="utf-8") as configfile:
         config.write(configfile)
 
-class ColoredHelpFormatter(argparse.RawTextHelpFormatter):
-    """Custom help formatter to display usage/help text in color."""
-    def format_usage(self) -> str:
-        usage = super().format_usage()
-        return f"{Fore.WHITE}{usage}{Style.RESET_ALL}"
-    def format_help(self) -> str:
-        help_text = super().format_help()
-        return help_text
+def load_cached_posts(subreddit: str) -> List[Dict[str, Any]]:
+    folder = get_cache_folder(subreddit)
+    posts = []
+    for filename in os.listdir(folder):
+        if filename.endswith(".json") and filename != "custom_flairs.json":
+            file_path = os.path.join(folder, filename)
+            try:
+                with open(file_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                posts.append(data)
+            except Exception as e:
+                logger.error(f"Error processing {file_path}: {e}")
+    posts.sort(key=lambda x: x.get("created_utc", 0), reverse=True)
+    return posts
+
+# -- PRAW API Wrappers --
 
 def submission_to_dict(submission: praw.models.Submission) -> Dict[str, Any]:
-    """Convert a PRAW Submission object to a serializable dictionary."""
     return {
         "id": submission.id,
         "title": submission.title,
@@ -93,15 +108,6 @@ def submission_to_dict(submission: praw.models.Submission) -> Dict[str, Any]:
     }
 
 def fetch_posts(subreddit: str) -> Optional[List[Dict[str, Any]]]:
-    """
-    Fetch the newest 100 posts for the given subreddit using PRAW.
-    
-    Parameters:
-        subreddit (str): Name of the subreddit.
-        
-    Returns:
-        Optional[List[Dict[str, Any]]]: List of post dictionaries, or None on error.
-    """
     try:
         submissions = reddit.subreddit(subreddit).new(limit=100)
         posts = [submission_to_dict(sub) for sub in submissions]
@@ -114,16 +120,6 @@ def fetch_posts(subreddit: str) -> Optional[List[Dict[str, Any]]]:
         return None
 
 def cache_post(subreddit: str, post_data: Dict[str, Any]) -> Tuple[Dict[str, Any], bool]:
-    """
-    Cache a post's data locally in a folder under "caches" corresponding to the subreddit.
-    
-    Parameters:
-        subreddit (str): Subreddit name.
-        post_data (Dict[str, Any]): Dictionary data for a single post.
-        
-    Returns:
-        Tuple[Dict[str, Any], bool]: Cached data and a flag indicating if it was newly created.
-    """
     folder = get_cache_folder(subreddit)
     post_id = post_data.get("id")
     if not post_id:
@@ -144,12 +140,6 @@ def cache_post(subreddit: str, post_data: Dict[str, Any]) -> Tuple[Dict[str, Any
     return post_data, True
 
 def fetch_modqueue_count(subreddit: str) -> int:
-    """
-    Fetch the number of posts waiting in the mod queue for the given subreddit.
-    
-    Returns:
-        int: The number of posts in the mod queue (or 0 on error).
-    """
     try:
         mod_items = list(reddit.subreddit(subreddit).mod.modqueue(limit=None))
         return len(mod_items)
@@ -158,75 +148,28 @@ def fetch_modqueue_count(subreddit: str) -> int:
         return 0
 
 def fetch_modmail_count(subreddit: str) -> int:
-    """
-    Fetch the number of unread modmail conversations for the given subreddit.
-    
-    Returns:
-        int: The number of unread modmail conversations (or 0 on error).
-    """
     try:
         conversations = list(reddit.subreddit(subreddit).modmail.conversations(limit=None))
-        # Check conversation state; count if state is "new"
         unread_count = sum(1 for conv in conversations if conv.state == "new")
         return unread_count
     except Exception as e:
         logger.error(f"Error fetching modmail for r/{subreddit}: {e}")
         return 0
 
+# -- Report Generation --
+
 def generate_flair_report(subreddit: str, report_limit: Optional[int] = None) -> Dict[str, int]:
-    """
-    Generate a summary report of unique flair texts from the cached posts.
-    
-    Parameters:
-        subreddit (str): Subreddit name.
-        report_limit (Optional[int]): Limit the number of cached posts scanned.
-        
-    Returns:
-        Dict[str, int]: Mapping of flair texts to occurrence counts.
-    """
-    flair_counts: Dict[str, int] = {}
-    folder = get_cache_folder(subreddit)
-    files = [os.path.join(folder, f) for f in os.listdir(folder)
-             if f.endswith(".json") and f != "custom_flairs.json"]
-    posts = []
-    for file_path in files:
-        try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            posts.append(data)
-        except Exception as e:
-            logger.error(f"Error processing {file_path}: {e}")
-    posts.sort(key=lambda x: x.get("created_utc", 0), reverse=True)
+    posts = load_cached_posts(subreddit)
     if report_limit is not None:
         posts = posts[:report_limit]
+    flair_counts = {}
     for post in posts:
         flair = post.get("link_flair_text") or "None"
         flair_counts[flair] = flair_counts.get(flair, 0) + 1
     return flair_counts
 
 def generate_show_report(subreddit: str, n: int) -> List[Dict[str, Any]]:
-    """
-    Generate a report showing selected fields for the last n cached posts.
-    
-    Parameters:
-        subreddit (str): Subreddit name.
-        n (int): Number of posts.
-        
-    Returns:
-        List[Dict[str, Any]]: List of posts with title, selftext, author, and flair.
-    """
-    posts_list = []
-    folder = get_cache_folder(subreddit)
-    for filename in os.listdir(folder):
-        if filename.endswith(".json") and filename != "custom_flairs.json":
-            file_path = os.path.join(folder, filename)
-            try:
-                with open(file_path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                posts_list.append(data)
-            except Exception as e:
-                logger.error(f"Error processing {file_path}: {e}")
-    posts_list.sort(key=lambda x: x.get("created_utc", 0), reverse=True)
+    posts_list = load_cached_posts(subreddit)
     selected = posts_list[:n]
     return [
         {
@@ -240,31 +183,9 @@ def generate_show_report(subreddit: str, n: int) -> List[Dict[str, Any]]:
 
 def generate_monthly_digest_report(subreddit: str, digest_pattern: str = "Monthly Digest", 
                                    limit: Optional[int] = None) -> Dict[str, Any]:
-    """
-    Generate a Monthly Digest report section by scanning cached posts whose titles match a pattern.
-    
-    Parameters:
-        subreddit (str): Subreddit name.
-        digest_pattern (str): Pattern to search for (default "Monthly Digest").
-        limit (Optional[int]): Limit the posts scanned.
-        
-    Returns:
-        Dict[str, Any]: Digest report with header, narrative, and digest_posts, or a message if none found.
-    """
-    posts_list = []
-    folder = get_cache_folder(subreddit)
+    posts_list = load_cached_posts(subreddit)
     pattern = re.compile(digest_pattern, re.IGNORECASE)
-    for filename in os.listdir(folder):
-        if filename.endswith(".json") and filename != "custom_flairs.json":
-            file_path = os.path.join(folder, filename)
-            try:
-                with open(file_path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                if pattern.search(data.get("title", "")):
-                    posts_list.append(data)
-            except Exception as e:
-                logger.error(f"Error processing {file_path}: {e}")
-    posts_list.sort(key=lambda x: x.get("created_utc", 0), reverse=True)
+    posts_list = [post for post in posts_list if pattern.search(post.get("title", ""))]
     if limit is not None:
         posts_list = posts_list[:limit]
     if not posts_list:
@@ -288,16 +209,9 @@ def generate_monthly_digest_report(subreddit: str, digest_pattern: str = "Monthl
     ]
     return {"header": header, "narrative": narrative, "digest_posts": digest_posts}
 
+# -- Code Formatting Helpers --
+
 def remove_fenced_code(text: str) -> str:
-    """
-    Remove fenced code blocks (delimited by lines starting with ```) from text.
-    
-    Parameters:
-        text (str): Raw markdown text.
-        
-    Returns:
-        str: Text with fenced code blocks removed.
-    """
     lines = text.splitlines()
     result_lines = []
     inside = False
@@ -310,15 +224,6 @@ def remove_fenced_code(text: str) -> str:
     return "\n".join(result_lines)
 
 def remove_indented_code(text: str) -> str:
-    """
-    Remove indented code blocks (lines indented by 4+ spaces or a tab) from text.
-    
-    Parameters:
-        text (str): Raw markdown text.
-        
-    Returns:
-        str: Text with indented code blocks removed.
-    """
     lines = text.splitlines()
     result_lines = []
     for line in lines:
@@ -328,28 +233,9 @@ def remove_indented_code(text: str) -> str:
     return "\n".join(result_lines)
 
 def remove_inline_code(text: str) -> str:
-    """
-    Remove inline code spans (text enclosed in single backticks) from text.
-    
-    Parameters:
-        text (str): Raw text.
-        
-    Returns:
-        str: Text with inline code removed.
-    """
     return re.sub(r"`[^`]+`", "", text)
 
 def clean_text(text: str) -> str:
-    """
-    Remove properly formatted code blocks (fenced and indented) and inline code spans from text.
-    Also unescape HTML entities so that code detection works on HTML-escaped content.
-    
-    Parameters:
-        text (str): Raw markdown text.
-        
-    Returns:
-        str: Cleaned text.
-    """
     unescaped = html.unescape(text)
     cleaned = remove_fenced_code(unescaped)
     cleaned = remove_indented_code(cleaned)
@@ -357,16 +243,6 @@ def clean_text(text: str) -> str:
     return cleaned
 
 def is_code_line(line: str) -> bool:
-    """
-    Check if a line likely contains Arduino/C/C++ code using common patterns,
-    allowing for optional leading whitespace.
-    
-    Parameters:
-        line (str): A single line of text.
-        
-    Returns:
-        bool: True if the line appears to be code, False otherwise.
-    """
     code_patterns = [
         re.compile(r'^\s*(?:#\s*)?include\s*<[^>]+>', re.IGNORECASE),
         re.compile(r'^\s*\bvoid\s+\w+\s*\([^)]*\)\s*{', re.IGNORECASE),
@@ -386,16 +262,6 @@ def is_code_line(line: str) -> bool:
     return False
 
 def has_unformatted_code(text: str) -> bool:
-    """
-    Determine if text contains a contiguous block of 3 or more non-empty lines (ignoring blank lines)
-    that appear to contain Arduino/C/C++ source code, ignoring properly formatted code blocks.
-    
-    Parameters:
-        text (str): Raw markdown text.
-        
-    Returns:
-        bool: True if such a block is detected, False otherwise.
-    """
     cleaned = clean_text(text)
     lines = cleaned.splitlines()
     code_run = 0
@@ -410,11 +276,9 @@ def has_unformatted_code(text: str) -> bool:
             code_run = 0
     return False
 
+# -- Output Functions --
+
 def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]) -> None:
-    """
-    Print a Markdown-formatted report of the final output.
-    (Full post body text is displayed without truncation.)
-    """
     md_lines = []
     md_lines.append("# Monthly Digest Report\n")
     for subreddit, result in final_output["results"].items():
@@ -485,10 +349,6 @@ def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]
     print("\n".join(md_lines))
 
 def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str, Any]) -> None:
-    """
-    Print a human-readable, colorful, ANSI report of the final output.
-    (Full post body text is displayed without truncation.)
-    """
     print(f"{Fore.GREEN}=== Human Readable Report ==={Style.RESET_ALL}")
     for subreddit, result in final_output["results"].items():
         print(f"{Fore.BLUE}Subreddit: {subreddit}{Style.RESET_ALL}")
@@ -557,45 +417,10 @@ def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str
         print(f"  {key}: {value}")
 
 def check_code_format_violations(subreddit: str, limit: Optional[int] = None) -> List[Dict[str, Any]]:
-    """
-    Interactively scan cached posts for code formatting violations.
-    
-    A violation is defined as a contiguous block of 3 or more non-empty lines (ignoring blank lines)
-    that appear to contain Arduino/C/C++ source code, ignoring properly formatted code blocks.
-    
-    For each post meeting the criteria and not already recorded as "no violation", the full post body is printed,
-    and the user is prompted:
-        y: Yes, it contains unformatted code (flag it).
-        n: No, it does not contain unformatted code (record in config so it isn’t flagged again).
-        s: Skip this post.
-        c: Cancel further checking.
-    
-    In non-interactive mode (if the environment variable TEST_NONINTERACTIVE is set), the response is automatically "y".
-    
-    Parameters:
-        subreddit (str): Subreddit name.
-        limit (Optional[int]): Limit the number of posts to scan.
-        
-    Returns:
-        List[Dict[str, Any]]: List of posts with confirmed code formatting violations.
-    """
     config, config_path = get_config()
     no_violation_ids = config["CodeFormat"] if "CodeFormat" in config else {}
     violations: List[Dict[str, Any]] = []
-    folder = get_cache_folder(subreddit)
-    if not os.path.isdir(folder):
-        return violations
-    files = [os.path.join(folder, f) for f in os.listdir(folder)
-             if f.endswith(".json") and f != "custom_flairs.json"]
-    posts: List[Dict[str, Any]] = []
-    for file_path in files:
-        try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            posts.append(data)
-        except Exception as e:
-            logger.error(f"Error processing {file_path}: {e}")
-    posts.sort(key=lambda x: x.get("created_utc", 0), reverse=True)
+    posts = load_cached_posts(subreddit)
     if limit is not None:
         posts = posts[:limit]
     for post in posts:
