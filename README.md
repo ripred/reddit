@@ -1,3 +1,4 @@
+[![Python Tests and Coverage](https://github.com/ripred/reddit/actions/workflows/python-app.yml/badge.svg)](https://github.com/ripred/reddit/actions/workflows/python-app.yml)
 # Reddit Cache Utility for Moderators
 
 ## Overview
