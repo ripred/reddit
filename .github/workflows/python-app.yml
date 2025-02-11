@@ -6,6 +6,13 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  REDDIT_CLIENT_ID: dummy
+  REDDIT_CLIENT_SECRET: dummy
+  REDDIT_USER_AGENT: "dummy user agent"
+  REDDIT_USERNAME: ""
+  REDDIT_PASSWORD: ""
+
 jobs:
   test:
     runs-on: ubuntu-22.04
@@ -27,7 +34,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install coverage praw tqdm colorama
-          # Uncomment the next line if you have a requirements.txt file:
+          # Uncomment if you have a requirements.txt file:
           # pip install -r requirements.txt
 
       - name: Run tests and generate coverage report
