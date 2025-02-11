@@ -440,12 +440,14 @@ def check_code_format_violations(subreddit: str, limit: Optional[int] = None) ->
                 print("[DEBUG] TEST_NONINTERACTIVE is set; automatically flagging this post.")
             else:
                 response = input("Does this post contain unformatted code? (y/n/s/c): ").strip().lower()
+
             if response == "y":
                 violations.append({
                     "id": post_id,
                     "title": post.get("title", ""),
                     "violation": "Post contains unformatted source code. Please format your code in proper code blocks."
-                })
+                    })
+                no_violation_ids[post_id] = "flagged"  # Record that this post was flagged.
             elif response == "n":
                 no_violation_ids[post_id] = "n"
             elif response == "s":
