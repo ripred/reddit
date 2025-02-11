@@ -173,3 +173,6 @@ cython_debug/
 # Project runtime caches
 caches/*
 
+# Private files
+set_envvars.sh
+
