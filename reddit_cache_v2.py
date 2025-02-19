@@ -2,7 +2,7 @@
 """
 reddit_cache_v2.py
 
-This script uses PRAW (Python Reddit API Wrapper) to fetch and cache the newest 100 posts 
+This script uses PRAW (Python Reddit API Wrapper) to fetch and cache the newest 1000 posts 
 from one or more subreddits, and generates various reports based on the local cache.
 It is a new version that replaces direct HTTP requests with PRAW for more robust, 
 authenticated interactions with Reddit's API.
@@ -13,7 +13,7 @@ Features:
   - Generates reports (flair, monthly digest, show posts) from the cached data.
   - Checks for unformatted code in post selftexts and prompts the moderator interactively.
   - Retrieves the number of posts waiting in the mod queue and the number of unread modmail conversations.
-  - Supports multiple output formats: JSON, human-readable ANSI report, and Markdown report.
+  - Supports multiple output formats: machine-readable JSON, human-readable ANSI-colored report, and Markdown-formatted report.
   
 Configuration:
   - PRAW will load credentials from praw.ini or from environment variables:
@@ -62,12 +62,14 @@ reddit = praw.Reddit(
 # -- Configuration and File I/O Helpers --
 
 def get_cache_folder(subreddit: str) -> str:
+    """Return the cache folder path for a given subreddit under 'caches'."""
     safe_subreddit = re.sub(r'[^\w-]', '_', subreddit)
     folder = os.path.join("caches", safe_subreddit)
     os.makedirs(folder, exist_ok=True)
     return folder
 
 def get_config() -> Tuple[configparser.ConfigParser, str]:
+    """Load the configuration file (caches/app.ini). Create it if it doesn't exist."""
     config = configparser.ConfigParser()
     config_path = os.path.join("caches", "app.ini")
     if os.path.exists(config_path):
@@ -77,10 +79,12 @@ def get_config() -> Tuple[configparser.ConfigParser, str]:
     return config, config_path
 
 def save_config(config: configparser.ConfigParser, config_path: str) -> None:
+    """Save the configuration to the specified config_path."""
     with open(config_path, "w", encoding="utf-8") as configfile:
         config.write(configfile)
 
 def load_cached_posts(subreddit: str) -> List[Dict[str, Any]]:
+    """Load cached posts from the given subreddit's cache folder."""
     folder = get_cache_folder(subreddit)
     posts = []
     for filename in os.listdir(folder):
@@ -98,6 +102,7 @@ def load_cached_posts(subreddit: str) -> List[Dict[str, Any]]:
 # -- PRAW API Wrappers --
 
 def submission_to_dict(submission: praw.models.Submission) -> Dict[str, Any]:
+    """Convert a PRAW submission object into a dictionary with selected fields."""
     return {
         "id": submission.id,
         "title": submission.title,
@@ -108,8 +113,12 @@ def submission_to_dict(submission: praw.models.Submission) -> Dict[str, Any]:
     }
 
 def fetch_posts(subreddit: str) -> Optional[List[Dict[str, Any]]]:
+    """
+    Fetch the newest 1000 posts for the given subreddit using PRAW.
+    Returns a list of post dictionaries or None if an error occurs.
+    """
     try:
-        submissions = reddit.subreddit(subreddit).new(limit=100)
+        submissions = reddit.subreddit(subreddit).new(limit=1000)
         posts = [submission_to_dict(sub) for sub in submissions]
         if not posts:
             logger.error(f"No posts found for r/{subreddit}.")
@@ -120,6 +129,10 @@ def fetch_posts(subreddit: str) -> Optional[List[Dict[str, Any]]]:
         return None
 
 def cache_post(subreddit: str, post_data: Dict[str, Any]) -> Tuple[Dict[str, Any], bool]:
+    """
+    Cache a post's data locally under caches/<subreddit>.
+    Returns the post data and a flag indicating whether it was newly cached.
+    """
     folder = get_cache_folder(subreddit)
     post_id = post_data.get("id")
     if not post_id:
@@ -140,6 +153,7 @@ def cache_post(subreddit: str, post_data: Dict[str, Any]) -> Tuple[Dict[str, Any
     return post_data, True
 
 def fetch_modqueue_count(subreddit: str) -> int:
+    """Return the number of posts currently waiting in the moderator queue for the given subreddit."""
     try:
         mod_items = list(reddit.subreddit(subreddit).mod.modqueue(limit=None))
         return len(mod_items)
@@ -148,6 +162,7 @@ def fetch_modqueue_count(subreddit: str) -> int:
         return 0
 
 def fetch_modmail_count(subreddit: str) -> int:
+    """Return the number of unread modmail conversations for the given subreddit."""
     try:
         conversations = list(reddit.subreddit(subreddit).modmail.conversations(limit=None))
         unread_count = sum(1 for conv in conversations if conv.state == "new")
@@ -159,16 +174,18 @@ def fetch_modmail_count(subreddit: str) -> int:
 # -- Report Generation --
 
 def generate_flair_report(subreddit: str, report_limit: Optional[int] = None) -> Dict[str, int]:
+    """Generate a summary report of unique flair texts from the cached posts."""
     posts = load_cached_posts(subreddit)
     if report_limit is not None:
         posts = posts[:report_limit]
-    flair_counts = {}
+    flair_counts: Dict[str, int] = {}
     for post in posts:
         flair = post.get("link_flair_text") or "None"
         flair_counts[flair] = flair_counts.get(flair, 0) + 1
     return flair_counts
 
 def generate_show_report(subreddit: str, n: int) -> List[Dict[str, Any]]:
+    """Generate a report showing selected fields for the last n cached posts."""
     posts_list = load_cached_posts(subreddit)
     selected = posts_list[:n]
     return [
@@ -183,6 +200,10 @@ def generate_show_report(subreddit: str, n: int) -> List[Dict[str, Any]]:
 
 def generate_monthly_digest_report(subreddit: str, digest_pattern: str = "Monthly Digest", 
                                    limit: Optional[int] = None) -> Dict[str, Any]:
+    """
+    Generate a Monthly Digest report section by scanning cached posts whose titles match a pattern.
+    Returns a dictionary containing the header, narrative, and digest posts, or a message if none are found.
+    """
     posts_list = load_cached_posts(subreddit)
     pattern = re.compile(digest_pattern, re.IGNORECASE)
     posts_list = [post for post in posts_list if pattern.search(post.get("title", ""))]
@@ -212,6 +233,9 @@ def generate_monthly_digest_report(subreddit: str, digest_pattern: str = "Monthl
 # -- Code Formatting Helpers --
 
 def remove_fenced_code(text: str) -> str:
+    """
+    Remove fenced code blocks (delimited by lines starting with ```) from text.
+    """
     lines = text.splitlines()
     result_lines = []
     inside = False
@@ -224,6 +248,9 @@ def remove_fenced_code(text: str) -> str:
     return "\n".join(result_lines)
 
 def remove_indented_code(text: str) -> str:
+    """
+    Remove indented code blocks (lines indented by 4+ spaces or a tab) from text.
+    """
     lines = text.splitlines()
     result_lines = []
     for line in lines:
@@ -233,52 +260,103 @@ def remove_indented_code(text: str) -> str:
     return "\n".join(result_lines)
 
 def remove_inline_code(text: str) -> str:
+    """
+    Remove inline code spans (enclosed in single backticks) from text.
+    """
     return re.sub(r"`[^`]+`", "", text)
 
 def clean_text(text: str) -> str:
+    """
+    Unescape HTML entities and remove fenced, indented, and inline code blocks from text.
+    """
     unescaped = html.unescape(text)
     cleaned = remove_fenced_code(unescaped)
     cleaned = remove_indented_code(cleaned)
     cleaned = remove_inline_code(cleaned)
     return cleaned
 
+# List of inline code patterns (not anchored to the start) for detecting code anywhere in a line.
+inline_code_patterns = [
+    re.compile(r'(?:#\s*)?include\s*<[^>]+>', re.IGNORECASE),
+    re.compile(r'\bvoid\s+\w+\s*\([^)]*\)\s*{', re.IGNORECASE),
+    re.compile(r'\bfor\s*\([^)]*\)', re.IGNORECASE),
+    re.compile(r'\bwhile\s*\([^)]*\)', re.IGNORECASE),
+    re.compile(r'\bif\s*\([^)]*\)', re.IGNORECASE),
+    re.compile(r'\bSerial\.println\s*\(', re.IGNORECASE),
+    re.compile(r'\bpinMode\s*\(', re.IGNORECASE),
+    re.compile(r'\bdigitalWrite\s*\(', re.IGNORECASE),
+    re.compile(r'\banalogRead\s*\(', re.IGNORECASE),
+    re.compile(r'\banalogWrite\s*\(', re.IGNORECASE),
+    re.compile(r'printf\s*\(', re.IGNORECASE)
+]
+
+def count_inline_code_patterns(line: str) -> int:
+    """
+    Count the number of occurrences of code-like patterns in a line.
+    """
+    count = 0
+    for pattern in inline_code_patterns:
+        count += len(pattern.findall(line))
+    return count
+
 def is_code_line(line: str) -> bool:
-    code_patterns = [
-        re.compile(r'^\s*(?:#\s*)?include\s*<[^>]+>', re.IGNORECASE),
-        re.compile(r'^\s*\bvoid\s+\w+\s*\([^)]*\)\s*{', re.IGNORECASE),
-        re.compile(r'^\s*\bfor\s*\([^)]*\)', re.IGNORECASE),
-        re.compile(r'^\s*\bwhile\s*\([^)]*\)', re.IGNORECASE),
-        re.compile(r'^\s*\bif\s*\([^)]*\)', re.IGNORECASE),
-        re.compile(r'^\s*\bSerial\.println\s*\(', re.IGNORECASE),
-        re.compile(r'^\s*\bpinMode\s*\(', re.IGNORECASE),
-        re.compile(r'^\s*\bdigitalWrite\s*\(', re.IGNORECASE),
-        re.compile(r'^\s*\banalogRead\s*\(', re.IGNORECASE),
-        re.compile(r'^\s*\banalogWrite\s*\(', re.IGNORECASE),
-        re.compile(r'^\s*printf\s*\(', re.IGNORECASE)
-    ]
-    for pattern in code_patterns:
+    """
+    Check if a line likely contains Arduino/C/C++ code using common patterns.
+    """
+    for pattern in inline_code_patterns:
         if pattern.search(line):
             return True
     return False
 
-def has_unformatted_code(text: str) -> bool:
+def has_unformatted_code(text: str, inline_threshold: int = 3, multiline_threshold: int = 3) -> bool:
+    """
+    Determine if text contains unformatted code.
+    
+    This function now checks in two ways:
+      1. **Inline Check:**  
+         If any single non-empty line contains at least `inline_threshold` matches of code-like patterns,
+         it is flagged as unformatted.
+      2. **Multiline Check:**  
+         If there are at least `multiline_threshold` consecutive lines that look like code, it is flagged.
+    
+    **Additional Heuristic:**  
+      If the total number of non-empty lines exceeds 50 and less than 30% of them look like code, then
+      the text is presumed to be well-formatted (even if some lines match) and will not be flagged.
+    
+    The thresholds can be adjusted via parameters.
+    """
     cleaned = clean_text(text)
-    lines = cleaned.splitlines()
-    code_run = 0
+    lines = [line for line in cleaned.splitlines() if line.strip() != ""]
+
+    # Heuristic: For long posts, if only a small fraction of lines appear as code, assume it is well formatted.
+    total_lines = len(lines)
+    if total_lines > 50:
+        code_lines = sum(1 for line in lines if is_code_line(line))
+        if (code_lines / total_lines) < 0.3:
+            return False
+
+    # Inline check: Each non-empty line is checked for inline code pattern occurrences.
     for line in lines:
-        if line.strip() == "":
-            continue
+        if count_inline_code_patterns(line) >= inline_threshold:
+            return True
+
+    # Multiline check: Check for consecutive lines that look like code.
+    consecutive = 0
+    for line in lines:
         if is_code_line(line):
-            code_run += 1
-            if code_run >= 3:
+            consecutive += 1
+            if consecutive >= multiline_threshold:
                 return True
         else:
-            code_run = 0
+            consecutive = 0
     return False
 
 # -- Output Functions --
 
 def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]) -> None:
+    """
+    Print a Markdown-formatted report of the final output.
+    """
     md_lines = []
     md_lines.append("# Monthly Digest Report\n")
     for subreddit, result in final_output["results"].items():
@@ -344,11 +422,14 @@ def print_markdown(final_output: Dict[str, Any], filters_applied: Dict[str, Any]
         md_lines.append(f"- **Total network retrievals (over time):** {gs.get('global_network_retrievals', 0)}")
         md_lines.append(f"- **Total cached posts (global):** {gs.get('global_cached_posts', 0)}\n")
     md_lines.append("## Filters and options applied")
-    for key, value in filters_applied.items():
+    for key, value in final_output.get("filters_applied", {}).items():
         md_lines.append(f"- **{key}:** {value}")
     print("\n".join(md_lines))
 
 def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str, Any]) -> None:
+    """
+    Print a human-readable, colorful, ANSI report of the final output.
+    """
     print(f"{Fore.GREEN}=== Human Readable Report ==={Style.RESET_ALL}")
     for subreddit, result in final_output["results"].items():
         print(f"{Fore.BLUE}Subreddit: {subreddit}{Style.RESET_ALL}")
@@ -413,10 +494,29 @@ def print_human_readable(final_output: Dict[str, Any], filters_applied: Dict[str
         print(f"  {Fore.LIGHTGREEN_EX}Total network retrievals (over time): {gs.get('global_network_retrievals', 0)}{Style.RESET_ALL}")
         print(f"  {Fore.LIGHTGREEN_EX}Total cached posts (global): {gs.get('global_cached_posts', 0)}{Style.RESET_ALL}")
     print(f"\n{Fore.YELLOW}Filters applied:{Style.RESET_ALL}")
-    for key, value in filters_applied.items():
+    for key, value in final_output.get("filters_applied", {}).items():
         print(f"  {key}: {value}")
 
+# -- Code Formatting Check --
+
 def check_code_format_violations(subreddit: str, limit: Optional[int] = None) -> List[Dict[str, Any]]:
+    """
+    Interactively scan cached posts for code formatting violations.
+    
+    For each post, any code outside properly formatted blocks is inspected.
+    A violation is flagged if either:
+      - A single non-empty line contains at least `inline_threshold` occurrences of code-like patterns, or
+      - There are at least `multiline_threshold` consecutive lines that look like code.
+      
+    An additional heuristic prevents flagging if the post is very long (more than 50 non-empty lines)
+    and less than 30% of lines appear as code, assuming the code is well formatted.
+    
+    In non-interactive mode (if the environment variable TEST_NONINTERACTIVE is set),
+    the response is automatically "y" (flagging the post).
+    """
+    inline_threshold = 3
+    multiline_threshold = 3
+
     config, config_path = get_config()
     no_violation_ids = config["CodeFormat"] if "CodeFormat" in config else {}
     violations: List[Dict[str, Any]] = []
@@ -428,7 +528,7 @@ def check_code_format_violations(subreddit: str, limit: Optional[int] = None) ->
         if post_id in no_violation_ids:
             continue
         selftext = post.get("selftext", "")
-        if has_unformatted_code(selftext):
+        if has_unformatted_code(selftext, inline_threshold, multiline_threshold):
             print(f"\n{Fore.CYAN}Potential Code Format Violation Detected:{Style.RESET_ALL}")
             print(f"Post ID: {post_id}")
             print(f"Title: {post.get('title', '')}")
@@ -440,14 +540,13 @@ def check_code_format_violations(subreddit: str, limit: Optional[int] = None) ->
                 print("[DEBUG] TEST_NONINTERACTIVE is set; automatically flagging this post.")
             else:
                 response = input("Does this post contain unformatted code? (y/n/s/c): ").strip().lower()
-
             if response == "y":
                 violations.append({
                     "id": post_id,
                     "title": post.get("title", ""),
                     "violation": "Post contains unformatted source code. Please format your code in proper code blocks."
-                    })
-                no_violation_ids[post_id] = "flagged"  # Record that this post was flagged.
+                })
+                no_violation_ids[post_id] = "flagged"
             elif response == "n":
                 no_violation_ids[post_id] = "n"
             elif response == "s":
@@ -459,9 +558,11 @@ def check_code_format_violations(subreddit: str, limit: Optional[int] = None) ->
     save_config(config, config_path)
     return violations
 
+# -- Main Program --
+
 def main() -> None:
     help_description = (
-        f"{Fore.CYAN}Fetch and cache the newest 100 posts from one or more subreddits using PRAW, displaying only new posts and summary stats.\n"
+        f"{Fore.CYAN}Fetch and cache the newest 1000 posts from one or more subreddits using PRAW, displaying only new posts and summary stats.\n"
         "If multiple subreddits are specified, a global summary is also provided.\n\n"
         "Positional arguments:\n"
         f"  {Fore.MAGENTA}subreddits{Style.RESET_ALL}  : One or more subreddit names to fetch posts from (default: arduino).\n\n"
