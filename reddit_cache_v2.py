@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/opt/local/bin/python3.12
 """
 reddit_cache_v2.py
 
@@ -50,13 +50,81 @@ class ColoredHelpFormatter(argparse.RawTextHelpFormatter):
         help_text = super().format_help()
         return help_text
 
-# Initialize PRAW Reddit instance using environment variables or praw.ini
+def load_credentials() -> Dict[str, str]:
+    """
+    Load Reddit API credentials from credentials.txt file or environment variables.
+    Validates that all required credentials are present.
+
+    Priority:
+    1. credentials.txt file (if it exists)
+    2. Environment variables
+    3. Exit with error if neither provides all required credentials
+
+    Returns:
+        Dict[str, str]: Dictionary of credential key-value pairs
+    """
+    credentials = {}
+    credentials_file = "credentials.txt"
+
+    # Try to load from credentials.txt first
+    if os.path.exists(credentials_file):
+        logger.info(f"Loading credentials from {credentials_file}")
+        try:
+            with open(credentials_file, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    # Skip comments and empty lines
+                    if line and not line.startswith("#"):
+                        if "=" in line:
+                            key, value = line.split("=", 1)
+                            credentials[key.strip()] = value.strip()
+        except Exception as e:
+            logger.error(f"Error reading {credentials_file}: {e}")
+
+    # Fall back to environment variables for any missing credentials
+    required_creds = ["REDDIT_CLIENT_ID", "REDDIT_CLIENT_SECRET", "REDDIT_USER_AGENT"]
+    optional_creds = ["REDDIT_USERNAME", "REDDIT_PASSWORD"]
+
+    for key in required_creds + optional_creds:
+        if key not in credentials or not credentials[key]:
+            env_value = os.environ.get(key)
+            if env_value:
+                credentials[key] = env_value
+
+    # Validate required credentials
+    missing = []
+    for key in required_creds:
+        if key not in credentials or not credentials[key] or credentials[key].startswith("your_"):
+            missing.append(key)
+
+    if missing:
+        error_msg = f"{Fore.RED}ERROR: Missing required Reddit API credentials:{Style.RESET_ALL}\n"
+        for key in missing:
+            error_msg += f"  - {key}\n"
+        error_msg += f"\n{Fore.YELLOW}Please provide credentials via:{Style.RESET_ALL}\n"
+        error_msg += f"  1. Create/edit credentials.txt with your Reddit API credentials\n"
+        error_msg += f"  2. Or set environment variables: {', '.join(required_creds)}\n"
+        error_msg += f"\n{Fore.CYAN}To get Reddit API credentials:{Style.RESET_ALL}\n"
+        error_msg += f"  1. Go to https://www.reddit.com/prefs/apps\n"
+        error_msg += f"  2. Create a new 'script' application\n"
+        error_msg += f"  3. Copy credentials.txt.template to credentials.txt\n"
+        error_msg += f"  4. Edit credentials.txt with your actual credentials\n"
+        print(error_msg, file=sys.stderr)
+        sys.exit(1)
+
+    logger.info("Credentials loaded successfully")
+    return credentials
+
+# Load and validate credentials
+creds = load_credentials()
+
+# Initialize PRAW Reddit instance using loaded credentials
 reddit = praw.Reddit(
-    client_id=os.environ.get("REDDIT_CLIENT_ID"),
-    client_secret=os.environ.get("REDDIT_CLIENT_SECRET"),
-    user_agent=os.environ.get("REDDIT_USER_AGENT", "reddit_cache_v2 script by /u/yourusername"),
-    username=os.environ.get("REDDIT_USERNAME"),
-    password=os.environ.get("REDDIT_PASSWORD")
+    client_id=creds["REDDIT_CLIENT_ID"],
+    client_secret=creds["REDDIT_CLIENT_SECRET"],
+    user_agent=creds["REDDIT_USER_AGENT"],
+    username=creds.get("REDDIT_USERNAME"),
+    password=creds.get("REDDIT_PASSWORD")
 )
 
 # -- Configuration and File I/O Helpers --

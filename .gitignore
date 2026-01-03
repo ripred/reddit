@@ -175,4 +175,6 @@ caches/*
 
 # Private files
 set_envvars.sh
+credentials.txt
+praw.ini
 

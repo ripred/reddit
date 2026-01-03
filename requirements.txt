@@ -1,0 +1,8 @@
+# Reddit Moderator Utility - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+praw>=7.8.1
+prawcore>=2.4.0
+requests>=2.32.0
+tqdm>=4.67.0
+colorama>=0.4.6
