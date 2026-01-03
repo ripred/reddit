@@ -768,6 +768,11 @@ def main() -> None:
         help=f"{Fore.MAGENTA}Include the number of unread modmail conversations for each subreddit{Style.RESET_ALL}"
     )
     parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help=f"{Fore.MAGENTA}Disable incremental caching - fetch all posts regardless of cache (useful for benchmarking){Style.RESET_ALL}"
+    )
+    parser.add_argument(
         "--output",
         type=str,
         choices=["json", "report", "markdown"],
@@ -784,6 +789,7 @@ def main() -> None:
         "check_code_format": "Enabled" if args.check_code_format else "None",
         "modqueue": "Enabled" if args.modqueue else "None",
         "modmail": "Enabled" if args.modmail else "None",
+        "no_cache": "Enabled" if args.no_cache else "None",
         "output": args.output
     }
 
@@ -796,13 +802,20 @@ def main() -> None:
         logger.info(f"Checking subreddit: {sub}")
 
         # Get the last post ID we retrieved for this subreddit (for incremental updates)
-        last_post_id, last_timestamp = get_last_retrieved(sub)
-        if last_post_id:
-            logger.info(f"Last retrieved post for r/{sub}: {last_post_id} at {last_timestamp}")
+        # Unless --no-cache is specified, which disables incremental fetching
+        if args.no_cache:
+            logger.info(f"Cache disabled (--no-cache), fetching all posts for r/{sub}")
+            last_post_id = None
+            last_timestamp = None
         else:
-            logger.info(f"No previous retrieval data for r/{sub}, fetching initial posts")
+            last_post_id, last_timestamp = get_last_retrieved(sub)
+            if last_post_id:
+                logger.info(f"Last retrieved post for r/{sub}: {last_post_id} at {last_timestamp}")
+            else:
+                logger.info(f"No previous retrieval data for r/{sub}, fetching initial posts")
 
         # Fetch only new posts since last_post_id (incremental fetch)
+        # Or fetch all posts if --no-cache is enabled
         posts = fetch_posts(sub, last_post_id=last_post_id)
         if posts is not None:
             global_network_hits += 1
