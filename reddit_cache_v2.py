@@ -151,6 +151,41 @@ def save_config(config: configparser.ConfigParser, config_path: str) -> None:
     with open(config_path, "w", encoding="utf-8") as configfile:
         config.write(configfile)
 
+def get_last_retrieved(subreddit: str) -> Tuple[Optional[str], Optional[float]]:
+    """
+    Get the last retrieved post ID and timestamp for a subreddit from app.ini.
+
+    Returns:
+        Tuple[Optional[str], Optional[float]]: (last_post_id, last_timestamp) or (None, None) if not found
+    """
+    config, _ = get_config()
+    if "LastRetrieved" not in config:
+        return None, None
+
+    last_post_id = config["LastRetrieved"].get(f"{subreddit}_last_post_id")
+    last_timestamp_str = config["LastRetrieved"].get(f"{subreddit}_last_timestamp")
+
+    last_timestamp = float(last_timestamp_str) if last_timestamp_str else None
+    return last_post_id, last_timestamp
+
+def update_last_retrieved(subreddit: str, post_id: str, timestamp: float) -> None:
+    """
+    Update the last retrieved post ID and timestamp for a subreddit in app.ini.
+
+    Parameters:
+        subreddit (str): Subreddit name
+        post_id (str): ID of the most recent post fetched
+        timestamp (float): Unix timestamp of the most recent post
+    """
+    config, config_path = get_config()
+    if "LastRetrieved" not in config:
+        config["LastRetrieved"] = {}
+
+    config["LastRetrieved"][f"{subreddit}_last_post_id"] = post_id
+    config["LastRetrieved"][f"{subreddit}_last_timestamp"] = str(timestamp)
+    save_config(config, config_path)
+    logger.info(f"Updated last retrieved for r/{subreddit}: {post_id} at {timestamp}")
+
 def load_cached_posts(subreddit: str) -> List[Dict[str, Any]]:
     """Load cached posts from the given subreddit's cache folder."""
     folder = get_cache_folder(subreddit)
@@ -180,18 +215,55 @@ def submission_to_dict(submission: praw.models.Submission) -> Dict[str, Any]:
         "link_flair_text": submission.link_flair_text
     }
 
-def fetch_posts(subreddit: str) -> Optional[List[Dict[str, Any]]]:
+def fetch_posts(subreddit: str, last_post_id: Optional[str] = None) -> Optional[List[Dict[str, Any]]]:
     """
-    Fetch the newest 1000 posts for the given subreddit using PRAW.
-    Returns a list of post dictionaries or None if an error occurs.
+    Fetch new posts from a subreddit, optionally stopping at a previously seen post.
+
+    This implements incremental fetching by:
+    1. Fetching the newest posts (up to 1000)
+    2. Stopping when we encounter last_post_id (if provided)
+    3. Only returning posts newer than what we've already cached
+
+    Parameters:
+        subreddit (str): Subreddit name
+        last_post_id (Optional[str]): ID of the last post we fetched previously.
+                                      If provided, only fetch posts newer than this.
+
+    Returns:
+        Optional[List[Dict[str, Any]]]: List of new posts, or None on error
     """
     try:
+        new_posts = []
+        seen_last_post = False
+
+        # Fetch up to 1000 newest posts (PRAW will paginate automatically)
+        # We stop early if we encounter a post we've seen before
         submissions = reddit.subreddit(subreddit).new(limit=1000)
-        posts = [submission_to_dict(sub) for sub in submissions]
-        if not posts:
-            logger.error(f"No posts found for r/{subreddit}.")
-            return None
-        return posts
+
+        for submission in submissions:
+            # If we've reached the last post we previously fetched, stop
+            if last_post_id and submission.id == last_post_id:
+                logger.info(f"Reached last retrieved post {last_post_id} for r/{subreddit}, stopping fetch")
+                seen_last_post = True
+                break
+
+            new_posts.append(submission_to_dict(submission))
+
+            # Safety limit: stop after 1000 posts even if we haven't seen last_post_id
+            if len(new_posts) >= 1000:
+                logger.warning(f"Fetched 1000 posts for r/{subreddit} without finding last_post_id {last_post_id}")
+                break
+
+        if not new_posts:
+            if last_post_id and seen_last_post:
+                logger.info(f"No new posts for r/{subreddit} since last check")
+            else:
+                logger.error(f"No posts found for r/{subreddit}.")
+            return [] if (last_post_id and seen_last_post) else None
+
+        logger.info(f"Fetched {len(new_posts)} new post(s) from r/{subreddit}")
+        return new_posts
+
     except Exception as e:
         logger.error(f"Exception fetching r/{subreddit}: {e}")
         return None
@@ -722,20 +794,47 @@ def main() -> None:
 
     for sub in tqdm(args.subreddits, desc="Processing subreddits", unit="subreddit"):
         logger.info(f"Checking subreddit: {sub}")
-        posts = fetch_posts(sub)
+
+        # Get the last post ID we retrieved for this subreddit (for incremental updates)
+        last_post_id, last_timestamp = get_last_retrieved(sub)
+        if last_post_id:
+            logger.info(f"Last retrieved post for r/{sub}: {last_post_id} at {last_timestamp}")
+        else:
+            logger.info(f"No previous retrieval data for r/{sub}, fetching initial posts")
+
+        # Fetch only new posts since last_post_id (incremental fetch)
+        posts = fetch_posts(sub, last_post_id=last_post_id)
         if posts is not None:
             global_network_hits += 1
-        if posts is None or len(posts) == 0:
-            logger.error(f"Subreddit '{sub}' does not exist or returned no posts. Skipping.")
+
+        if posts is None:
+            logger.error(f"Subreddit '{sub}' does not exist or error occurred. Skipping.")
             continue
+
+        if len(posts) == 0:
+            logger.info(f"No new posts for r/{sub} since last check")
+            # Still generate reports from cached data below
+            posts = []
 
         new_posts = []
         new_posts_count = 0
+        newest_post_id = None
+        newest_timestamp = None
+
         for post in posts:
             cached, is_new = cache_post(sub, post)
             if is_new:
                 new_posts.append(cached)
                 new_posts_count += 1
+
+            # Track the newest post for updating last_retrieved
+            if newest_post_id is None or post.get("created_utc", 0) > newest_timestamp:
+                newest_post_id = post.get("id")
+                newest_timestamp = post.get("created_utc", 0)
+
+        # Update last_retrieved with the newest post we saw
+        if newest_post_id and newest_timestamp:
+            update_last_retrieved(sub, newest_post_id, newest_timestamp)
 
         try:
             folder = get_cache_folder(sub)
