@@ -30,6 +30,7 @@ import configparser
 import re
 import html
 import logging
+from datetime import datetime, timezone
 from tqdm import tqdm
 from colorama import init, Fore, Style
 from typing import Tuple, Optional, List, Dict, Any
@@ -37,9 +38,63 @@ from typing import Tuple, Optional, List, Dict, Any
 # Initialize colorama for ANSI color support with auto-reset.
 init(autoreset=True)
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
-logger = logging.getLogger(__name__)
+# Configure logging to both file and console
+def setup_logging() -> logging.Logger:
+    """
+    Set up logging to write to both console and a log file.
+    The log file is created in the 'caches' directory and appends to existing logs.
+    """
+    log_dir = "caches"
+    os.makedirs(log_dir, exist_ok=True)
+    log_file = os.path.join(log_dir, "reddit_cache.log")
+
+    # Create logger
+    log = logging.getLogger(__name__)
+    log.setLevel(logging.INFO)
+
+    # Create formatters
+    file_formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
+    console_formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
+
+    # File handler (append mode)
+    file_handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(file_formatter)
+
+    # Console handler
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    console_handler.setFormatter(console_formatter)
+
+    # Add handlers to logger
+    log.addHandler(file_handler)
+    log.addHandler(console_handler)
+
+    return log
+
+logger = setup_logging()
+
+def format_timestamp(unix_timestamp: float) -> str:
+    """
+    Convert a Unix timestamp (UTC) to a human-readable string with timezone info.
+
+    Parameters:
+        unix_timestamp (float): Unix timestamp in UTC
+
+    Returns:
+        str: Formatted string showing both UTC and local time
+    """
+    if unix_timestamp is None:
+        return "None"
+
+    # Convert to UTC datetime
+    utc_dt = datetime.fromtimestamp(unix_timestamp, tz=timezone.utc)
+
+    # Convert to local datetime
+    local_dt = datetime.fromtimestamp(unix_timestamp)
+
+    # Format as: "2026-01-06 03:26:08 UTC (2026-01-05 19:26:08 local)"
+    return f"{utc_dt.strftime('%Y-%m-%d %H:%M:%S')} UTC ({local_dt.strftime('%Y-%m-%d %H:%M:%S')} local)"
 
 # Custom help formatter for colored output
 class ColoredHelpFormatter(argparse.RawTextHelpFormatter):
@@ -148,6 +203,8 @@ def get_config() -> Tuple[configparser.ConfigParser, str]:
 
 def save_config(config: configparser.ConfigParser, config_path: str) -> None:
     """Save the configuration to the specified config_path."""
+    # Ensure the directory exists
+    os.makedirs(os.path.dirname(config_path), exist_ok=True)
     with open(config_path, "w", encoding="utf-8") as configfile:
         config.write(configfile)
 
@@ -184,7 +241,7 @@ def update_last_retrieved(subreddit: str, post_id: str, timestamp: float) -> Non
     config["LastRetrieved"][f"{subreddit}_last_post_id"] = post_id
     config["LastRetrieved"][f"{subreddit}_last_timestamp"] = str(timestamp)
     save_config(config, config_path)
-    logger.info(f"Updated last retrieved for r/{subreddit}: {post_id} at {timestamp}")
+    logger.info(f"Updated last retrieved for r/{subreddit}: {post_id} at {format_timestamp(timestamp)}")
 
 def load_cached_posts(subreddit: str) -> List[Dict[str, Any]]:
     """Load cached posts from the given subreddit's cache folder."""
@@ -781,6 +838,14 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    # Log the start of the script execution
+    logger.info("=" * 80)
+    logger.info(f"Script started: reddit_cache_v2.py")
+    logger.info(f"Subreddits to process: {', '.join(args.subreddits)}")
+    logger.info(f"Output format: {args.output}")
+    logger.info(f"Options: modqueue={args.modqueue}, modmail={args.modmail}, "
+                f"check_code_format={args.check_code_format}, no_cache={args.no_cache}")
+
     filters_applied = {
         "limit_report": args.limit_report if args.limit_report is not None else "None",
         "report": args.report if args.report is not None else "None",
@@ -810,7 +875,7 @@ def main() -> None:
         else:
             last_post_id, last_timestamp = get_last_retrieved(sub)
             if last_post_id:
-                logger.info(f"Last retrieved post for r/{sub}: {last_post_id} at {last_timestamp}")
+                logger.info(f"Last retrieved post for r/{sub}: {last_post_id} at {format_timestamp(last_timestamp)}")
             else:
                 logger.info(f"No previous retrieval data for r/{sub}, fetching initial posts")
 
@@ -919,6 +984,14 @@ def main() -> None:
     else:
         print_human_readable(final_output, filters_applied)
 
+    # Log completion
+    logger.info(f"Script completed successfully. Processed {len(args.subreddits)} subreddit(s).")
+    logger.info("=" * 80)
+
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        logger.exception(f"Fatal error occurred: {e}")
+        sys.exit(1)
 

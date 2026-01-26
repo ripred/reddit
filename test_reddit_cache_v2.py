@@ -16,6 +16,8 @@ from reddit_cache_v2 import (
     get_cache_folder,
     get_config,
     save_config,
+    get_last_retrieved,
+    update_last_retrieved,
     load_cached_posts,
     submission_to_dict,
     fetch_posts,
@@ -86,6 +88,19 @@ class TestRedditCacheV2(unittest.TestCase):
         self.assertIn("dummy", new_config["CodeFormat"])
         self.assertEqual(new_config["CodeFormat"]["dummy"], "value")
 
+    def test_get_last_retrieved_none(self):
+        os.makedirs("caches", exist_ok=True)
+        last_post_id, last_timestamp = get_last_retrieved("testsub")
+        self.assertIsNone(last_post_id)
+        self.assertIsNone(last_timestamp)
+
+    def test_update_and_get_last_retrieved(self):
+        os.makedirs("caches", exist_ok=True)
+        update_last_retrieved("testsub", "post123", 1234567890.0)
+        last_post_id, last_timestamp = get_last_retrieved("testsub")
+        self.assertEqual(last_post_id, "post123")
+        self.assertEqual(last_timestamp, 1234567890.0)
+
     def test_load_cached_posts(self):
         folder = get_cache_folder("testsub")
         posts = [
@@ -133,6 +148,29 @@ class TestRedditCacheV2(unittest.TestCase):
         self.assertEqual(len(posts), 2)
         self.assertEqual(posts[0]["id"], "id1")
         self.assertIsNone(posts[1]["link_flair_text"])
+
+    @patch("reddit_cache_v2.reddit")
+    def test_fetch_posts_incremental_with_last_post_id(self, mock_reddit):
+        dummy_sub1 = DummySubmission("id1", "Title 1", DummyAuthor("user1"), 333, "Text 1", "News")
+        dummy_sub2 = DummySubmission("id2", "Title 2", DummyAuthor("user2"), 222, "Text 2", None)
+        dummy_sub3 = DummySubmission("id3", "Title 3", DummyAuthor("user3"), 111, "Text 3", "Old")
+        fake_subreddit = MagicMock()
+        fake_subreddit.new.return_value = [dummy_sub1, dummy_sub2, dummy_sub3]
+        mock_reddit.subreddit.return_value = fake_subreddit
+        posts = fetch_posts("testsub", last_post_id="id2")
+        self.assertIsNotNone(posts)
+        self.assertEqual(len(posts), 1)
+        self.assertEqual(posts[0]["id"], "id1")
+
+    @patch("reddit_cache_v2.reddit")
+    def test_fetch_posts_incremental_no_new_posts(self, mock_reddit):
+        dummy_sub1 = DummySubmission("id1", "Title 1", DummyAuthor("user1"), 111, "Text 1", "News")
+        fake_subreddit = MagicMock()
+        fake_subreddit.new.return_value = [dummy_sub1]
+        mock_reddit.subreddit.return_value = fake_subreddit
+        posts = fetch_posts("testsub", last_post_id="id1")
+        self.assertIsNotNone(posts)
+        self.assertEqual(len(posts), 0)
 
     def test_cache_post(self):
         post_data = {"id": "abc123", "title": "Test Post", "created_utc": 123, "selftext": "Some text", "author": "user", "link_flair_text": "Info"}
@@ -467,7 +505,7 @@ class TestRedditCacheV2(unittest.TestCase):
         self.assertEqual(config["CodeFormat"].get("post2"), "n")
 
     def test_main_no_valid_subreddits(self):
-        with patch("reddit_cache_v2.fetch_posts", return_value=[]), \
+        with patch("reddit_cache_v2.fetch_posts", return_value=None), \
              patch("reddit_cache_v2.tqdm", lambda x, **kwargs: x):
             test_args = ["reddit_cache_v2.py", "nosub"]
             with patch.object(sys, 'argv', test_args):
@@ -545,6 +583,27 @@ class TestRedditCacheV2(unittest.TestCase):
                 output = captured.getvalue()
                 self.assertIn("Flair Report", output)
                 self.assertIn("News: 1", output)
+
+    def test_main_no_cache_option(self):
+        dummy_post = {
+            "id": "post5",
+            "title": "No Cache Test",
+            "author": "tester",
+            "created_utc": 5000,
+            "selftext": "Test text",
+            "link_flair_text": "Test"
+        }
+        with patch("reddit_cache_v2.fetch_posts", return_value=[dummy_post]) as mock_fetch, \
+             patch("reddit_cache_v2.cache_post", side_effect=lambda sub, post: (post, True)), \
+             patch("reddit_cache_v2.get_last_retrieved", return_value=("old_post", 1000.0)), \
+             patch("reddit_cache_v2.tqdm", lambda x, **kwargs: x):
+            test_args = ["reddit_cache_v2.py", "testsub", "--no-cache", "--output", "json"]
+            with patch.object(sys, 'argv', test_args):
+                captured = StringIO()
+                sys.stdout = captured
+                main()
+                sys.stdout = sys.__stdout__
+                mock_fetch.assert_called_once_with("testsub", last_post_id=None)
 
 if __name__ == '__main__':
     unittest.main()
