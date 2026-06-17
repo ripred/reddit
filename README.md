@@ -1,5 +1,9 @@
 [![Python Tests and Coverage](https://github.com/ripred/reddit/actions/workflows/python-app.yml/badge.svg)](https://github.com/ripred/reddit/actions/workflows/python-app.yml)
 
+[![License](https://flat.badgen.net/github/license/ripred/reddit)](https://github.com/ripred/reddit/blob/main/LICENSE)
+[![Stars](https://flat.badgen.net/github/stars/ripred/reddit)](https://github.com/ripred/reddit/stargazers)
+[![Forks](https://flat.badgen.net/github/forks/ripred/reddit)](https://github.com/ripred/reddit/network/members)
+
 # Reddit Cache Utility for Moderators
 
 ## Version Information
