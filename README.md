@@ -1,10 +1,10 @@
 # Reddit Cache Utility for Moderators
 
-[![Python App](https://img.shields.io/static/v1?style=flat&label=Python+App&message=passing&color=2da44e&labelColor=24292f)](https://github.com/ripred/reddit/actions/workflows/python-app.yml)
-[![Python](https://img.shields.io/static/v1?style=flat&label=Python&message=3.x&color=3776ab&labelColor=24292f)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/static/v1?style=flat&label=License&message=MIT&color=0969da&labelColor=24292f)](https://github.com/ripred/reddit/blob/main/LICENSE)
-[![Stars](https://img.shields.io/static/v1?style=flat&label=Stars&message=2&color=bf8700&labelColor=24292f)](https://github.com/ripred/reddit/stargazers)
-[![Forks](https://img.shields.io/static/v1?style=flat&label=Forks&message=0&color=6f42c1&labelColor=24292f)](https://github.com/ripred/reddit/network/members)
+[![Python App](https://flat.badgen.net/badge/Python%20App/passing/2da44e?labelColor=24292f)](https://github.com/ripred/reddit/actions/workflows/python-app.yml)
+[![Python](https://flat.badgen.net/badge/Python/3.x/3776ab?labelColor=24292f)](https://www.python.org/downloads/)
+[![License](https://flat.badgen.net/badge/License/MIT/0969da?labelColor=24292f)](https://github.com/ripred/reddit/blob/main/LICENSE)
+[![Stars](https://flat.badgen.net/badge/Stars/2/bf8700?labelColor=24292f)](https://github.com/ripred/reddit/stargazers)
+[![Forks](https://flat.badgen.net/badge/Forks/0/6f42c1?labelColor=24292f)](https://github.com/ripred/reddit/network/members)
 
 ## Version Information
 
